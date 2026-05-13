@@ -126,6 +126,42 @@ const serviceData: Record<number, any> = {
   },
 };
 
+
+/* ── Per-service brand logo rows ── */
+const serviceBrandLogos: Record<number, { file: string; label: string; color: string }[]> = {
+  2: [ // Pearl Farms
+    { file: logoKannada,  label: 'Mandya Farm',    color: '#3b82f6' },
+    { file: logoEnglish,  label: 'Certified Pearls', color: '#06b6d4' },
+    { file: logoHindi,    label: 'Investor Portal', color: '#0ea5e9' },
+    { file: logoTelugu,   label: 'Buyback Program', color: '#38bdf8' },
+  ],
+  3: [ // Manikya Market
+    { file: logoKannada,  label: 'Handloom',       color: '#10b981' },
+    { file: logoEnglish,  label: 'Organic Foods',  color: '#059669' },
+    { file: logoHindi,    label: 'Pottery & Art',  color: '#34d399' },
+    { file: logoTelugu,   label: 'Women SHGs',     color: '#6ee7b7' },
+    { file: logoCrime,    label: 'Village Crafts', color: '#10b981' },
+  ],
+  4: [ // Manikya Roots
+    { file: logoRoots,    label: 'Amrutha Malt',   color: '#22c55e' },
+    { file: logoKannada,  label: 'Cold-Press Oils', color: '#84cc16' },
+    { file: logoEnglish,  label: 'Millet Snacks',  color: '#4ade80' },
+    { file: logoHindi,    label: 'Herbal Range',   color: '#86efac' },
+  ],
+  5: [ // Manikya Properties
+    { file: logoKannada,  label: 'Residential',    color: '#f59e0b' },
+    { file: logoEnglish,  label: 'Commercial',     color: '#ef4444' },
+    { file: logoHindi,    label: 'Home Loans',     color: '#f97316' },
+    { file: logoTelugu,   label: 'Farm Lands',     color: '#fbbf24' },
+  ],
+  6: [ // Manikya Money
+    { file: logoKannada,  label: 'Personal Loans', color: '#8b5cf6' },
+    { file: logoEnglish,  label: 'Business Loans', color: '#a855f7' },
+    { file: logoHindi,    label: 'Home Loans',     color: '#7c3aed' },
+    { file: logoTelugu,   label: 'Quick Approval', color: '#c084fc' },
+  ],
+};
+
 const services = [
   { id:1, title:'NewsJunction',      subtitle:'Digital Media Network',   icon:Newspaper,   gradient:'linear-gradient(135deg,#ef4444,#f97316)', accent:'#ef4444', tag:'Media',         hasChannels:true,  tagline:'One Network. Many Voices.', description:'NewsJunction is a National Multi-Lingual Media Powerhouse with five dedicated language channels delivering 24/7 live news, entertainment, and hyper-local stories from across India.', features:['5 dedicated language channels with local editorial teams','Live 24/7 streaming at newsjunction.net','Coverage of all 31 Karnataka districts','Music Junction & Comedy Junction verticals','Shoppable content integrated with Manikya Market','Citizen journalism and audience engagement'], link:'/contact' },
   { id:2, title:'Pearl Farms',        subtitle:'Premium Investment',       icon:Sparkles,    gradient:'linear-gradient(135deg,#3b82f6,#06b6d4)', accent:'#3b82f6', tag:'★ Featured',   featured:true,     tagline:'Where Nature Meets High-Yield Financial Growth.', description:'A premium alternative investment combining sustainable freshwater pearl farming in Mandya, Karnataka with lucrative returns. We connect urban investors with trained farmers.', features:['Expected ROI of 30–40% per 18-month cycle','Complete technical training and farm setup','End-to-end support from pond prep to pearl sales','100% buyback assurance with certified market linkage','Passive income — no daily farm involvement required','Eco-friendly farming that improves water body health'], link:'/pearl-farms' },
@@ -181,6 +217,7 @@ export default function Services() {
         @keyframes gridMove{0%{backgroundPosition:0 0}100%{backgroundPosition:60px 60px}}
         @keyframes riseBar{0%{height:20%}100%{height:70%}}
         @keyframes windowBlink{0%,100%{opacity:0.1}50%{opacity:0.7}}
+        @keyframes logoPopIn{from{opacity:0;transform:translateY(20px) scale(0.85)}to{opacity:1;transform:translateY(0) scale(1)}}
 
         .gold{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
         .reveal{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.16,1,.3,1)}
@@ -422,6 +459,26 @@ export default function Services() {
               </div>
 
 
+            </div>
+          )}
+
+          {/* ── BRAND LOGOS ROW — same style as NewsJunction channels ── */}
+          {s.id !== 1 && serviceBrandLogos[s.id] && (
+            <div style={{ background:'#0f172a',padding:'1.6rem 0' }}>
+              <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem' }}>
+                <p style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.35)',fontSize:'0.65rem',textTransform:'uppercase',letterSpacing:'0.22em',marginBottom:14,textAlign:'center' }}>Our {s.title} Offerings</p>
+                <div style={{ display:'grid',gridTemplateColumns:`repeat(${serviceBrandLogos[s.id].length},1fr)`,gap:14 }}>
+                  {serviceBrandLogos[s.id].map((logo,i) => (
+                    <div key={i} className="channel-logo"
+                      style={{ display:'flex',flexDirection:'column',alignItems:'center',gap:8,animation:`logoPopIn .5s cubic-bezier(.16,1,.3,1) ${i*0.1}s both` }}>
+                      <div style={{ width:'100%',aspectRatio:'1',borderRadius:16,overflow:'hidden',border:`2px solid ${logo.color}60`,boxShadow:`0 4px 20px ${logo.color}35`,background:`${logo.color}10` }}>
+                        <img src={logo.file} alt={logo.label} style={{ width:'100%',height:'100%',objectFit:'cover' }}/>
+                      </div>
+                      <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',color:'rgba(255,255,255,0.65)',fontWeight:600,textAlign:'center' }}>{logo.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
 
