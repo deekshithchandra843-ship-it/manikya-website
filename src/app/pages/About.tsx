@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import { ArrowRight, Play, X, Award, Users, Globe, Heart, CheckCircle, Upload, Video, Plus, Quote } from 'lucide-react';
 
 // Embedded leadership photos
-const IMG_RAHMAT = '/images/dr-rahmat.png';
-const IMG_MEENA = '/images/meena-kumari.png';
+const IMG_RAHMAT = '/images/dr-rahmat.jpg';
+const IMG_MEENA = '/images/meena-kumari.jpg';
 const IMG_DHANUSH = '/images/dhanush-gowda.png';
 const IMG_SHABEERA = '/images/shabeera-k.png';
 

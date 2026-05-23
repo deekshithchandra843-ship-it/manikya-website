@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Lock, Mail } from 'lucide-react';
+import { adminApi } from '../../../lib/api';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -9,23 +10,20 @@ export default function AdminLogin() {
     password: '',
   });
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
-    // TODO: When Supabase is connected, use real authentication:
-    // const { data, error } = await supabase.auth.signInWithPassword({
-    //   email: credentials.email,
-    //   password: credentials.password,
-    // })
-
-    // Simulated authentication (demo purposes only)
-    if (credentials.email === 'admin@manikya.com' && credentials.password === 'admin123') {
-      localStorage.setItem('admin_logged_in', 'true');
+    try {
+      await adminApi.login(credentials.email, credentials.password);
       navigate('/admin/dashboard');
-    } else {
-      setError('Invalid email or password');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Invalid email or password');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -38,12 +36,6 @@ export default function AdminLogin() {
           </div>
           <h1 className="text-3xl font-bold text-gray-900">Admin Login</h1>
           <p className="text-gray-600 mt-2">Manikya Services Dashboard</p>
-        </div>
-
-        <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-sm text-blue-900 font-semibold mb-1">Demo Credentials:</p>
-          <p className="text-sm text-blue-700">Email: admin@manikya.com</p>
-          <p className="text-sm text-blue-700">Password: admin123</p>
         </div>
 
         {error && (
@@ -95,16 +87,16 @@ export default function AdminLogin() {
 
           <button
             type="submit"
-            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            disabled={loading}
+            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign In
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            For production use, connect Supabase for secure authentication
-          </p>
+        <div className="mt-8 text-center border-t border-gray-100 pt-6">
+          <p className="text-xs text-gray-400 tracking-widest uppercase">Powered by</p>
+          <p className="text-sm font-semibold text-gray-700 mt-1">Manikya Group</p>
         </div>
       </div>
     </div>

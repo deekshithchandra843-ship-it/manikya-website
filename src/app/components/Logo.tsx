@@ -1,9 +1,10 @@
-export default function Logo({ className = "w-10 h-10" }: { className?: string }) {
+export default function Logo({ className = "w-16 h-16 object-contain" }: { className?: string }) {
   return (
     <img
-      src="/src/imports/image-3.png"
-      alt="Manikya Services Pvt Ltd"
+      src="/manikya-navbar-logo.png"
+      alt="Manikya Money Service Pvt Ltd"
       className={className}
+      style={{ imageRendering: 'crisp-edges' }}
     />
   );
 }

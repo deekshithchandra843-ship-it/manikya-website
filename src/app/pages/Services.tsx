@@ -7,7 +7,14 @@ import {
   Users
 } from 'lucide-react';
 
-/* ── Asset paths — exact filenames from public/media/ ── */
+/* ── Asset paths — exact filenames from public/media/ ──
+   Images to copy into public/media/:
+   pearl-farm-pond.jpg            ← 1150745d-af43-40e9-a899-bc7f7678be74.jpg  (Pearl Farms)
+   manikya-market-vegetables.jpg  ← markus-spiske-3nX7pythQyM-unsplash.jpg    (E-Market)
+   manikya-roots-product.jpg      ← WhatsApp_Image_2026-05-12_at_9_48_53_PM.jpeg (Manikya Roots - Amrutha product)
+   manikya-properties-urban.jpg   ← urban2.jpg                                 (Manikya Properties)
+   manikya-properties-bank.jpg    ← 2304_q702_034_F_m005_c7_bank.jpg           (Manikya Money)
+*/
 const njVideo      = '/media/WhatsApp Video 2026-05-12 at 9.49.00 PM.mp4';
 const logoCrime    = '/media/WhatsApp Image 2026-05-12 at 9.48.46 PM.jpeg';
 const logoMusic    = '/media/WhatsApp Image 2026-05-12 at 9.48.48 PM.jpeg';
@@ -18,6 +25,12 @@ const logoHeritage = '/media/WhatsApp Image 2026-05-12 at 9.48.55 PM.jpeg';
 const logoKannada  = '/media/WhatsApp Image 2026-05-12 at 9.48.57 PM.jpeg';
 const logoEnglish  = '/media/WhatsApp Image 2026-05-12 at 9.48.59 PM.jpeg';
 const logoHindi    = '/media/WhatsApp Image 2026-05-12 at 9.48.59 PM.jpeg';
+const bgPearl      = '/media/pearl-farm-pond.jpg';
+const bgMarket     = '/media/manikya-market-vegetables.jpg';
+const bgRoots      = '/media/manikya-roots-product.jpg';
+const bgTraders    = '/manikya-traders-banner.jpg';
+const bgProperties = '/media/manikya-properties-urban.jpg';
+const bgMoney      = '/media/manikya-properties-bank.jpg';
 
 function useInView(t = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -34,7 +47,7 @@ function useInView(t = 0.1) {
 const channels = [
   { name:'NewsJunction Kannada', lang:'ಕನ್ನಡ', flag:'🟠', color:'#ef4444', url:'https://newsjunction.net/stream.php',           desc:"Karnataka's #1 Kannada digital channel — hyper-local stories from all 31 districts, politics, culture." },
   { name:'NewsJunction Hindi',   lang:'हिन्दी',  flag:'🔵', color:'#3b82f6', url:'https://newsjunction.net/channel.php?channelId=47&channelName=Jankranti+hindi+news+bulletin', desc:'Jankranti Hindi News Bulletin — pan-India coverage with a Southern Indian editorial lens.' },
-  { name:'NewsJunction Tamil',   lang:'தமிழ்',  flag:'🟢', color:'#10b981', url:'https://newsjunction.net/stream.php',           desc:'Tamil news and live programs serving Tamil-speaking communities with authentic regional stories.' },
+  { name:'NewsJunction Marathi', lang:'मराठी',  flag:'🟢', color:'#10b981', url:'https://newsjunction.net/stream.php',           desc:'Marathi news and live programs serving Marathi-speaking communities with authentic regional stories from Maharashtra and beyond.' },
   { name:'NewsJunction Telugu',  lang:'తెలుగు', flag:'🟣', color:'#8b5cf6', url:'https://newsjunction.net/stream.php',           desc:'Andhra and Telangana news with comprehensive coverage of regional politics and business events.' },
   { name:'NewsJunction English', lang:'English', flag:'🔴', color:'#f59e0b', url:'https://newsjunction.net/featured_channels.php?rss_id=132', desc:'National & global English news with an Indian editorial lens — for professionals and the diaspora.' },
 ];
@@ -70,7 +83,7 @@ const serviceData: Record<number, any> = {
       {step:1,title:'Multi-Language Coverage',desc:'Five dedicated language desks — each with local journalists delivering verified news in Kannada, Hindi, Tamil, Telugu, and English.'},
       {step:2,title:'Hyper-Local Reporting',desc:'Reporters embedded in all 31 Karnataka districts ensuring every village story gets the national attention it deserves.'},
       {step:3,title:'Live Streaming & Digital',desc:'Watch 24/7 live news at newsjunction.net. Content distributed across YouTube, social media, and mobile apps.'},
-      {step:4,title:'Integrated Commerce',desc:"NewsJunction's shoppable content is integrated with Manikya Market — watch a story, buy the product directly from the artisan."},
+      {step:4,title:'Integrated Commerce',desc:"NewsJunction's shoppable content is integrated with E-Market — watch a story, buy the product directly from the artisan."},
     ],
     extra:{title:'Entertainment Beyond News',items:['🎵 Music Junction — regional music programming','😂 Comedy Junction — original comedy content','🛒 Shoppable News — buy from what you watch','🎙️ Citizen Journalism — your voice, our platform']},
   },
@@ -95,14 +108,14 @@ const serviceData: Record<number, any> = {
     extra:{title:'What We Sell',items:['🧵 Handloom textiles and silk products','🏺 Traditional pottery and terracotta art','🍯 Organic honey, pickles and homemade foods','🌿 Herbal products, oils and natural cosmetics']},
   },
   4: {
-    stats:[{value:'42',label:'Natural Ingredients',icon:'🌿'},{value:'0',label:'Artificial Additives',icon:'✅'},{value:'5000+',label:'Happy Customers',icon:'😊'},{value:'100%',label:'Natural & FSSAI',icon:'🏆'}],
+    stats:[{value:'B2B',label:'Business Model',icon:'🤝'},{value:'100%',label:'Transparent',icon:'✅'},{value:'KA-Wide',label:'Vendor Network',icon:'🗺️'},{value:'20+',label:'Years of Trust',icon:'🏆'}],
     howItWorks:[
-      {step:1,title:'Ancient Wisdom Meets Modern Science',desc:'Formulations rooted in Ayurvedic texts and validated by nutrition experts. Each ingredient chosen for its proven health benefit.'},
-      {step:2,title:'Sourcing from Certified Farms',desc:'All 42 ingredients sourced from certified organic farms across Karnataka. Cold-pressed, stone-ground, minimal processing.'},
-      {step:3,title:'Precision Blending',desc:'Ingredients blended in exact proportions using traditional methods — no heat processing that destroys nutrients.'},
-      {step:4,title:'Direct to Your Doorstep',desc:'Products packed fresh and delivered directly. No middlemen, no shelf-aging. Fresh, potent wellness product every time.'},
+      {step:1,title:'Vendor Registers Product',desc:'Manufacturers and producers from their own warehouse or production unit register their food machinery or commodity with us — roti machines, packaging equipment, grains, pulses and more.'},
+      {step:2,title:'We Market & Advertise',desc:'Manikya Traders runs digital campaigns, WhatsApp outreach, field sales and on-ground promotions to connect your product with the right buyers across Karnataka and beyond.'},
+      {step:3,title:'We Match Buyer to Vendor',desc:'Our team identifies the right client — hotels, canteens, food factories, retailers — and facilitates direct introductions, demos and presentations on your behalf.'},
+      {step:4,title:'Deal Closed — Everyone Wins',desc:'Vendor gets the sale, buyer gets the right product, and Manikya Traders earns a transparent commission. No hidden charges. Clean, fast, and simple.'},
     ],
-    extra:{title:'Our Products',items:['🌾 Amrutha Multi Millet Malt — 42 ingredients','🫒 Cold-pressed oils — groundnut, coconut, sesame','🌶️ Stone-ground spices — pure, no adulteration','🍪 Millet snacks — healthy guilt-free alternatives']},
+    extra:{title:'What We Trade & Market',items:['🫓 Roti & chapati making machines','📦 Food packaging & sealing machinery','🌾 Grain & pulse processing equipment','🍚 Rice, wheat, pulses & commodity trading','🔧 Commercial kitchen & milling instruments','📣 Full B2B digital & field marketing']},
   },
   5: {
     stats:[{value:'100%',label:'Client-First',icon:'🤝'},{value:'0',label:'Hidden Charges',icon:'✅'},{value:'10+',label:'Bank Partners',icon:'🏦'},{value:'100%',label:'Legal Verified',icon:'⚖️'}],
@@ -135,18 +148,18 @@ const serviceBrandLogos: Record<number, { file: string; label: string; color: st
     { file: logoHindi,    label: 'Investor Portal', color: '#0ea5e9' },
     { file: logoTelugu,   label: 'Buyback Program', color: '#38bdf8' },
   ],
-  3: [ // Manikya Market
+  3: [ // E-Market
     { file: logoKannada,  label: 'Handloom',       color: '#10b981' },
     { file: logoEnglish,  label: 'Organic Foods',  color: '#059669' },
     { file: logoHindi,    label: 'Pottery & Art',  color: '#34d399' },
     { file: logoTelugu,   label: 'Women SHGs',     color: '#6ee7b7' },
     { file: logoCrime,    label: 'Village Crafts', color: '#10b981' },
   ],
-  4: [ // Manikya Roots
-    { file: logoRoots,    label: 'Amrutha Malt',   color: '#22c55e' },
-    { file: logoKannada,  label: 'Cold-Press Oils', color: '#84cc16' },
-    { file: logoEnglish,  label: 'Millet Snacks',  color: '#4ade80' },
-    { file: logoHindi,    label: 'Herbal Range',   color: '#86efac' },
+  4: [ // Manikya Traders
+    { file: logoKannada,  label: 'Machinery Marketing', color: '#f59e0b' },
+    { file: logoEnglish,  label: 'Grain Trading',       color: '#f97316' },
+    { file: logoHindi,    label: 'Vendor Network',      color: '#ef4444' },
+    { file: logoTelugu,   label: 'B2B Outreach',        color: '#fbbf24' },
   ],
   5: [ // Manikya Properties
     { file: logoKannada,  label: 'Residential',    color: '#f59e0b' },
@@ -163,11 +176,11 @@ const serviceBrandLogos: Record<number, { file: string; label: string; color: st
 };
 
 const services = [
-  { id:1, title:'NewsJunction',      subtitle:'Digital Media Network',   icon:Newspaper,   gradient:'linear-gradient(135deg,#ef4444,#f97316)', accent:'#ef4444', tag:'Media',         hasChannels:true,  tagline:'One Network. Many Voices.', description:'NewsJunction is a National Multi-Lingual Media Powerhouse with five dedicated language channels delivering 24/7 live news, entertainment, and hyper-local stories from across India.', features:['5 dedicated language channels with local editorial teams','Live 24/7 streaming at newsjunction.net','Coverage of all 31 Karnataka districts','Music Junction & Comedy Junction verticals','Shoppable content integrated with Manikya Market','Citizen journalism and audience engagement'], link:'/contact' },
+  { id:1, title:'NewsJunction',      subtitle:'Digital Media Network',   icon:Newspaper,   gradient:'linear-gradient(135deg,#ef4444,#f97316)', accent:'#ef4444', tag:'Media',         hasChannels:true,  tagline:'One Network. Many Voices.', description:'NewsJunction is a National Multi-Lingual Media Powerhouse with five dedicated language channels delivering 24/7 live news, entertainment, and hyper-local stories from across India.', features:['5 dedicated language channels with local editorial teams','Live 24/7 streaming at newsjunction.net','Coverage of all 31 Karnataka districts','Music Junction & Comedy Junction verticals','Shoppable content integrated with E-Market','Citizen journalism and audience engagement'], link:'/contact' },
   { id:2, title:'Pearl Farms',        subtitle:'Premium Investment',       icon:Sparkles,    gradient:'linear-gradient(135deg,#3b82f6,#06b6d4)', accent:'#3b82f6', tag:'★ Featured',   featured:true,     tagline:'Where Nature Meets High-Yield Financial Growth.', description:'A premium alternative investment combining sustainable freshwater pearl farming in Mandya, Karnataka with lucrative returns. We connect urban investors with trained farmers.', features:['Expected ROI of 30–40% per 18-month cycle','Complete technical training and farm setup','End-to-end support from pond prep to pearl sales','100% buyback assurance with certified market linkage','Passive income — no daily farm involvement required','Eco-friendly farming that improves water body health'], link:'/pearl-farms' },
-  { id:3, title:'Manikya Market',     subtitle:'Rapid Desi Online Bazar',  icon:ShoppingBag, gradient:'linear-gradient(135deg,#10b981,#059669)', accent:'#10b981', tag:'Commerce',      tagline:'From the Heart of Villages to Doorsteps Worldwide.', description:'A tech-enabled marketplace bridging authentic Indian village craftsmanship with global consumers. We handle everything for rural sellers so they can focus on their craft.', features:['100% Desi products sourced directly from artisans','Rapid delivery through our rurban logistics network','"Meet the Maker" story-driven shoppable content','Priority platform for women entrepreneurs and SHGs','Zero technical burden for rural producers','Integrated discovery through NewsJunction coverage'], link:'/contact' },
-  { id:4, title:'Manikya Roots',      subtitle:'FMCG & Wellness',          icon:Leaf,        gradient:'linear-gradient(135deg,#22c55e,#84cc16)', accent:'#22c55e', tag:'Wellness',      tagline:'Purity in Every Grain, Health in Every Sip.', description:'The wellness vertical of Manikya Groups — bringing the forgotten wisdom of Ayurveda into modern daily life. Our flagship Amrutha Multi Millet Malt blends 42 ancient ingredients.', features:['Amrutha Multi Millet Malt — 42 handpicked natural ingredients','Zero refined sugar — specially formulated for diabetics','FSSAI certified — no chemicals, no preservatives','Cold-pressed oils and stone-ground spices range','Millet-based snacks for healthy guilt-free eating','Sourced from certified organic farms across Karnataka'], link:'/contact' },
-  { id:5, title:'Manikya Properties', subtitle:'Real Estate & Home Loans', icon:Building2,   gradient:'linear-gradient(135deg,#f59e0b,#ef4444)', accent:'#f59e0b', tag:'Real Estate',   tagline:'Your Dream Home, Made Possible.', description:'Manikya Properties is your end-to-end real estate facilitator — we find the property, verify it legally, coordinate your bank loan, and handle all documentation.', features:['Residential & commercial property search','Home loan facilitation — SBI, HDFC, ICICI, Axis & more','Complete documentation support — zero paperwork stress','Legal title verification, encumbrance & RERA checks','Price negotiation assistance for best market deal','Post-purchase: registration, mutation & handover support'], link:'/contact' },
+  { id:3, title:'E-Market',     subtitle:'Rapid Desi Online Bazar',  icon:ShoppingBag, gradient:'linear-gradient(135deg,#10b981,#059669)', accent:'#10b981', tag:'Commerce',      tagline:'From the Heart of Villages to Doorsteps Worldwide.', description:'A tech-enabled marketplace bridging authentic Indian village craftsmanship with global consumers. We handle everything for rural sellers so they can focus on their craft.', features:['100% Desi products sourced directly from artisans','Rapid delivery through our rurban logistics network','"Meet the Maker" story-driven shoppable content','Priority platform for women entrepreneurs and SHGs','Zero technical burden for rural producers','Integrated discovery through NewsJunction coverage'], link:'/contact' },
+  { id:4, title:'Manikya Traders',    subtitle:'Marketing & Trading',      icon:TrendingUp,  gradient:'linear-gradient(135deg,#f59e0b,#ef4444)', accent:'#f59e0b', tag:'Trading',       tagline:'We Trade · You Grow · Together We Prosper.', description:'Manikya Traders is the B2B marketing and commodity trading arm of Manikya Group. We are the intermediary between food machinery manufacturers, grain producers, and businesses — handling all marketing, outreach, and deal facilitation.', features:['Food machinery marketing — roti, packaging, milling machines','Grain & commodity trading — rice, wheat, pulses, spices','B2B vendor–client matchmaking across Karnataka','Digital + field marketing campaigns for your product','Transparent commission model — no hidden charges','Backed by 20+ years of Manikya Group trust'], link:'/contact' },
+  { id:5, title:'Manikya Properties', subtitle:'Real Estate & Home Loans', icon:Building2,   gradient:'linear-gradient(135deg,#1e3a5f,#2563eb)', accent:'#2563eb', tag:'Real Estate',   tagline:'Your Dream Home, Made Possible.', description:'Manikya Properties is your end-to-end real estate facilitator — we find the property, verify it legally, coordinate your bank loan, and handle all documentation.', features:['Residential & commercial property search','Home loan facilitation — SBI, HDFC, ICICI, Axis & more','Complete documentation support — zero paperwork stress','Legal title verification, encumbrance & RERA checks','Price negotiation assistance for best market deal','Post-purchase: registration, mutation & handover support'], link:'/contact' },
   { id:6, title:'Manikya Money',      subtitle:'Financial Services',       icon:DollarSign,  gradient:'linear-gradient(135deg,#8b5cf6,#a855f7)', accent:'#8b5cf6', tag:'Finance',       tagline:'Empowering Your Financial Future with Trust.', description:'Manikya Money Service Pvt. Ltd. provides accessible, affordable financial services to every segment of Indian society — personal loans, business loans, and home loan facilitation.', features:['Personal, business & home loan facilitation','Speedy approval in 24–48 business hours','Low interest rates — competitive & transparent','Zero hidden charges — complete transparency','Minimal documentation — digital-friendly process','Customer-first support at every step of the journey'], link:'/contact' },
 ];
 
@@ -182,6 +195,7 @@ export default function Services() {
   const [active, setActive]           = useState(0);
   const [showChannels, setShowChannels] = useState(false);
   const [hovCh, setHovCh]             = useState<number|null>(null);
+  const [isMuted, setIsMuted]          = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const hero = useInView(); const detail = useInView(); const coming = useInView();
 
@@ -201,6 +215,9 @@ export default function Services() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
         @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
+        @keyframes logoReveal{0%{opacity:0;filter:drop-shadow(0 0 0px rgba(59,130,246,0)) brightness(0.3)}40%{opacity:0.9;filter:drop-shadow(0 0 80px rgba(59,130,246,1)) drop-shadow(0 0 120px rgba(239,68,68,0.9)) brightness(2.5)}70%{opacity:0.5;filter:drop-shadow(0 0 40px rgba(59,130,246,0.7)) brightness(1.6)}100%{opacity:0.15;filter:drop-shadow(0 0 40px rgba(59,130,246,0.5)) drop-shadow(0 0 80px rgba(239,68,68,0.3)) brightness(1.2)}}
+        @keyframes heroTextIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes heroBadgeIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
         @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
         @keyframes tabIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
         @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.65}}
@@ -218,6 +235,7 @@ export default function Services() {
         @keyframes riseBar{0%{height:20%}100%{height:70%}}
         @keyframes windowBlink{0%,100%{opacity:0.1}50%{opacity:0.7}}
         @keyframes logoPopIn{from{opacity:0;transform:translateY(20px) scale(0.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes kenBurns{from{transform:scale(1) translate(0,0)}to{transform:scale(1.08) translate(-1%,-1%)}}
 
         .gold{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
         .reveal{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.16,1,.3,1)}
@@ -248,26 +266,72 @@ export default function Services() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section style={{ background:'linear-gradient(135deg,#020817,#0a1628,#1e3a8a)',padding:'7rem 0 4rem',position:'relative',overflow:'hidden' }}>
+      <section style={{ background:'linear-gradient(135deg,#020817,#0a1628,#1e3a8a)',padding:'7rem 0 4rem',position:'relative',overflow:'hidden',minHeight:420 }}>
+
+        {/* Stars */}
         {Array.from({length:28},(_,i)=>(
           <div key={i} style={{ position:'absolute',width:Math.random()*2.5+0.5,height:Math.random()*2.5+0.5,borderRadius:'50%',background:'white',left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,opacity:Math.random()*0.5+0.1,animation:`twinkle ${Math.random()*4+3}s ease-in-out ${Math.random()*3}s infinite` }}/>
         ))}
+
+        {/* Glow orbs */}
         {[['70%','20%','rgba(59,130,246,0.2)'],['10%','65%','rgba(245,158,11,0.12)'],['85%','75%','rgba(139,92,246,0.15)']].map(([x,y,c],i)=>(
           <div key={i} style={{ position:'absolute',left:x,top:y,width:300,height:300,borderRadius:'50%',background:`radial-gradient(circle,${c},transparent)`,filter:'blur(55px)',transform:'translate(-50%,-50%)',pointerEvents:'none' }}/>
         ))}
-        <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',position:'relative',zIndex:1 }} ref={hero.ref}>
-          <div className={`reveal ${hero.v?'on':''}`}>
-            <div style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'8px 18px',borderRadius:40,background:'rgba(245,158,11,0.1)',border:'1px solid rgba(245,158,11,0.35)',marginBottom:20 }}>
+
+        {/* ── Logo: glows bright first, then settles to watermark ── */}
+        <div style={{
+          position:'absolute', top:'50%', left:'50%',
+          transform:'translate(-50%,-50%)',
+          width:'clamp(280px,38vw,520px)',
+          pointerEvents:'none', zIndex:0,
+        }}>
+          <img
+            src="/manikya-logo-services.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              width:'100%', height:'auto',
+              mixBlendMode:'screen',
+              animation:'logoReveal 2.2s cubic-bezier(0.16,1,0.3,1) 0.1s both',
+            }}
+          />
+        </div>
+
+        {/* ── Hero text — fades in AFTER logo highlight ── */}
+        <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',position:'relative',zIndex:1,textAlign:'center' }} ref={hero.ref}>
+          <div>
+            {/* Badge — appears after logo */}
+            <div style={{
+              display:'inline-flex',alignItems:'center',gap:8,padding:'8px 18px',borderRadius:40,
+              background:'rgba(245,158,11,0.1)',border:'1px solid rgba(245,158,11,0.35)',marginBottom:20,
+              animation:'heroBadgeIn 0.6s cubic-bezier(0.16,1,0.3,1) 1.6s both',
+            }}>
               <span className="live-dot"/>
               <span style={{ color:'#fde68a',fontSize:'0.68rem',letterSpacing:'0.25em',fontWeight:700,textTransform:'uppercase',fontFamily:'DM Sans,sans-serif' }}>7 Business Verticals · 1 Coming Soon</span>
             </div>
-            <h1 style={{ fontSize:'clamp(2.8rem,6vw,4.5rem)',fontWeight:700,color:'white',lineHeight:1.1,marginBottom:16 }}>
+
+            {/* Heading */}
+            <h1 style={{
+              fontSize:'clamp(2.8rem,6vw,4.5rem)',fontWeight:700,color:'white',lineHeight:1.1,marginBottom:16,
+              animation:'heroTextIn 0.8s cubic-bezier(0.16,1,0.3,1) 1.8s both',
+            }}>
               Our <span className="gold">Services</span>
             </h1>
-            <p style={{ fontFamily:'DM Sans,sans-serif',color:'#93c5fd',fontSize:'1.1rem',maxWidth:'36rem',lineHeight:1.75,marginBottom:28 }}>
+
+            {/* Subtitle */}
+            <p style={{
+              fontFamily:'DM Sans,sans-serif',color:'#93c5fd',fontSize:'1.1rem',
+              maxWidth:'42rem',lineHeight:1.75,margin:'0 auto 28px',
+              animation:'heroTextIn 0.8s cubic-bezier(0.16,1,0.3,1) 2s both',
+            }}>
               Seven powerful business verticals — media, investment, commerce, wellness, real estate, financial services, and culture.
             </p>
-            <div style={{ display:'flex',flexWrap:'wrap',gap:10 }}>
+
+            {/* Service tab buttons */}
+            <div style={{
+              display:'flex',flexWrap:'wrap',gap:10,justifyContent:'center',
+              animation:'heroTextIn 0.8s cubic-bezier(0.16,1,0.3,1) 2.2s both',
+            }}>
               {services.map((sv,i)=>{
                 const SI=sv.icon;
                 return(
@@ -285,6 +349,7 @@ export default function Services() {
             </div>
           </div>
         </div>
+
         <div style={{ position:'absolute',bottom:0,left:0,right:0 }}>
           <svg viewBox="0 0 1440 80" xmlns="http://www.w3.org/2000/svg"><path d="M0,50 C480,90 960,20 1440,50 L1440,80 L0,80 Z" fill="#f8fafc"/></svg>
         </div>
@@ -322,13 +387,39 @@ export default function Services() {
                   ref={videoRef}
                   src={newsJunctionVideo}
                   autoPlay
-                  muted
+                  muted={isMuted}
                   loop
                   playsInline
                   style={{ width:'100%',maxHeight:520,objectFit:'cover',display:'block' }}
                 />
                 {/* Overlay gradient for text readability */}
                 <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.7) 100%)' }}/>
+                {/* Audio toggle button */}
+                <button
+                  onClick={()=>{
+                    if(videoRef.current){
+                      videoRef.current.muted = !isMuted;
+                      setIsMuted(m=>!m);
+                    }
+                  }}
+                  style={{
+                    position:'absolute',top:16,right:16,zIndex:10,
+                    display:'flex',alignItems:'center',gap:6,
+                    padding:'8px 14px',borderRadius:40,
+                    background:'rgba(0,0,0,0.55)',backdropFilter:'blur(8px)',
+                    border:'1px solid rgba(255,255,255,0.25)',color:'white',
+                    fontWeight:700,fontSize:'0.78rem',fontFamily:'DM Sans,sans-serif',
+                    cursor:'pointer',transition:'all .25s'
+                  }}
+                  onMouseEnter={e=>(e.currentTarget.style.background='rgba(0,0,0,0.8)')}
+                  onMouseLeave={e=>(e.currentTarget.style.background='rgba(0,0,0,0.55)')}
+                >
+                  {isMuted ? (
+                    <><span style={{fontSize:'1rem'}}>🔇</span> Unmute</>
+                  ) : (
+                    <><span style={{fontSize:'1rem'}}>🔊</span> Mute</>
+                  )}
+                </button>
                 {/* Title overlay */}
                 <div style={{ position:'absolute',bottom:0,left:0,right:0,padding:'2.5rem' }}>
                   <div style={{ maxWidth:1280,margin:'0 auto' }}>
@@ -363,133 +454,64 @@ export default function Services() {
             /* ══════════════════════════════════════════════
                ALL OTHER SERVICES: CINEMATIC ANIMATED HEADER
             ══════════════════════════════════════════════ */
-            <div style={{ position:'relative',width:'100%',height:420,overflow:'hidden',background:'#000' }}>
+            <div style={{ width:'100%', position:'relative', height:400, overflow:'hidden', background:'#111' }}>
 
-              {/* ── Per-service animated background ── */}
-              {s.id === 2 && ( /* Pearl Farms — underwater shimmer */
-                <div style={{ position:'absolute',inset:0 }}>
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#0a1628,#0c4a6e,#0369a1,#0ea5e9)',animation:'bgShift 8s ease-in-out infinite alternate' }}/>
-                  {Array.from({length:18},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',borderRadius:'50%',background:`radial-gradient(circle,rgba(147,197,253,${0.15+Math.random()*0.25}),transparent)`,width:Math.random()*180+60,height:Math.random()*180+60,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`pearlFloat ${4+Math.random()*6}s ease-in-out ${Math.random()*4}s infinite alternate`,filter:'blur(2px)' }}/>
-                  ))}
-                  {Array.from({length:12},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',borderRadius:'50%',background:'rgba(255,255,255,0.6)',width:Math.random()*6+2,height:Math.random()*6+2,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`bubble ${3+Math.random()*4}s ease-in ${Math.random()*3}s infinite` }}/>
-                  ))}
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.75) 100%)' }}/>
+              {/* ── Per-service background photo — landscape, objectFit:cover ── */}
+              {s.id === 2 && (
+                <img src={bgPearl} alt="Pearl Farms" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',display:'block',position:'absolute',inset:0 }}/>
+              )}
+              {s.id === 3 && (
+                <img src={bgMarket} alt="E-Market" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',display:'block',position:'absolute',inset:0 }}/>
+              )}
+              {s.id === 4 && (
+                <div style={{ position:'absolute',inset:0,overflow:'hidden' }}>
+                  <img src={bgTraders} alt="Manikya Traders" style={{
+                    position:'absolute', inset:0,
+                    width:'100%', height:'100%',
+                    objectFit:'cover', objectPosition:'center center',
+                    display:'block',
+                  }}/>
+                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to right, rgba(10,4,0,0.72) 0%, rgba(10,4,0,0.35) 50%, rgba(10,4,0,0.65) 100%)' }}/>
                 </div>
               )}
-              {s.id === 3 && ( /* Manikya Market — warm village bazaar */
-                <div style={{ position:'absolute',inset:0 }}>
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#064e3b,#065f46,#047857,#059669)',animation:'bgShift 7s ease-in-out infinite alternate' }}/>
-                  {Array.from({length:20},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',width:Math.random()*3+1,height:Math.random()*80+40,background:`rgba(${Math.random()>0.5?'251,191,36':'167,243,208'},${0.1+Math.random()*0.2})`,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,borderRadius:4,animation:`sway ${3+Math.random()*4}s ease-in-out ${Math.random()*3}s infinite alternate`,transformOrigin:'bottom center' }}/>
-                  ))}
-                  {Array.from({length:8},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',borderRadius:'50%',background:`rgba(251,191,36,${0.1+Math.random()*0.15})`,width:Math.random()*120+40,height:Math.random()*120+40,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`pearlFloat ${5+Math.random()*5}s ease-in-out ${Math.random()*3}s infinite alternate`,filter:'blur(8px)' }}/>
-                  ))}
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.75) 100%)' }}/>
-                </div>
+              {s.id === 5 && (
+                <img src={bgProperties} alt="Manikya Properties" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',display:'block',position:'absolute',inset:0 }}/>
               )}
-              {s.id === 4 && ( /* Manikya Roots — nature & wellness */
-                <div style={{ position:'absolute',inset:0 }}>
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#14532d,#166534,#15803d,#16a34a)',animation:'bgShift 9s ease-in-out infinite alternate' }}/>
-                  {Array.from({length:16},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',width:Math.random()*4+2,height:Math.random()*120+60,background:`rgba(134,239,172,${0.08+Math.random()*0.18})`,left:`${Math.random()*100}%`,bottom:0,borderRadius:'50% 50% 0 0',animation:`grow ${4+Math.random()*5}s ease-in-out ${Math.random()*3}s infinite alternate`,transformOrigin:'bottom center' }}/>
-                  ))}
-                  {Array.from({length:25},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',borderRadius:'50%',background:`rgba(${Math.random()>0.5?'134,239,172':'253,224,71'},${0.06+Math.random()*0.12})`,width:Math.random()*60+20,height:Math.random()*60+20,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`twinkle ${2+Math.random()*4}s ease-in-out ${Math.random()*3}s infinite` }}/>
-                  ))}
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.75) 100%)' }}/>
-                </div>
-              )}
-              {s.id === 5 && ( /* Manikya Properties — city skyline */
-                <div style={{ position:'absolute',inset:0 }}>
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#1c1917,#292524,#44403c,#78350f)',animation:'bgShift 10s ease-in-out infinite alternate' }}/>
-                  {/* Buildings silhouette */}
-                  {Array.from({length:14},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',bottom:0,background:`rgba(251,191,36,${0.04+Math.random()*0.08})`,width:Math.random()*60+30,height:Math.random()*200+80,left:`${i*7+Math.random()*4}%`,borderRadius:'4px 4px 0 0' }}/>
-                  ))}
-                  {/* Windows */}
-                  {Array.from({length:30},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',background:`rgba(251,191,36,${Math.random()>0.6?0.6:0.1})`,width:6,height:8,left:`${Math.random()*95}%`,bottom:`${Math.random()*40+5}%`,borderRadius:1,animation:`windowBlink ${2+Math.random()*4}s ease-in-out ${Math.random()*4}s infinite` }}/>
-                  ))}
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,rgba(0,0,0,0.3) 0%,transparent 40%,rgba(0,0,0,0.75) 100%)' }}/>
-                </div>
-              )}
-              {s.id === 6 && ( /* Manikya Money — finance grid */
-                <div style={{ position:'absolute',inset:0 }}>
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(135deg,#1e1b4b,#312e81,#3730a3,#4338ca)',animation:'bgShift 8s ease-in-out infinite alternate' }}/>
-                  {/* Grid lines */}
-                  <div style={{ position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(167,139,250,0.07) 1px,transparent 1px),linear-gradient(90deg,rgba(167,139,250,0.07) 1px,transparent 1px)',backgroundSize:'60px 60px',animation:'gridMove 20s linear infinite' }}/>
-                  {Array.from({length:12},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',borderRadius:'50%',background:`radial-gradient(circle,rgba(167,139,250,${0.15+Math.random()*0.2}),transparent)`,width:Math.random()*150+50,height:Math.random()*150+50,left:`${Math.random()*100}%`,top:`${Math.random()*100}%`,animation:`pearlFloat ${5+Math.random()*5}s ease-in-out ${Math.random()*4}s infinite alternate`,filter:'blur(6px)' }}/>
-                  ))}
-                  {/* Rising bars */}
-                  {Array.from({length:8},(_,i)=>(
-                    <div key={i} style={{ position:'absolute',bottom:0,width:30,background:`rgba(167,139,250,${0.08+Math.random()*0.1})`,height:`${20+Math.random()*60}%`,left:`${i*13+5}%`,borderRadius:'4px 4px 0 0',animation:`riseBar ${2+Math.random()*3}s ease-in-out ${Math.random()*2}s infinite alternate` }}/>
-                  ))}
-                  <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,0.75) 100%)' }}/>
-                </div>
+              {s.id === 6 && (
+                <img src={bgMoney} alt="Manikya Money" style={{ width:'100%',height:'100%',objectFit:'cover',objectPosition:'center',display:'block',position:'absolute',inset:0 }}/>
               )}
 
-              {/* ── Text overlay (same style as NewsJunction) ── */}
-              <div style={{ position:'absolute',bottom:0,left:0,right:0,padding:'2.5rem' }}>
-                <div style={{ maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'flex-end',justifyContent:'space-between',flexWrap:'wrap',gap:20 }}>
-                  <div>
-                    <div style={{ display:'flex',alignItems:'center',gap:8,marginBottom:10 }}>
-                      <div style={{ width:8,height:8,borderRadius:'50%',background:s.accent,animation:'pulse 1.5s ease-in-out infinite' }}/>
-                      <span style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.85)',fontWeight:700,fontSize:'0.7rem',textTransform:'uppercase',letterSpacing:'0.2em' }}>{s.tag}</span>
-                    </div>
-                    <h2 style={{ color:'white',fontSize:'clamp(2rem,5vw,3.5rem)',fontWeight:700,margin:'0 0 8px',lineHeight:1.05 }}>{s.title}</h2>
-                    <p style={{ color:'rgba(255,255,255,0.75)',fontStyle:'italic',fontFamily:'DM Sans,sans-serif',fontSize:'1.05rem',margin:0 }}>"{s.tagline}"</p>
-                  </div>
-                  {/* Logo / icon on right */}
-                  <div style={{ flexShrink:0 }}>
-                    {serviceLogos[s.id] ? (
-                      <div className="logo-float" style={{ width:110,height:110,borderRadius:20,overflow:'hidden',border:`3px solid ${s.accent}80`,boxShadow:`0 8px 32px ${s.accent}50` }}>
-                        <img src={serviceLogos[s.id]} alt={s.title} style={{ width:'100%',height:'100%',objectFit:'cover' }}/>
-                      </div>
-                    ) : (
-                      <div className="logo-float" style={{ width:110,height:110,borderRadius:20,background:`${s.accent}25`,display:'flex',alignItems:'center',justifyContent:'center',border:`3px solid ${s.accent}60`,boxShadow:`0 8px 32px ${s.accent}40` }}>
-                        <Icon size={52} color={s.accent}/>
-                      </div>
-                    )}
-                  </div>
+              {/* ── Dark gradient left-side overlay for text readability ── */}
+              <div style={{ position:'absolute',inset:0,background:'linear-gradient(to right,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.45) 45%,rgba(0,0,0,0.05) 100%)' }}/>
+
+              {/* ── Service name text — left side ── */}
+              <div style={{ position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 3rem',zIndex:3 }}>
+                {/* Tag badge */}
+                <div style={{ display:'inline-flex',alignItems:'center',gap:8,marginBottom:14,padding:'5px 14px',borderRadius:20,background:'rgba(0,0,0,0.4)',backdropFilter:'blur(8px)',border:`1px solid ${s.accent}70`,width:'fit-content' }}>
+                  <div style={{ width:8,height:8,borderRadius:'50%',background:s.accent,animation:'pulse 1.5s ease-in-out infinite' }}/>
+                  <span style={{ fontFamily:'DM Sans,sans-serif',color:'white',fontWeight:700,fontSize:'0.7rem',textTransform:'uppercase',letterSpacing:'0.2em' }}>{s.tag}</span>
                 </div>
+                {/* Service Title */}
+                <h2 style={{ color:'white',fontSize:'clamp(2rem,5vw,3.5rem)',fontWeight:800,margin:'0 0 10px',lineHeight:1.05,textShadow:'0 3px 16px rgba(0,0,0,0.9)',maxWidth:500 }}>{s.title}</h2>
+                {/* Tagline */}
+                <p style={{ color:'rgba(255,255,255,0.85)',fontStyle:'italic',fontFamily:'DM Sans,sans-serif',fontSize:'1rem',margin:0,textShadow:'0 2px 10px rgba(0,0,0,0.9)',maxWidth:420,lineHeight:1.6 }}>"{s.tagline}"</p>
+                {/* Accent line */}
+                <div style={{ width:60,height:4,borderRadius:2,background:s.gradient,marginTop:18 }}/>
               </div>
-
 
             </div>
           )}
 
-          {/* ── BRAND LOGOS ROW — same style as NewsJunction channels ── */}
-          {s.id !== 1 && serviceBrandLogos[s.id] && (
-            <div style={{ background:'#0f172a',padding:'1.6rem 0' }}>
-              <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem' }}>
-                <p style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.35)',fontSize:'0.65rem',textTransform:'uppercase',letterSpacing:'0.22em',marginBottom:14,textAlign:'center' }}>Our {s.title} Offerings</p>
-                <div style={{ display:'grid',gridTemplateColumns:`repeat(${serviceBrandLogos[s.id].length},1fr)`,gap:14 }}>
-                  {serviceBrandLogos[s.id].map((logo,i) => (
-                    <div key={i} className="channel-logo"
-                      style={{ display:'flex',flexDirection:'column',alignItems:'center',gap:8,animation:`logoPopIn .5s cubic-bezier(.16,1,.3,1) ${i*0.1}s both` }}>
-                      <div style={{ width:'100%',aspectRatio:'1',borderRadius:16,overflow:'hidden',border:`2px solid ${logo.color}60`,boxShadow:`0 4px 20px ${logo.color}35`,background:`${logo.color}10` }}>
-                        <img src={logo.file} alt={logo.label} style={{ width:'100%',height:'100%',objectFit:'cover' }}/>
-                      </div>
-                      <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',color:'rgba(255,255,255,0.65)',fontWeight:600,textAlign:'center' }}>{logo.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
 
-          {/* STATS BAR */}
-          <div style={{ background:'#0f172a',padding:'1.6rem 0' }}>
-            <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:16 }}>
+
+          {/* STATS BAR — compact */}
+          <div style={{ background:'#0f172a',padding:'0.7rem 0' }}>
+            <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8 }}>
               {data.stats.map((st: any,i: number)=>(
-                <div key={i} style={{ textAlign:'center' }}>
-                  <div style={{ fontSize:'1.4rem',marginBottom:4 }}>{st.icon}</div>
-                  <div style={{ fontSize:'2rem',fontWeight:700,color:'white',lineHeight:1,fontFamily:'Georgia,serif' }}>{st.value}</div>
-                  <div style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.7rem',textTransform:'uppercase',letterSpacing:'0.12em',marginTop:4 }}>{st.label}</div>
+                <div key={i} style={{ textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center',gap:8,padding:'4px 0' }}>
+                  <span style={{ fontSize:'1rem' }}>{st.icon}</span>
+                  <span style={{ fontSize:'1.1rem',fontWeight:700,color:'white',fontFamily:'Georgia,serif' }}>{st.value}</span>
+                  <span style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.65rem',textTransform:'uppercase',letterSpacing:'0.08em' }}>{st.label}</span>
                 </div>
               ))}
             </div>
@@ -525,19 +547,67 @@ export default function Services() {
                           Full Pearl Farms Page <ArrowRight size={15}/>
                         </Link>
                       : <Link to={s.link} className="btn" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'12px 22px',borderRadius:12,fontWeight:700,fontSize:'0.88rem',color:'white',background:s.gradient,boxShadow:`0 6px 20px ${s.accent}40` }}>
-                          {s.id===5?'Enquire About Properties':s.id===6?'Apply for a Loan':'Get Started'} <ArrowRight size={15}/>
+                          {s.id===5?'Enquire About Properties':s.id===6?'Apply for a Loan':s.id===4?'Partner With Us':'Get Started'} <ArrowRight size={15}/>
                         </Link>
                     }
                     <Link to="/contact" className="btn" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'12px 20px',borderRadius:12,fontWeight:700,fontSize:'0.88rem',color:s.accent,border:`2px solid ${s.accent}30`,background:'white' }}>
                       <Phone size={14}/> Contact Us
                     </Link>
                   </div>
+                  {s.id===4 && (
+                    <div style={{ marginTop:28 }}>
+                      <h4 style={{ fontSize:'1rem',fontWeight:700,color:'#0f172a',marginBottom:16,fontFamily:'DM Sans,sans-serif',textTransform:'uppercase',letterSpacing:'0.1em' }}>Our Business Model</h4>
+                      {[
+                        { icon:'🏭', label:'Vendor Registers Product', desc:'Registers food machinery or commodity from their warehouse', color:'#f59e0b' },
+                        { icon:'📣', label:'We Market & Advertise', desc:'Digital campaigns, WhatsApp outreach & field sales', color:'#ef4444' },
+                        { icon:'🤝', label:'Buyer Match Found', desc:'We connect & facilitate demo or presentation', color:'#3b82f6' },
+                        { icon:'✅', label:'Deal Closed — Everyone Wins', desc:'Vendor sells, buyer benefits, we earn transparent commission', color:'#10b981' },
+                      ].map((step,i,arr)=>(
+                        <div key={i} style={{ display:'flex',alignItems:'flex-start',gap:0 }}>
+                          <div style={{ display:'flex',flexDirection:'column',alignItems:'center',flexShrink:0 }}>
+                            <div style={{ width:40,height:40,borderRadius:'50%',background:step.color,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1rem',boxShadow:`0 4px 14px ${step.color}55` }}>{step.icon}</div>
+                            {i<arr.length-1&&<div style={{ width:2,height:26,background:`linear-gradient(${step.color},${arr[i+1].color})`,opacity:0.35 }}/>}
+                          </div>
+                          <div style={{ paddingLeft:12,paddingTop:8,paddingBottom:i<arr.length-1?4:0 }}>
+                            <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:'#0f172a',fontSize:'0.86rem' }}>{step.label}</div>
+                            <div style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.78rem',marginTop:2 }}>{step.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                      <div style={{ marginTop:16,padding:'12px 16px',borderRadius:10,background:'linear-gradient(135deg,rgba(245,158,11,0.09),rgba(239,68,68,0.09))',border:'1px solid rgba(245,158,11,0.3)' }}>
+                        <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:'#92400e',fontSize:'0.75rem',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:6 }}>How We Earn</div>
+                        {['💼 Marketing service fee','📊 Commission on deals','🌾 Commodity trading margin'].map((it,i)=>(
+                          <div key={i} style={{ fontFamily:'DM Sans,sans-serif',color:'#78350f',fontSize:'0.8rem',marginBottom:3 }}>{it}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-
                 {/* RIGHT */}
                 <div>
+                  {s.id===4 && (
+                    <div style={{ marginBottom:22,padding:'18px 20px',borderRadius:14,background:'linear-gradient(135deg,rgba(245,158,11,0.07),rgba(239,68,68,0.07))',border:'1px solid rgba(245,158,11,0.22)' }}>
+                      <h4 style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:'#0f172a',fontSize:'0.9rem',marginBottom:12,textTransform:'uppercase',letterSpacing:'0.1em' }}>Who We Serve</h4>
+                      <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:12 }}>
+                        {[
+                          { title:'Vendors', color:'#f59e0b', items:['Food machinery manufacturers','Grain & commodity producers','Warehouse owners','Packaging providers'] },
+                          { title:'Buyers', color:'#ef4444', items:['Hotels & cloud kitchens','Canteens & caterers','Food factories','Wholesalers & retailers'] },
+                        ].map((col,ci)=>(
+                          <div key={ci}>
+                            <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:col.color,fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:6 }}>{col.title}</div>
+                            {col.items.map((item,ii)=>(
+                              <div key={ii} style={{ display:'flex',alignItems:'flex-start',gap:5,marginBottom:4 }}>
+                                <div style={{ width:4,height:4,borderRadius:'50%',background:col.color,marginTop:5,flexShrink:0 }}/>
+                                <span style={{ fontFamily:'DM Sans,sans-serif',color:'#475569',fontSize:'0.78rem',lineHeight:1.5 }}>{item}</span>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <h4 style={{ fontSize:'1rem',fontWeight:700,color:'#0f172a',marginBottom:14,fontFamily:'DM Sans,sans-serif',textTransform:'uppercase',letterSpacing:'0.1em' }}>
-                    {s.id===5?'Our 4-Step Process':s.id===6?'How Loan Process Works':s.id===1?'How NewsJunction Works':'How It Works'}
+                    {s.id===5?'Our 4-Step Process':s.id===6?'How Loan Process Works':s.id===1?'How NewsJunction Works':s.id===4?'Step-by-Step Process':'How It Works'}
                   </h4>
                   <div style={{ display:'flex',flexDirection:'column',gap:10,marginBottom:24 }}>
                     {data.howItWorks.map((step: any)=>(

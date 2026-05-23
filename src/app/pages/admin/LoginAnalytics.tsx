@@ -1,75 +1,46 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { ArrowLeft, TrendingUp, Users, Mail, Phone, Calendar } from 'lucide-react';
+import { ArrowLeft, TrendingUp, Users, Mail, Phone } from 'lucide-react';
 import { Link } from 'react-router';
 
 interface LoginAttempt {
-  id: number;
+  id: string;
   method: 'email' | 'phone';
   type: 'otp' | 'magic_link';
   identifier: string;
   status: 'success' | 'failed' | 'pending';
-  timestamp: string;
+  created_at: string;
 }
 
 export default function LoginAnalytics() {
   const navigate = useNavigate();
-  const [loginAttempts, setLoginAttempts] = useState<LoginAttempt[]>([
-    {
-      id: 1,
-      method: 'email',
-      type: 'magic_link',
-      identifier: 'user@example.com',
-      status: 'success',
-      timestamp: '2026-05-05T10:30:00',
-    },
-    {
-      id: 2,
-      method: 'phone',
-      type: 'otp',
-      identifier: '+91 9876543210',
-      status: 'success',
-      timestamp: '2026-05-05T09:15:00',
-    },
-    {
-      id: 3,
-      method: 'email',
-      type: 'otp',
-      identifier: 'admin@manikya.com',
-      status: 'failed',
-      timestamp: '2026-05-05T08:45:00',
-    },
-  ]);
+  const [loginAttempts, setLoginAttempts] = useState<LoginAttempt[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('admin_logged_in');
-    if (!isLoggedIn) {
-      navigate('/admin');
-    }
+    if (!isLoggedIn) { navigate('/admin'); return; }
 
-    // TODO: When Supabase is connected, fetch real analytics:
-    // const fetchAnalytics = async () => {
-    //   const { data, error } = await supabase
-    //     .from('login_analytics')
-    //     .select('*')
-    //     .order('timestamp', { ascending: false })
-    //     .limit(100);
-    //
-    //   if (!error && data) {
-    //     setLoginAttempts(data);
-    //   }
-    // };
-    // fetchAnalytics();
+    const token = localStorage.getItem('manikya_admin_token');
+    fetch(`${(import.meta as any).env?.VITE_API_URL ?? 'http://localhost:4000/api'}/analytics/logins`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(r => r.json())
+      .then(data => { if (data.attempts) setLoginAttempts(data.attempts); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, [navigate]);
 
   const stats = {
-    totalAttempts: loginAttempts.length,
-    successfulLogins: loginAttempts.filter((a) => a.status === 'success').length,
-    emailLogins: loginAttempts.filter((a) => a.method === 'email').length,
-    phoneLogins: loginAttempts.filter((a) => a.method === 'phone').length,
+    totalAttempts:    loginAttempts.length,
+    successfulLogins: loginAttempts.filter(a => a.status === 'success').length,
+    emailLogins:      loginAttempts.filter(a => a.method === 'email').length,
+    phoneLogins:      loginAttempts.filter(a => a.method === 'phone').length,
   };
 
-  const successRate = ((stats.successfulLogins / stats.totalAttempts) * 100).toFixed(1);
+  const successRate = stats.totalAttempts
+    ? ((stats.successfulLogins / stats.totalAttempts) * 100).toFixed(1)
+    : '0.0';
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -170,7 +141,7 @@ export default function LoginAnalytics() {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-600 text-sm">
-                      {new Date(attempt.timestamp).toLocaleString()}
+                      {new Date(attempt.created_at).toLocaleString()}
                     </td>
                   </tr>
                 ))}
@@ -179,26 +150,13 @@ export default function LoginAnalytics() {
           </div>
         </div>
 
-        <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="font-semibold text-blue-900 mb-2 flex items-center">
-            <Calendar size={20} className="mr-2" />
-            Production Setup
-          </h3>
-          <p className="text-blue-700 text-sm mb-3">
-            To enable real-time analytics tracking, connect Supabase and create the following table:
-          </p>
-          <div className="bg-white rounded p-4 font-mono text-sm text-gray-800">
-            <pre>{`CREATE TABLE login_analytics (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id UUID REFERENCES auth.users(id),
-  method TEXT CHECK (method IN ('email', 'phone')),
-  type TEXT CHECK (type IN ('otp', 'magic_link')),
-  identifier TEXT,
-  status TEXT CHECK (status IN ('success', 'failed', 'pending')),
-  timestamp TIMESTAMPTZ DEFAULT NOW()
-);`}</pre>
-          </div>
-        </div>
+        {loading && (
+          <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-500">Loading analytics...</div>
+        )}
+
+        {!loading && loginAttempts.length === 0 && (
+          <div className="bg-white rounded-lg shadow-sm p-8 text-center text-gray-400">No login attempts recorded yet.</div>
+        )}
       </div>
     </div>
   );

@@ -6,8 +6,7 @@ import Services from "./pages/Services";
 import PearlFarms from "./pages/PearlFarms";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
-import Login from "./pages/auth/Login";
-import VerifyOTP from "./pages/auth/VerifyOTP";
+import InsideManikya from "./pages/InsideManikya";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import LoginAnalytics from "./pages/admin/LoginAnalytics";
@@ -24,15 +23,8 @@ export const router = createBrowserRouter([
       { path: "pearl-farms", Component: PearlFarms },
       { path: "gallery", Component: Gallery },
       { path: "contact", Component: Contact },
+      { path: "inside-manikya", Component: InsideManikya },
     ],
-  },
-  {
-    path: "/login",
-    Component: Login,
-  },
-  {
-    path: "/auth/verify-otp",
-    Component: VerifyOTP,
   },
   {
     path: "/admin",

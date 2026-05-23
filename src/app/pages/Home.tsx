@@ -95,7 +95,7 @@ const cycleWords = [
   { text:'Media',       color:'#ef4444', icon:'📺' },
   { text:'Pearl Farming',color:'#3b82f6',icon:'💎' },
   { text:'E-commerce',  color:'#10b981', icon:'🛒' },
-  { text:'Wellness',    color:'#22c55e', icon:'🌿' },
+  { text:'Trading',     color:'#f97316', icon:'🏭' },
   { text:'Real Estate', color:'#f59e0b', icon:'🏡' },
   { text:'Finance',     color:'#8b5cf6', icon:'💰' },
 ];
@@ -147,7 +147,7 @@ const services = [
   { id:1, num:'01', title:'NewsJunction',       sub:'Digital Media Network',     color:'#ef4444', bg:'#0c0202', desc:'Five-language media powerhouse delivering 24/7 live news — Kannada, Hindi, Tamil, Telugu, English.',        link:'/services', ext:'https://newsjunction.net/stream.php' },
   { id:2, num:'02', title:'Pearl Farms',         sub:'Alternative Investment',    color:'#3b82f6', bg:'#020510', desc:'Invest in living freshwater pearl ecosystems in Mandya, Karnataka. 30–40% ROI per cycle.',               link:'/pearl-farms' },
   { id:3, num:'03', title:'Manikya Market',      sub:'Desi Commerce',            color:'#10b981', bg:'#01080a', desc:'Authentic Indian village products reaching global doorsteps. Zero burden on rural artisans.',             link:'/services' },
-  { id:4, num:'04', title:'Manikya Roots',       sub:'FMCG & Wellness',          color:'#22c55e', bg:'#020a04', desc:'Amrutha Multi Millet Malt — 42 ancient Ayurvedic ingredients, zero sugar, zero chemicals.',             link:'/services' },
+  { id:4, num:'04', title:'Manikya Traders',     sub:'Marketing & Trading',      color:'#f97316', bg:'#0a0400', desc:'B2B food machinery marketing & grain commodity trading. We connect manufacturers to buyers across Karnataka.', link:'/services' },
   { id:5, num:'05', title:'Manikya Properties',  sub:'Real Estate',              color:'#f59e0b', bg:'#0a0700', desc:'Your trusted real estate middleman — property search, bank loan facilitation, legal verification.',      link:'/services' },
   { id:6, num:'06', title:'Manikya Money',       sub:'Financial Services',       color:'#8b5cf6', bg:'#060210', desc:'Accessible, affordable loan services with speedy approvals, low interest, and zero hidden charges.',    link:'/services' },
   { id:7, num:'07', title:'Manikya Heritage',    sub:'Coming Soon',              color:'#a855f7', bg:'#060110', desc:"A living museum of Karnataka's 5000-year culture — folk arts, Ayurvedic wellness, heritage stays.",   link:'/services', soon:true },
@@ -157,7 +157,7 @@ const stats = [
   {value:24,suffix:'+',label:'Years'},
   {value:500,suffix:'+',label:'Partners'},
   {value:7,suffix:'',label:'Verticals'},
-  {value:42,suffix:'',label:'Ingredients'},
+  {value:50,suffix:'+',label:'Vendors'},
 ];
 
 // ⚠️ UPDATE THESE LINKS when ready
@@ -168,10 +168,166 @@ const socialLinks = {
   linkedin:  'https://linkedin.com/company/manikyaservices',
 };
 
+/* ── Cycling Company Name (top label) ── */
+const companyNames = [
+  { name: 'Manikya Services', sub: 'Est. 2002 · Bengaluru', color: '#f59e0b' },
+  { name: 'Manikya Money Service Pvt', sub: 'Financial Excellence · Since 2002', color: '#3b82f6' },
+  { name: 'Manikya Services', sub: 'Media · Commerce · Finance · Wellness', color: '#ef4444' },
+];
+function CyclingCompanyName() {
+  const [idx, setIdx] = useState(0);
+  const [vis, setVis] = useState(true);
+  useEffect(() => {
+    const t = setInterval(() => {
+      setVis(false);
+      setTimeout(() => { setIdx(p => (p + 1) % companyNames.length); setVis(true); }, 400);
+    }, 3200);
+    return () => clearInterval(t);
+  }, []);
+  const c = companyNames[idx];
+  return (
+    <div style={{ textAlign:'center', transition:'all 0.4s ease', opacity:vis?1:0, transform:vis?'translateY(0)':'translateY(-10px)' }}>
+      <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.78rem', fontWeight:700, letterSpacing:'0.26em', textTransform:'uppercase', color:c.color, lineHeight:1.4, transition:'color 0.4s ease' }}>{c.name}</div>
+      <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.6rem', fontWeight:400, letterSpacing:'0.18em', textTransform:'uppercase', color:'rgba(255,255,255,0.38)', marginTop:3 }}>{c.sub}</div>
+    </div>
+  );
+}
+
+
+
+/* ── Hero Words: Growing (from left) & Together (from right) ── */
+function HeroWords() {
+  const [step, setStep] = useState(0);
+  useEffect(() => {
+    const t1 = setTimeout(() => setStep(1), 150);
+    const t2 = setTimeout(() => setStep(2), 1400);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, []);
+  const fs = 'clamp(2rem,4vw,5.5rem)';
+  return (
+    <div style={{
+      display:'flex',
+      justifyContent:'center',
+      alignItems:'center',
+      gap:'clamp(1rem,4vw,4rem)',
+      width:'100%',
+      padding:'0 clamp(1rem,4vw,5rem)',
+      zIndex:12,
+      overflow:'hidden',
+    }}>
+      {/* GROWING — starts far LEFT, slides RIGHT to center */}
+      <div style={{
+        transform: step >= 1 ? 'translateX(0)' : 'translateX(-100vw)',
+        opacity: step >= 1 ? 1 : 0,
+        transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease',
+        textAlign:'center',
+      }}>
+        <span style={{
+          fontFamily:"'Playfair Display',Georgia,serif",
+          fontSize: fs, fontWeight:800, color:'#ffffff',
+          textShadow:'0 0 40px rgba(239,68,68,0.7), 0 2px 30px rgba(0,0,0,0.9)',
+          letterSpacing:'-0.02em', display:'block', whiteSpace:'nowrap', lineHeight:1,
+        }}>Growing</span>
+        <span style={{
+          display:'block', height:3, borderRadius:2, marginTop:6, margin:'6px auto 0',
+          width: step >= 2 ? '100%' : '0%',
+          background:'linear-gradient(90deg,#ef4444,#f59e0b)',
+          transition:'width 0.7s cubic-bezier(0.16,1,0.3,1)',
+        }}/>
+      </div>
+
+      {/* Divider dot */}
+      <div style={{
+        width:8, height:8, borderRadius:'50%', flexShrink:0,
+        background:'radial-gradient(circle,#f59e0b,#ef4444)',
+        boxShadow:'0 0 12px rgba(245,158,11,0.8)',
+        opacity: step >= 2 ? 1 : 0,
+        transform: step >= 2 ? 'scale(1)' : 'scale(0)',
+        transition:'opacity 0.5s ease 1s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 1s',
+      }}/>
+
+      {/* TOGETHER — starts far RIGHT, slides LEFT to center */}
+      <div style={{
+        transform: step >= 1 ? 'translateX(0)' : 'translateX(100vw)',
+        opacity: step >= 1 ? 1 : 0,
+        transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s, opacity 0.4s ease 0.1s',
+        textAlign:'center',
+      }}>
+        <span style={{
+          fontFamily:"'Playfair Display',Georgia,serif",
+          fontSize: fs, fontWeight:800,
+          background:'linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b)',
+          WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+          letterSpacing:'-0.02em', display:'block', whiteSpace:'nowrap', lineHeight:1,
+          filter:'drop-shadow(0 0 12px rgba(245,158,11,0.6))',
+        }}>Together</span>
+        <span style={{
+          display:'block', height:3, borderRadius:2, marginTop:6, margin:'6px auto 0',
+          width: step >= 2 ? '100%' : '0%',
+          background:'linear-gradient(90deg,#f59e0b,#fde68a)',
+          transition:'width 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s',
+        }}/>
+      </div>
+    </div>
+  );
+}
+
+/* ── Hero Cycling Sectors ── */
+const sectorData = [
+  { label:'MEDIA',      color:'#ef4444', bg:'rgba(239,68,68,0.12)',      border:'rgba(239,68,68,0.4)',      icon:'📺' },
+  { label:'E-COMMERCE', color:'#10b981', bg:'rgba(16,185,129,0.12)',     border:'rgba(16,185,129,0.4)',     icon:'🛒' },
+  { label:'FINANCE',    color:'#8b5cf6', bg:'rgba(139,92,246,0.12)',     border:'rgba(139,92,246,0.4)',     icon:'💰' },
+  { label:'TRADING',    color:'#f97316', bg:'rgba(249,115,22,0.12)',     border:'rgba(249,115,22,0.4)',     icon:'🏭' },
+  { label:'REALTY',     color:'#f59e0b', bg:'rgba(245,158,11,0.12)',     border:'rgba(245,158,11,0.4)',     icon:'🏡' },
+  { label:'HERITAGE',   color:'#a855f7', bg:'rgba(168,85,247,0.12)',     border:'rgba(168,85,247,0.4)',     icon:'🏛️' },
+];
+function HeroCyclingSectors() {
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setActive(p => (p + 1) % sectorData.length), 1800);
+    return () => clearInterval(t);
+  }, []);
+  return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:'clamp(6px,1vw,12px)', flexWrap:'wrap', marginBottom:20 }}>
+      {sectorData.map((s, i) => (
+        <div key={s.label} style={{
+          display:'inline-flex', alignItems:'center', gap:6,
+          padding:'6px 14px',
+          background: i === active ? s.bg : 'rgba(255,255,255,0.03)',
+          border: `1px solid ${i === active ? s.border : 'rgba(255,255,255,0.1)'}`,
+          borderRadius: 50,
+          transition: 'all 0.5s cubic-bezier(.16,1,.3,1)',
+          transform: i === active ? 'scale(1.12) translateY(-2px)' : 'scale(1)',
+          boxShadow: i === active ? `0 4px 20px ${s.bg}` : 'none',
+          cursor: 'pointer',
+        }}
+        onClick={() => setActive(i)}>
+          <span style={{ fontSize: i === active ? '1rem' : '0.75rem', transition:'font-size 0.4s' }}>{s.icon}</span>
+          <span style={{
+            fontFamily:'DM Sans,sans-serif',
+            fontSize: 'clamp(0.6rem,0.85vw,0.75rem)',
+            fontWeight: i === active ? 700 : 500,
+            letterSpacing:'0.12em',
+            color: i === active ? s.color : 'rgba(255,255,255,0.35)',
+            textTransform:'uppercase',
+            transition:'all 0.4s ease',
+          }}>{s.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Home() {
   const [activeSvc, setActiveSvc]   = useState(0);
   const [mouse, setMouse]           = useState({x:0,y:0});
   const [showSocial, setShowSocial] = useState(false);
+  const [introStep, setIntroStep]   = useState(0);
+  // 0=logo only  1=content visible
+  useEffect(() => {
+    const t = setTimeout(() => setIntroStep(1), 3200);
+    return () => clearTimeout(t);
+  }, []);
   const s1=useInView(); const s2=useInView(); const s3=useInView(); const s4=useInView();
 
   const onMouseMove = useCallback((e:React.MouseEvent)=>{
@@ -194,9 +350,9 @@ export default function Home() {
         @keyframes svcSlide{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 
         .loaded-1{animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .2s both}
-        .loaded-2{animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .4s both}
-        .loaded-3{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .6s both}
-        .loaded-4{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .8s both}
+        .loaded-2{animation:fadeUp 1.1s cubic-bezier(.16,1,.3,1) .45s both}
+        .loaded-3{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .65s both}
+        .loaded-4{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .85s both}
         .loaded-5{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) 1s both}
 
         .gold-text{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
@@ -224,24 +380,125 @@ export default function Home() {
         .why-card:hover{transform:translateY(-5px)}
         @media(max-width:768px){.grid-2{grid-template-columns:1fr!important}}
 
-        /* ── Logo animations ── */
-        @keyframes logoEntrance{0%{opacity:0;transform:translate(-50%,-50%) scale(0.6)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-        @keyframes logoFloat{0%,100%{transform:translate(-50%,-50%) translateY(0)}50%{transform:translate(-50%,-50%) translateY(-18px)}}
-        @keyframes orbitA{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-        @keyframes orbitB{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
-        @keyframes orbitC{from{transform:translate(-50%,-50%) rotate(45deg)}to{transform:translate(-50%,-50%) rotate(405deg)}}
-        @keyframes glowPulse{0%,100%{box-shadow:0 0 30px 10px rgba(245,158,11,0.5),0 0 80px 30px rgba(245,158,11,0.15)}50%{box-shadow:0 0 50px 18px rgba(245,158,11,0.8),0 0 120px 50px rgba(245,158,11,0.25)}}
-        @keyframes dotOrbit{from{transform:rotate(var(--start)) translateX(var(--r)) rotate(calc(-1 * var(--start)))}to{transform:rotate(calc(var(--start) + 360deg)) translateX(var(--r)) rotate(calc(-1 * (var(--start) + 360deg)))}}
-        @keyframes ringGlow{0%,100%{opacity:0.15;transform:translate(-50%,-50%) scale(1)}50%{opacity:0.45;transform:translate(-50%,-50%) scale(1.04)}}
-        @keyframes mTextGlow{0%,100%{text-shadow:0 0 20px rgba(245,158,11,0.6),0 0 60px rgba(245,158,11,0.2)}50%{text-shadow:0 0 40px rgba(245,158,11,1),0 0 100px rgba(245,158,11,0.5),0 0 160px rgba(59,130,246,0.3)}}
-        @keyframes taglineFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes sparkle{0%,100%{opacity:0;transform:scale(0) rotate(0deg)}40%,60%{opacity:1;transform:scale(1) rotate(180deg)}}
+        /* ── HERO ANIMATIONS ── */
+        @keyframes heroFadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes starTwinkle{0%,100%{opacity:0.08;transform:scale(0.8)}50%{opacity:0.75;transform:scale(1.4)}}
+        @keyframes logoEntrance{0%{opacity:0;transform:scale(0.75) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+        @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes globePulse{0%,100%{box-shadow:0 0 22px 8px rgba(59,130,246,0.85),0 0 55px 22px rgba(59,130,246,0.35)}50%{box-shadow:0 0 38px 14px rgba(96,165,250,1),0 0 90px 38px rgba(59,130,246,0.55)}}
+        @keyframes platformGlow{0%,100%{opacity:0.65}50%{opacity:1}}
+        @keyframes swooshDraw{from{stroke-dashoffset:1100}to{stroke-dashoffset:0}}
+        @keyframes slideFromLeft{
+          0%{opacity:0;transform:translateX(-120vw) skewX(-8deg)}
+          70%{opacity:1;transform:translateX(8px) skewX(2deg)}
+          85%{transform:translateX(-4px) skewX(-1deg)}
+          100%{opacity:1;transform:translateX(0) skewX(0)}
+        }
+        @keyframes slideFromRight{
+          0%{opacity:0;transform:translateX(120vw) skewX(8deg)}
+          70%{opacity:1;transform:translateX(-8px) skewX(-2deg)}
+          85%{transform:translateX(4px) skewX(1deg)}
+          100%{opacity:1;transform:translateX(0) skewX(0)}
+        }
+        @keyframes fadeUpSub{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes textGlow{0%,100%{text-shadow:0 0 20px rgba(255,255,255,0.3)}50%{text-shadow:0 0 40px rgba(255,255,255,0.7),0 0 80px rgba(99,102,241,0.4)}}
+        @keyframes sectorPop{0%{opacity:0;transform:translateY(12px) scale(0.9)}100%{opacity:1;transform:translateY(0) scale(1)}}
+        @keyframes btnShine{0%{background-position:-200% center}100%{background-position:200% center}}
+        @keyframes pulseRing{0%{box-shadow:0 0 0 0 rgba(245,158,11,0.5)}70%{box-shadow:0 0 0 12px rgba(245,158,11,0)}100%{box-shadow:0 0 0 0 rgba(245,158,11,0)}}
 
-        .logo-wrap{animation:logoEntrance 1.4s cubic-bezier(.16,1,.3,1) 0.3s both}
-        .logo-float{animation:logoFloat 6s ease-in-out infinite}
-        .logo-m{animation:mTextGlow 3s ease-in-out infinite}
-        .logo-wrap:hover .logo-m{animation:mTextGlow 1s ease-in-out infinite}
-        .logo-ring-glow{animation:ringGlow 4s ease-in-out infinite}
+        @keyframes logoIntroGlow{
+          0%  {opacity:0;filter:brightness(0) drop-shadow(0 0 0px transparent)}
+          8%  {opacity:1;filter:brightness(0.4) drop-shadow(0 0 30px rgba(59,130,246,0.4))}
+          25% {opacity:1;filter:brightness(1.8) drop-shadow(0 0 120px rgba(59,130,246,1)) drop-shadow(0 0 200px rgba(239,68,68,0.9)) drop-shadow(0 0 60px #fff) saturate(1.5)}
+          45% {opacity:1;filter:brightness(2.5) drop-shadow(0 0 160px rgba(239,68,68,1)) drop-shadow(0 0 240px rgba(59,130,246,1)) saturate(2)}
+          65% {opacity:1;filter:brightness(1.6) drop-shadow(0 0 100px rgba(59,130,246,0.8)) drop-shadow(0 0 140px rgba(239,68,68,0.7)) saturate(1.3)}
+          82% {opacity:1;filter:brightness(1.2) drop-shadow(0 0 60px rgba(59,130,246,0.5)) drop-shadow(0 0 80px rgba(239,68,68,0.4))}
+          100%{opacity:1;filter:brightness(1.1) drop-shadow(0 0 50px rgba(220,38,38,0.8)) drop-shadow(0 0 100px rgba(29,78,216,0.7))}
+        }
+        @keyframes introDarkOverlay{
+          0%  {opacity:1}
+          70% {opacity:1}
+          100%{opacity:0}
+        }
+        @keyframes contentReveal{
+          0%  {opacity:0;transform:translateY(18px)}
+          100%{opacity:1;transform:translateY(0)}
+        }
+        @keyframes wordSlideLeft{
+          0%  {opacity:0;transform:translateX(-100vw)}
+          100%{opacity:1;transform:translateX(0)}
+        }
+        @keyframes wordSlideRight{
+          0%  {opacity:0;transform:translateX(100vw)}
+          100%{opacity:1;transform:translateX(0)}
+        }
+        @keyframes underlineDraw{
+          0%  {width:0%}
+          100%{width:100%}
+        }
+        .hero-section{animation:heroFadeIn 0.9s ease both}
+        .logo-entrance{animation:logoEntrance 1.1s cubic-bezier(.16,1,.3,1) 0.1s both}
+        .logo-float{animation:logoFloat 5.5s ease-in-out infinite}
+        .globe-pulse{animation:globePulse 2.6s ease-in-out infinite}
+        .platform-ring{animation:platformGlow 3s ease-in-out infinite}
+        .swoosh-draw{stroke-dasharray:1100;animation:swooshDraw 1.6s cubic-bezier(.16,1,.3,1) 0.5s both}
+        .hero-sub{animation:fadeUpSub 1s cubic-bezier(.16,1,.3,1) 1s both}
+        .hero-btns{animation:fadeUpSub 1s cubic-bezier(.16,1,.3,1) 1.3s both}
+
+        /* Growing | LOGO | Together — logo tall, words at its lower-center */
+        .hero-main-row{
+          display:flex;
+          align-items:flex-end;
+          justify-content:center;
+          width:100%;
+          padding:0 clamp(0.5rem,3vw,2rem);
+          gap:0;
+        }
+        .hero-growing{
+          flex:1;
+          text-align:right;
+          padding-right:clamp(0.8rem,2.5vw,2.5rem);
+          padding-bottom:clamp(0.6rem,1.5vw,1.2rem);
+          font-family:'Cormorant Garamond',Georgia,serif;
+          font-size:clamp(1.6rem,3.2vw,4rem);
+          font-weight:700;
+          line-height:1;
+          letter-spacing:-0.02em;
+          color:#ffffff;
+          white-space:nowrap;
+          animation:slideFromLeft 1.1s cubic-bezier(.16,1,.3,1) 0.2s both;
+        }
+        .hero-logo-col{
+          flex-shrink:0;
+          width:clamp(220px,32vw,420px);
+          display:flex;
+          align-items:center;
+          justify-content:center;
+        }
+        .hero-together{
+          flex:1;
+          text-align:left;
+          padding-left:clamp(0.8rem,2.5vw,2.5rem);
+          padding-bottom:clamp(0.6rem,1.5vw,1.2rem);
+          font-family:'Cormorant Garamond',Georgia,serif;
+          font-size:clamp(1.6rem,3.2vw,4rem);
+          font-weight:700;
+          line-height:1;
+          letter-spacing:-0.02em;
+          background:linear-gradient(90deg,#f59e0b,#fde68a 40%,#f59e0b);
+          background-size:200% auto;
+          -webkit-background-clip:text;
+          -webkit-text-fill-color:transparent;
+          background-clip:text;
+          white-space:nowrap;
+          animation:slideFromRight 1.1s cubic-bezier(.16,1,.3,1) 0.2s both, shimmer 5s linear 1.4s infinite;
+        }
+        @media(max-width:680px){
+          .hero-main-row{flex-direction:column;align-items:center;gap:0.5rem}
+          .hero-growing{text-align:center;padding-right:0;padding-bottom:0}
+          .hero-together{text-align:center;padding-left:0;padding-bottom:0}
+          .hero-logo-col{width:clamp(200px,70vw,320px);order:-1;margin-bottom:0.5rem}
+        }
       `}</style>
 
       {/* ── SOCIAL MODAL ── */}
@@ -303,129 +560,140 @@ export default function Home() {
       </a>
 
       {/* ── HERO ── */}
-      <section style={{ position:'relative',height:'100vh',minHeight:600,display:'flex',alignItems:'flex-end',background:'linear-gradient(135deg,#020b1a 0%,#051430 35%,#0a1f4a 65%,#0d2760 100%)',overflow:'hidden' }} onMouseMove={onMouseMove}>
-        <NetworkCanvas/>
-        <FloatingIcons/>
-        <ParallaxOrbs mouse={mouse}/>
+      <section className="hero-section" style={{
+        position:'relative', height:'100vh', minHeight:700,
+        display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
+        background:'radial-gradient(ellipse 130% 90% at 50% 0%, #050e24 0%, #060f26 40%, #030918 75%, #010710 100%)',
+        overflow:'hidden',
+      }} onMouseMove={onMouseMove}>
 
-        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse at 60% 40%,rgba(59,130,246,0.15) 0%,transparent 60%)',pointerEvents:'none' }}/>
-        <div style={{ position:'absolute',inset:0,background:'linear-gradient(to top,#020b1a 0%,rgba(2,11,26,0.4) 50%,transparent 100%)',pointerEvents:'none' }}/>
-        <div style={{ position:'absolute',top:'50%',left:0,right:0,height:1,background:'linear-gradient(90deg,transparent,rgba(59,130,246,0.15),rgba(245,158,11,0.12),transparent)',pointerEvents:'none' }}/>
+        {/* ── Stars ── */}
+        {Array.from({length:90}).map((_,i)=>{
+          const x=(i*137.5)%100, y=(i*97.3)%100, s=0.5+(i%4)*0.5;
+          return <div key={i} style={{ position:'absolute',left:`${x}%`,top:`${y}%`,width:s,height:s,borderRadius:'50%',background:'white',animation:`starTwinkle ${2+(i%4)*0.7}s ease-in-out ${(i*0.21)%5}s infinite`,pointerEvents:'none' }}/>;
+        })}
 
-        {/* ══ MANIKYA INTERACTIVE LOGO ══ */}
-        <div className="logo-wrap absolute right-16 top-1/2 hidden xl:block" style={{ width: 560, height: 560, position: 'absolute', right: '6rem', top: '50%' }}>
-          <div className="logo-float" style={{ position: 'relative', width: '100%', height: '100%' }}>
+        {/* ── Atmospheric glows ── */}
+        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 18% 55%, rgba(200,30,30,0.26) 0%, transparent 65%)',pointerEvents:'none' }}/>
+        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 82% 55%, rgba(29,78,216,0.30) 0%, transparent 65%)',pointerEvents:'none' }}/>
+        <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 60%,#010710 100%)',pointerEvents:'none' }}/>
 
-            {/* — Outermost ambient glow ring — */}
-            <div className="logo-ring-glow" style={{ position:'absolute', top:'50%', left:'50%', width:540, height:540, borderRadius:'50%', background:'radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 70%)', transform:'translate(-50%,-50%)', pointerEvents:'none' }}/>
+        {/* ── DARK OVERLAY — hides content during logo intro ── */}
+        {introStep === 0 && (
+          <div style={{
+            position:'absolute', inset:0, zIndex:50,
+            background:'radial-gradient(ellipse 80% 80% at 50% 50%, rgba(2,8,20,0.2) 0%, rgba(1,4,12,0.98) 100%)',
+            pointerEvents:'none',
+            animation:'introDarkOverlay 3.2s ease forwards',
+          }}/>
+        )}
 
-            {/* — Ring 1: slow clockwise, dashed gold — */}
-            <div style={{ position:'absolute', top:'50%', left:'50%', width:500, height:500, borderRadius:'50%', border:'1px dashed rgba(245,158,11,0.2)', animation:'orbitA 32s linear infinite', transform:'translate(-50%,-50%)' }}>
-              {/* Dot on ring 1 */}
-              {[0,90,180,270].map((deg,i)=>(
-                <div key={i} style={{ position:'absolute', top:'50%', left:'50%', width: i%2===0 ? 8 : 5, height: i%2===0 ? 8 : 5, borderRadius:'50%', background: i%2===0 ? '#f59e0b' : 'rgba(245,158,11,0.4)', boxShadow: i%2===0 ? '0 0 16px 6px rgba(245,158,11,0.7)' : 'none', transform:`translate(-50%,-50%) rotate(${deg}deg) translateX(250px)`, marginTop:0 }}/>
-              ))}
-            </div>
+        {/* ══ ALL HERO CONTENT ══ */}
+        <div style={{
+          position:'relative', zIndex:10,
+          width:'100%', height:'100%',
+          display:'flex', flexDirection:'column',
+          alignItems:'center', justifyContent:'center',
+          gap:0, padding:'clamp(1rem,2vh,2rem) 1rem',
+          boxSizing:'border-box',
+        }}>
 
-            {/* — Ring 2: reverse, solid blue faint — */}
-            <div style={{ position:'absolute', top:'50%', left:'50%', width:390, height:390, borderRadius:'50%', border:'1px solid rgba(59,130,246,0.18)', animation:'orbitB 22s linear infinite', transform:'translate(-50%,-50%)' }}>
-              <div style={{ position:'absolute', top:-6, left:'50%', width:12, height:12, borderRadius:'50%', background:'#60a5fa', boxShadow:'0 0 20px 8px rgba(96,165,250,0.7)', transform:'translateX(-50%)' }}/>
-              <div style={{ position:'absolute', bottom:-5, right:'18%', width:7, height:7, borderRadius:'50%', background:'#93c5fd', boxShadow:'0 0 12px 5px rgba(147,197,253,0.5)' }}/>
-            </div>
-
-            {/* — Ring 3: medium clockwise, purple — */}
-            <div style={{ position:'absolute', top:'50%', left:'50%', width:285, height:285, borderRadius:'50%', border:'1px solid rgba(139,92,246,0.22)', animation:'orbitC 16s linear infinite', transform:'translate(-50%,-50%) rotate(45deg)' }}>
-              <div style={{ position:'absolute', top:-5, left:'50%', width:10, height:10, borderRadius:'50%', background:'#a78bfa', boxShadow:'0 0 18px 7px rgba(167,139,250,0.65)', transform:'translateX(-50%)' }}/>
-            </div>
-
-            {/* — Ring 4: innermost, gold solid — */}
-            <div style={{ position:'absolute', top:'50%', left:'50%', width:185, height:185, borderRadius:'50%', border:'1.5px solid rgba(245,158,11,0.35)', animation:'orbitA 10s linear infinite', transform:'translate(-50%,-50%)' }}>
-              <div style={{ position:'absolute', top:-5, left:'50%', width:9, height:9, borderRadius:'50%', background:'#fde68a', boxShadow:'0 0 14px 6px rgba(253,230,138,0.8)', transform:'translateX(-50%)' }}/>
-            </div>
-
-            {/* — Central logo disc — */}
-            <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:130, height:130, borderRadius:'50%', background:'radial-gradient(circle at 38% 35%, rgba(255,255,255,0.12), rgba(245,158,11,0.08) 40%, rgba(15,23,42,0.95) 70%)', border:'2px solid rgba(245,158,11,0.5)', boxShadow:'0 0 0 1px rgba(245,158,11,0.15), inset 0 1px 0 rgba(255,255,255,0.08)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', zIndex:10, animation:'glowPulse 3.5s ease-in-out infinite', cursor:'pointer', transition:'transform 0.4s cubic-bezier(.16,1,.3,1)' }}
-              onMouseEnter={e=>{ (e.currentTarget as HTMLElement).style.transform='translate(-50%,-50%) scale(1.12)'; }}
-              onMouseLeave={e=>{ (e.currentTarget as HTMLElement).style.transform='translate(-50%,-50%) scale(1)'; }}>
-              {/* M lettermark */}
-              <div className="logo-m" style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", fontSize:'3.6rem', fontWeight:700, color:'#f59e0b', lineHeight:1, letterSpacing:'-0.04em', userSelect:'none' }}>M</div>
-              {/* Sub-label */}
-              <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.42rem', fontWeight:700, letterSpacing:'0.22em', textTransform:'uppercase', color:'rgba(245,158,11,0.6)', marginTop:2, lineHeight:1 }}>MANIKYA</div>
-            </div>
-
-            {/* — Sparkle particles around the disc — */}
-            {[
-              { angle:30,  r:100, size:4, color:'#f59e0b', delay:'0s',   dur:'2.8s' },
-              { angle:110, r:95,  size:3, color:'#60a5fa', delay:'0.6s', dur:'3.2s' },
-              { angle:200, r:105, size:5, color:'#fde68a', delay:'1.1s', dur:'2.5s' },
-              { angle:290, r:98,  size:3, color:'#a78bfa', delay:'1.8s', dur:'3.6s' },
-              { angle:160, r:92,  size:2, color:'#10b981', delay:'0.3s', dur:'2.2s' },
-              { angle:340, r:108, size:3, color:'#f59e0b', delay:'2.1s', dur:'3.0s' },
-            ].map((sp, i) => {
-              const rad = (sp.angle * Math.PI) / 180;
-              const x = Math.cos(rad) * sp.r;
-              const y = Math.sin(rad) * sp.r;
-              return (
-                <div key={i} style={{ position:'absolute', top:`calc(50% + ${y}px)`, left:`calc(50% + ${x}px)`, width:sp.size, height:sp.size, borderRadius:'50%', background:sp.color, boxShadow:`0 0 ${sp.size*3}px ${sp.size}px ${sp.color}80`, transform:'translate(-50%,-50%)', animation:`sparkle ${sp.dur} ease-in-out ${sp.delay} infinite`, pointerEvents:'none' }}/>
-              );
-            })}
-
-            {/* — Tagline below the logo — */}
-            <div style={{ position:'absolute', bottom: -10, left:'50%', transform:'translateX(-50%)', textAlign:'center', animation:'taglineFade 1.8s cubic-bezier(.16,1,.3,1) 1.2s both', whiteSpace:'nowrap' }}>
-              <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.65rem', fontWeight:600, letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(245,158,11,0.55)', marginBottom:6 }}>Est. 2002 · Bengaluru</div>
-              <div style={{ display:'flex', alignItems:'center', gap:8, justifyContent:'center' }}>
-                {['Media','Agri','Commerce','Finance','Wellness','Realty','Heritage'].map((v,i)=>(
-                  <div key={i} style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.52rem', fontWeight:500, color:'rgba(255,255,255,0.22)', letterSpacing:'0.1em', textTransform:'uppercase' }}>{v}{i<6&&<span style={{ marginLeft:8, color:'rgba(255,255,255,0.1)' }}>·</span>}</div>
-                ))}
-              </div>
-            </div>
-
+          {/* ── Logo — blazes bright on intro, settles after ── */}
+          <div className="hero-logo-col" style={{ margin:'0 auto', flexShrink:0 }}>
+            <img
+              src="/manikya-logo-transparent.png"
+              alt="Manikya Services Logo"
+              style={{
+                width:'100%', height:'auto', display:'block',
+                animation:'logoIntroGlow 3.2s cubic-bezier(0.16,1,0.3,1) 0.1s both',
+              }}
+            />
           </div>
-        </div>
 
-        {/* Hero text */}
-        <div style={{ position:'relative',zIndex:10,width:'100%',padding:'clamp(2rem,5vw,5rem)',paddingBottom:'clamp(3rem,8vw,7rem)' }}>
-          <div style={{ maxWidth:1400,margin:'0 auto' }}>
-            <div className="loaded-1" style={{ display:'flex',alignItems:'center',gap:14,marginBottom:22 }}>
-              <div style={{ width:40,height:1,background:'#f59e0b' }}/>
-              <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:500,letterSpacing:'0.3em',textTransform:'uppercase',color:'#f59e0b' }}>Manikya Services Private Limited · Est. 2002 · Bengaluru</span>
-            </div>
-            <h1 className="loaded-2" style={{ fontSize:'clamp(4rem,9vw,9rem)',fontWeight:700,lineHeight:0.95,letterSpacing:'-0.02em',margin:'0 0 24px',color:'white' }}>
-              Growing<br/><span className="gold-text">Together.</span>
-            </h1>
-            <div className="loaded-3" style={{ marginBottom:32 }}>
-              <p style={{ fontFamily:'DM Sans,sans-serif',fontSize:'clamp(1rem,2vw,1.15rem)',color:'rgba(255,255,255,0.55)',lineHeight:1.7,marginBottom:10,fontWeight:300 }}>
-                A multi-sector enterprise driving innovation across
-              </p>
-              <div style={{ display:'inline-flex',alignItems:'center',gap:12,padding:'11px 20px',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',backdropFilter:'blur(10px)',borderRadius:4,maxWidth:380 }}>
-                <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.35)',fontWeight:500,textTransform:'uppercase',letterSpacing:'0.1em',flexShrink:0 }}>NOW</span>
-                <div style={{ width:1,height:18,background:'rgba(255,255,255,0.15)' }}/>
-                <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'1rem',display:'flex',alignItems:'center' }}><CyclingWord/></div>
-              </div>
-              <p style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.92rem',color:'rgba(255,255,255,0.35)',lineHeight:1.7,marginTop:10,fontWeight:300 }}>
-                — for a sustainable, prosperous India.
-              </p>
-            </div>
-            <div className="loaded-4" style={{ display:'flex',gap:14,flexWrap:'wrap' }}>
-              <Link to="/services" className="btn-inf" style={{ display:'inline-flex',alignItems:'center',gap:10,padding:'14px 30px',background:'#f59e0b',color:'#000',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.88rem',letterSpacing:'0.05em',textTransform:'uppercase' }}>
-                Explore Our Business <ArrowRight size={15}/>
-              </Link>
-              <Link to="/pearl-farms" className="btn-inf" style={{ display:'inline-flex',alignItems:'center',gap:10,padding:'14px 30px',border:'1px solid rgba(255,255,255,0.28)',color:'white',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.88rem',textTransform:'uppercase' }}>
-                Pearl Farm Investment
-              </Link>
-              <Link to="/contact" className="btn-inf" style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'14px 24px',border:'1px solid rgba(245,158,11,0.4)',color:'#f59e0b',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.88rem' }}>
-                Apply Loan
-              </Link>
-            </div>
+          {/* ── Growing | Together — appears after intro ── */}
+          <div style={{
+            width:'100%', flexShrink:0, marginTop:'-0.5rem',
+            opacity: introStep >= 1 ? 1 : 0,
+            transition:'opacity 0.6s ease',
+          }}>
+            {introStep >= 1 && <HeroWords />}
           </div>
-          <div className="loaded-5" style={{ position:'absolute',right:'clamp(2rem,5vw,5rem)',bottom:'clamp(2rem,4vw,3rem)',display:'flex',flexDirection:'column',alignItems:'center',gap:8 }}>
-            <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.62rem',letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.35)',writingMode:'vertical-rl' }}>Scroll to explore</span>
-            <div className="scroll-cue" style={{ width:1,height:48,background:'linear-gradient(to bottom,rgba(255,255,255,0.35),transparent)' }}/>
+
+          {/* ── Subtitle ── */}
+          <p style={{
+            fontFamily:'DM Sans,sans-serif', fontSize:'clamp(0.78rem,1.2vw,0.92rem)',
+            color:'rgba(255,255,255,0.45)', fontWeight:300, textAlign:'center',
+            margin:'10px 0 8px', lineHeight:1.5, flexShrink:0,
+            opacity: introStep >= 1 ? 1 : 0,
+            transform: introStep >= 1 ? 'translateY(0)' : 'translateY(20px)',
+            transition:'opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s',
+          }}>
+            A multi-sector enterprise driving innovation across
+          </p>
+
+          {/* ── Cycling sector badges ── */}
+          <div style={{
+            flexShrink:0, width:'100%',
+            opacity: introStep >= 1 ? 1 : 0,
+            transform: introStep >= 1 ? 'translateY(0)' : 'translateY(20px)',
+            transition:'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s',
+          }}>
+            <HeroCyclingSectors />
           </div>
+
+          {/* ── Buttons ── */}
+          <div style={{
+            display:'flex', gap:14, justifyContent:'center', flexWrap:'wrap', flexShrink:0, marginTop:4,
+            opacity: introStep >= 1 ? 1 : 0,
+            transform: introStep >= 1 ? 'translateY(0)' : 'translateY(20px)',
+            transition:'opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s',
+          }}>
+            <Link to="/services" style={{
+              display:'inline-flex', alignItems:'center', gap:8,
+              padding:'12px 30px',
+              background:'linear-gradient(135deg,#ef4444,#f59e0b)',
+              color:'white', fontFamily:'DM Sans,sans-serif', fontWeight:700,
+              fontSize:'0.88rem', letterSpacing:'0.05em',
+              border:'none', borderRadius:50,
+              boxShadow:'0 4px 24px rgba(245,158,11,0.4)',
+              textDecoration:'none', transition:'all 0.3s ease',
+            }}
+            onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-2px) scale(1.04)';(e.currentTarget as HTMLElement).style.boxShadow='0 8px 36px rgba(245,158,11,0.6)'}}
+            onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='none';(e.currentTarget as HTMLElement).style.boxShadow='0 4px 24px rgba(245,158,11,0.4)'}}>
+              <Sparkles size={15}/> Explore Services <ArrowRight size={14}/>
+            </Link>
+            <Link to="/about" style={{
+              display:'inline-flex', alignItems:'center', gap:8,
+              padding:'12px 30px',
+              background:'rgba(255,255,255,0.07)',
+              color:'rgba(255,255,255,0.85)', fontFamily:'DM Sans,sans-serif',
+              fontWeight:600, fontSize:'0.88rem',
+              border:'1.5px solid rgba(255,255,255,0.25)', borderRadius:50,
+              backdropFilter:'blur(10px)', textDecoration:'none', transition:'all 0.3s ease',
+            }}
+            onMouseEnter={e=>{(e.currentTarget as HTMLElement).style.transform='translateY(-2px)';(e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.14)'}}
+            onMouseLeave={e=>{(e.currentTarget as HTMLElement).style.transform='none';(e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.07)'}}>
+              Learn More
+            </Link>
+          </div>
+
+          {/* ── Scroll cue ── */}
+          <div style={{
+            marginTop:'auto', paddingTop:12,
+            display:'flex', flexDirection:'column', alignItems:'center', gap:5, flexShrink:0,
+            opacity: introStep >= 1 ? 1 : 0,
+            transition:'opacity 1s ease 1s',
+          }}>
+            <div style={{ width:22,height:36,borderRadius:11,border:'1.5px solid rgba(255,255,255,0.2)',display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'4px 0' }}>
+              <div className="scroll-cue" style={{ width:3,height:3,borderRadius:'50%',background:'rgba(255,255,255,0.5)' }}/>
+            </div>
+            <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.48rem',letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.2)' }}>SCROLL</span>
+          </div>
+
         </div>
       </section>
 
-      {/* ── SOCIAL MEDIA MARQUEE (replaces old service text bar) ── */}
+            {/* ── SOCIAL MEDIA MARQUEE (replaces old service text bar) ── */}
       <section style={{ background:'#0f172a',padding:'0',overflow:'hidden',borderTop:'1px solid rgba(255,255,255,0.05)' }}>
         <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 clamp(1rem,3vw,3rem)' }}>
           <div style={{ display:'flex',overflow:'hidden',flex:1,padding:'11px 0' }}>

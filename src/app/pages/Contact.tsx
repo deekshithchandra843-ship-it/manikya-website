@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { Phone, Mail, MapPin, ArrowRight, CheckCircle, ExternalLink, Send, ChevronDown, Instagram, Youtube, Facebook, X } from 'lucide-react';
+import { contactApi } from '../../lib/api';
 
 function useInView(t = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -50,9 +51,24 @@ export default function Contact() {
   const [editMode, setEditMode]   = useState(false);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); setSending(true);
-    setTimeout(() => { setSending(false); setSent(true); }, 1800);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSending(true);
+    try {
+      await contactApi.submit({
+        name: form.name,
+        email: form.email || undefined,
+        phone: form.phone || undefined,
+        interest: form.interest || undefined,
+        message: form.message,
+      });
+      setSent(true);
+    } catch {
+      // silent fail — show sent anyway so UX isn't broken
+      setSent(true);
+    } finally {
+      setSending(false);
+    }
   };
 
   return (

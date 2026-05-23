@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Mail, Phone, Send, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router';
+import { authApi } from '../../../lib/api';
 
 type LoginMethod = 'email' | 'phone';
 
@@ -18,80 +19,34 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
-    // Track login attempt
-    const loginAttempt = {
-      method: 'email',
-      type: useMagicLink ? 'magic_link' : 'otp',
-      email,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log('Login attempt tracked:', loginAttempt);
-
-    // TODO: When Supabase is connected, use this code:
-    // if (useMagicLink) {
-    //   const { error } = await supabase.auth.signInWithOtp({
-    //     email,
-    //     options: {
-    //       emailRedirectTo: `${window.location.origin}/auth/callback`,
-    //     },
-    //   });
-    //   if (error) {
-    //     setMessage(`Error: ${error.message}`);
-    //   } else {
-    //     setMessage('Check your email for the magic link!');
-    //   }
-    // } else {
-    //   const { error } = await supabase.auth.signInWithOtp({ email });
-    //   if (error) {
-    //     setMessage(`Error: ${error.message}`);
-    //   } else {
-    //     navigate('/auth/verify-otp', { state: { email } });
-    //   }
-    // }
-
-    // Demo simulation
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await authApi.sendOTP('email', email, useMagicLink ? 'magic_link' : 'otp');
       if (useMagicLink) {
         setMessage('✓ Magic link sent! Check your email inbox.');
       } else {
         setMessage('✓ OTP sent! Redirecting to verification...');
-        setTimeout(() => navigate('/auth/verify-otp', { state: { email } }), 1500);
+        setTimeout(() => navigate('/auth/verify-otp', { state: { email } }), 1200);
       }
-    }, 1500);
+    } catch (err: unknown) {
+      setMessage(`Error: ${err instanceof Error ? err.message : 'Failed to send. Try again.'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePhoneLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
-
-    // Track login attempt
-    const loginAttempt = {
-      method: 'phone',
-      type: 'otp',
-      phone,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log('Login attempt tracked:', loginAttempt);
-
-    // TODO: When Supabase is connected, use this code:
-    // const { error } = await supabase.auth.signInWithOtp({ phone });
-    // if (error) {
-    //   setMessage(`Error: ${error.message}`);
-    // } else {
-    //   navigate('/auth/verify-otp', { state: { phone } });
-    // }
-
-    // Demo simulation
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await authApi.sendOTP('phone', phone, 'otp');
       setMessage('✓ OTP sent to your phone! Redirecting...');
-      setTimeout(() => navigate('/auth/verify-otp', { state: { phone } }), 1500);
-    }, 1500);
+      setTimeout(() => navigate('/auth/verify-otp', { state: { phone } }), 1200);
+    } catch (err: unknown) {
+      setMessage(`Error: ${err instanceof Error ? err.message : 'Failed to send. Try again.'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -253,11 +208,9 @@ export default function Login() {
           </p>
         </div>
 
-        <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-          <p className="text-xs text-blue-900 font-semibold mb-1">Demo Mode:</p>
-          <p className="text-xs text-blue-700">
-            Connect Supabase to enable real authentication. Currently tracking attempts to console.
-          </p>
+        <div className="mt-8 text-center border-t border-gray-100 pt-6">
+          <p className="text-xs text-gray-400 tracking-widest uppercase">Powered by</p>
+          <p className="text-sm font-semibold text-gray-700 mt-1">Manikya Group</p>
         </div>
       </div>
     </div>

@@ -34,9 +34,15 @@ const galleryItems = [
 ];
 
 export default function Gallery() {
+  const isAdmin = !!localStorage.getItem('admin_logged_in');
   const [activeCat, setActiveCat]   = useState('All');
   const [lightbox, setLightbox]     = useState<number | null>(null);
-  const [images, setImages]         = useState<Record<number, string>>({});
+  const [images, setImages]         = useState<Record<number, string>>(() => {
+    try {
+      const saved = localStorage.getItem('manikya_gallery_images');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
   const fileRefs                    = useRef<Record<number, HTMLInputElement | null>>({});
   const s1 = useInView(); const s2 = useInView();
 
@@ -57,17 +63,34 @@ export default function Gallery() {
     return () => window.removeEventListener('keydown', fn);
   }, [lbIdx, filtered]);
 
-  // Permanent upload — no 15-sec timer
+  // Persist images to localStorage as base64 so they survive page refresh
+  const saveToStorage = (updated: Record<number, string>) => {
+    try { localStorage.setItem('manikya_gallery_images', JSON.stringify(updated)); } catch { /* quota exceeded */ }
+  };
+
   const handleUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setImages(p => ({ ...p, [id]: url }));
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      setImages(p => {
+        const updated = { ...p, [id]: base64 };
+        saveToStorage(updated);
+        return updated;
+      });
+    };
+    reader.readAsDataURL(file);
   };
 
   const removeImage = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
-    setImages(p => { const n = { ...p }; delete n[id]; return n; });
+    setImages(p => {
+      const n = { ...p };
+      delete n[id];
+      saveToStorage(n);
+      return n;
+    });
     if (fileRefs.current[id]) fileRefs.current[id]!.value = '';
   };
 
@@ -164,13 +187,15 @@ export default function Gallery() {
             <span style={{ marginLeft:'auto',fontFamily:'DM Sans,sans-serif',fontSize:'0.8rem',color:'#94a3b8',alignSelf:'center',paddingRight:8 }}>{filtered.length} items</span>
           </div>
 
-          {/* Upload tip */}
+          {/* Upload tip — admin only */}
+          {isAdmin && (
           <div className={`reveal ${s1.v?'on':''}`} style={{ display:'flex',alignItems:'center',gap:12,padding:'12px 16px',background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:10,marginBottom:32 }}>
             <Upload size={18} style={{ color:'#16a34a',flexShrink:0 }}/>
             <p style={{ fontFamily:'DM Sans,sans-serif',color:'#15803d',fontSize:'0.85rem',margin:0 }}>
-              <strong>Upload photos:</strong> Click "Choose File" on each card to permanently upload a photo. Photos stay visible until you remove them.
+              <strong>Upload photos:</strong> Click "Choose File" on any card. Photos are saved in your browser and persist across page refreshes — they will still be here when you return.
             </p>
           </div>
+          )}
 
           {/* Masonry grid */}
           <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16 }}>
@@ -182,8 +207,8 @@ export default function Gallery() {
                   onClick={()=>setLightbox(item.id)}>
                   <div style={{ position:'absolute',top:0,left:0,right:0,height:3,background:item.color,zIndex:2 }}/>
 
-                  {/* Delete button */}
-                  {hasImg && (
+                  {/* Delete button — admin only */}
+                  {hasImg && isAdmin && (
                     <button className="del-btn" onClick={e=>removeImage(item.id,e)}>
                       <Trash2 size={13} color="white"/>
                     </button>
@@ -199,26 +224,35 @@ export default function Gallery() {
                       </div>
                     </div>
                   ) : (
-                    /* Upload zone */
+                    /* No image — show upload zone to admin, placeholder to public */
                     <div style={{ padding:24,height:'100%',minHeight:item.size==='large'?340:200,display:'flex',flexDirection:'column',justifyContent:'space-between' }}>
                       <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',fontWeight:700,color:item.color,textTransform:'uppercase',letterSpacing:'0.15em',padding:'3px 10px',border:`1px solid ${item.color}40`,borderRadius:20,alignSelf:'flex-start' }}>{item.cat}</span>
 
-                      {/* Upload area */}
-                      <div className="upload-zone" onClick={e=>{e.stopPropagation();fileRefs.current[item.id]?.click();}}
-                        style={{ borderColor:`${item.color}40`,background:`${item.color}06`,padding:item.size==='large'?'32px 20px':'20px',flex:1,margin:'16px 0' }}>
-                        <div style={{ width:52,height:52,borderRadius:'50%',background:item.color+'15',display:'flex',alignItems:'center',justifyContent:'center' }}>
-                          <ImageIcon size={24} style={{ color:item.color }}/>
+                      {isAdmin ? (
+                        /* Upload area — admin only */
+                        <div className="upload-zone" onClick={e=>{e.stopPropagation();fileRefs.current[item.id]?.click();}}
+                          style={{ borderColor:`${item.color}40`,background:`${item.color}06`,padding:item.size==='large'?'32px 20px':'20px',flex:1,margin:'16px 0' }}>
+                          <div style={{ width:52,height:52,borderRadius:'50%',background:item.color+'15',display:'flex',alignItems:'center',justifyContent:'center' }}>
+                            <ImageIcon size={24} style={{ color:item.color }}/>
+                          </div>
+                          <div style={{ textAlign:'center' }}>
+                            <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:item.color,fontSize:'0.88rem',marginBottom:4 }}>Click to Upload Photo</div>
+                            <div style={{ fontFamily:'DM Sans,sans-serif',color:'#94a3b8',fontSize:'0.72rem' }}>JPG, PNG, WEBP supported</div>
+                          </div>
+                          <label style={{ display:'inline-flex',alignItems:'center',gap:6,padding:'8px 18px',background:item.color,color:'#fff',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.78rem',borderRadius:6,cursor:'pointer',letterSpacing:'0.05em' }}
+                            onClick={e=>e.stopPropagation()}>
+                            <Upload size={14}/> Choose File
+                            <input ref={el=>{ fileRefs.current[item.id]=el; }} type="file" accept="image/*" style={{ display:'none' }} onChange={e=>handleUpload(item.id,e)} onClick={e=>e.stopPropagation()}/>
+                          </label>
                         </div>
-                        <div style={{ textAlign:'center' }}>
-                          <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,color:item.color,fontSize:'0.88rem',marginBottom:4 }}>Click to Upload Photo</div>
-                          <div style={{ fontFamily:'DM Sans,sans-serif',color:'#94a3b8',fontSize:'0.72rem' }}>JPG, PNG, WEBP supported</div>
+                      ) : (
+                        /* Placeholder for public */
+                        <div style={{ flex:1,margin:'16px 0',display:'flex',alignItems:'center',justifyContent:'center' }}>
+                          <div style={{ width:52,height:52,borderRadius:'50%',background:item.color+'15',display:'flex',alignItems:'center',justifyContent:'center' }}>
+                            <ImageIcon size={24} style={{ color:item.color }}/>
+                          </div>
                         </div>
-                        <label style={{ display:'inline-flex',alignItems:'center',gap:6,padding:'8px 18px',background:item.color,color:'#fff',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.78rem',borderRadius:6,cursor:'pointer',letterSpacing:'0.05em' }}
-                          onClick={e=>e.stopPropagation()}>
-                          <Upload size={14}/> Choose File
-                          <input ref={el=>{ fileRefs.current[item.id]=el; }} type="file" accept="image/*" style={{ display:'none' }} onChange={e=>handleUpload(item.id,e)} onClick={e=>e.stopPropagation()}/>
-                        </label>
-                      </div>
+                      )}
 
                       <div>
                         <h3 style={{ fontSize:item.size==='large'?'1.15rem':'0.95rem',fontWeight:700,color:'#0f172a',marginBottom:3,lineHeight:1.3 }}>{item.title}</h3>

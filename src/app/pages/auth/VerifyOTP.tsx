@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router';
+import { authApi } from '../../../lib/api';
 
 export default function VerifyOTP() {
   const navigate = useNavigate();
@@ -67,75 +68,26 @@ export default function VerifyOTP() {
     e.preventDefault();
     setLoading(true);
     setError('');
-
-    const otpCode = otp.join('');
-
-    // Track verification attempt
-    const verificationAttempt = {
-      method: email ? 'email' : 'phone',
-      identifier: email || phone,
-      otpLength: otpCode.length,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log('Verification attempt tracked:', verificationAttempt);
-
-    // TODO: When Supabase is connected, use this code:
-    // const { data, error } = await supabase.auth.verifyOtp({
-    //   email,
-    //   phone,
-    //   token: otpCode,
-    //   type: email ? 'email' : 'sms',
-    // });
-    //
-    // if (error) {
-    //   setError(error.message);
-    //   setLoading(false);
-    // } else {
-    //   // Track successful login
-    //   await supabase.from('login_analytics').insert({
-    //     user_id: data.user.id,
-    //     method: email ? 'email' : 'phone',
-    //     type: 'otp',
-    //     timestamp: new Date().toISOString(),
-    //   });
-    //   navigate('/');
-    // }
-
-    // Demo simulation
-    setTimeout(() => {
+    try {
+      await authApi.verifyOTP(email || phone, otp.join(''));
+      navigate('/');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Invalid or expired code. Please try again.');
+      setOtp(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
+    } finally {
       setLoading(false);
-      if (otpCode === '123456') {
-        // Demo OTP
-        localStorage.setItem('user_logged_in', 'true');
-        navigate('/');
-      } else {
-        setError('Invalid OTP. Try 123456 for demo.');
-      }
-    }, 1500);
+    }
   };
 
   const handleResend = async () => {
     setResendTimer(60);
     setError('');
-
-    // Track resend attempt
-    const resendAttempt = {
-      method: email ? 'email' : 'phone',
-      identifier: email || phone,
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log('Resend OTP tracked:', resendAttempt);
-
-    // TODO: When Supabase is connected, resend OTP
-    // if (email) {
-    //   await supabase.auth.signInWithOtp({ email });
-    // } else if (phone) {
-    //   await supabase.auth.signInWithOtp({ phone });
-    // }
-
-    alert('OTP resent! (Demo mode - use 123456)');
+    try {
+      await authApi.resend(email ? 'email' : 'phone', email || phone);
+    } catch {
+      setError('Failed to resend. Please try again.');
+    }
   };
 
   return (
