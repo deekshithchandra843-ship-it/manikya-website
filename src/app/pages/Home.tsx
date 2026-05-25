@@ -209,7 +209,7 @@ function HeroWords() {
       display:'flex',
       justifyContent:'center',
       alignItems:'center',
-      gap:'clamp(1rem,4vw,4rem)',
+      gap:'clamp(0.5rem,3vw,4rem)',
       width:'100%',
       padding:'0 clamp(1rem,4vw,5rem)',
       zIndex:12,
@@ -236,15 +236,7 @@ function HeroWords() {
         }}/>
       </div>
 
-      {/* Divider dot */}
-      <div style={{
-        width:8, height:8, borderRadius:'50%', flexShrink:0,
-        background:'radial-gradient(circle,#f59e0b,#ef4444)',
-        boxShadow:'0 0 12px rgba(245,158,11,0.8)',
-        opacity: step >= 2 ? 1 : 0,
-        transform: step >= 2 ? 'scale(1)' : 'scale(0)',
-        transition:'opacity 0.5s ease 1s, transform 0.5s cubic-bezier(0.16,1,0.3,1) 1s',
-      }}/>
+
 
       {/* TOGETHER — starts far RIGHT, slides LEFT to center */}
       <div style={{
@@ -255,11 +247,9 @@ function HeroWords() {
       }}>
         <span style={{
           fontFamily:"'Playfair Display',Georgia,serif",
-          fontSize: fs, fontWeight:800,
-          background:'linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b)',
-          WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text',
+          fontSize: fs, fontWeight:800, color:'#ffffff',
+          textShadow:'0 0 40px rgba(255,255,255,0.4), 0 2px 30px rgba(0,0,0,0.9)',
           letterSpacing:'-0.02em', display:'block', whiteSpace:'nowrap', lineHeight:1,
-          filter:'drop-shadow(0 0 12px rgba(245,158,11,0.6))',
         }}>Together</span>
         <span style={{
           display:'block', height:3, borderRadius:2, marginTop:6, margin:'6px auto 0',
@@ -378,7 +368,15 @@ export default function Home() {
         .social-modal{animation:scaleIn .3s ease}
         .why-card{transition:all .35s ease}
         .why-card:hover{transform:translateY(-5px)}
-        @media(max-width:768px){.grid-2{grid-template-columns:1fr!important}}
+        @media(max-width:768px){
+          .grid-2{grid-template-columns:1fr!important}
+          .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+          .why-grid{grid-template-columns:1fr!important}
+          .svc-layout{grid-template-columns:1fr!important}
+        }
+        @media(max-width:480px){
+          .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+        }}
 
         /* ── HERO ANIMATIONS ── */
         @keyframes heroFadeIn{from{opacity:0}to{opacity:1}}
@@ -551,7 +549,7 @@ export default function Home() {
             <span style={{ width:6,height:6,borderRadius:'50%',background:'white',display:'inline-block',animation:'pulse .9s ease-in-out infinite' }}/>
             <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.65rem',fontWeight:700,color:'white',letterSpacing:'0.15em',textTransform:'uppercase' }}>Live</span>
           </div>
-          <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.82rem',fontWeight:600,color:'rgba(255,255,255,0.9)' }}>NewsJunction Dashboard — Kannada · Hindi · Tamil · Telugu · English</span>
+          <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.82rem',fontWeight:600,color:'rgba(255,255,255,0.9)' }}>NewsJunction Dashboard — Kannada · Hindi · Telugu · English · Marathi</span>
         </div>
         <div style={{ display:'flex',alignItems:'center',gap:8,padding:'5px 14px',background:'rgba(255,255,255,0.12)',border:'1px solid rgba(255,255,255,0.2)',borderRadius:4 }}>
           <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:600,color:'white',textTransform:'uppercase',letterSpacing:'0.08em' }}>Open Dashboard</span>

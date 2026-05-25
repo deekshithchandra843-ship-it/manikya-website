@@ -22,7 +22,7 @@ const faqs = [
   { q:'Can I apply for a loan online?', a:'Yes. Our application process is fully digital-friendly. You can apply, upload documents, and track status entirely online through our platform.' },
   { q:'What types of loans does Manikya Properties offer?', a:'We facilitate Home Loans, Loan Against Property, Commercial Property Loans, and Plot Loans through our partner banks including SBI, HDFC, ICICI, and Axis Bank.' },
   { q:'How do I contact the Pearl Farms investment team?', a:'You can reach out through this contact form, call us at +91 74116 42999, or email us. Our investment team will schedule a consultation within 24 hours.' },
-  { q:'Where is the NewsJunction studio located?', a:'Our primary studio is at No. 411, 3rd Floor, Old Airport Road, HAL Kodihalli, Bengaluru – 560008. You can also watch us live at newsjunction.net/stream.php.' },
+  { q:'Where is the NewsJunction studio located?', a:'Our primary studio is at #215, MGES, Second Floor, 5th Main Road, RPC Layout, Hampi Nagar, Bengaluru – 560 104. You can also watch us live at newsjunction.net/stream.php.' },
   { q:'How can I sell on Manikya Market?', a:'Rural artisans, farmers, and women entrepreneurs can register through our contact form. Our team will visit, photograph your products, and list them — at zero cost to you.' },
   { q:'Where can I buy Amrutha Multi Millet Malt?', a:'Amrutha Multi Millet Malt by Manikya Roots is available through our online portal and select retail partners. Contact us to place bulk or retail orders.' },
 ];
@@ -33,39 +33,37 @@ const interests = [
   'Manikya Money — Loan Enquiry','General Enquiry',
 ];
 
-// Editable social links — update these URLs when ready
 const defaultSocialLinks = {
   instagram: 'https://instagram.com/manikyaservices',
   facebook:  'https://facebook.com/manikyaservices',
   youtube:   'https://youtube.com/@manikyaservices',
-  maps:      'https://maps.google.com/?q=Old+Airport+Road+HAL+Kodihalli+Bengaluru',
+  maps:      'https://maps.google.com/?q=215+MGES+5th+Main+Road+RPC+Layout+Hampi+Nagar+Bengaluru+560104',
 };
 
 export default function Contact() {
-  const [form, setForm]           = useState({ name:'',email:'',phone:'',interest:'',message:'' });
-  const [sent, setSent]           = useState(false);
-  const [sending, setSending]     = useState(false);
-  const [openFaq, setOpenFaq]     = useState<number|null>(null);
+  const [form, setForm]             = useState({ name:'',email:'',phone:'',interest:'',message:'' });
+  const [sent, setSent]             = useState(false);
+  const [sending, setSending]       = useState(false);
+  const [error, setError]           = useState('');
+  const [showPopup, setShowPopup]   = useState(false);
+  const [openFaq, setOpenFaq]       = useState<number|null>(null);
   const [showSocial, setShowSocial] = useState(false);
   const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
-  const [editMode, setEditMode]   = useState(false);
+  const [editMode, setEditMode]     = useState(false);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
     setSending(true);
     try {
-      await contactApi.submit({
-        name: form.name,
-        email: form.email || undefined,
-        phone: form.phone || undefined,
-        interest: form.interest || undefined,
-        message: form.message,
-      });
+      await contactApi.submit(form);
       setSent(true);
+      setShowPopup(true);
+      setTimeout(() => setShowPopup(false), 7000);
+      setForm({ name:'',email:'',phone:'',interest:'',message:'' });
     } catch {
-      // silent fail — show sent anyway so UX isn't broken
-      setSent(true);
+      setError('Something went wrong. Please try again or call us directly.');
     } finally {
       setSending(false);
     }
@@ -74,6 +72,7 @@ export default function Contact() {
   return (
     <div style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", background:'#fff', overflowX:'hidden' }}>
       <style>{`
+        * { box-sizing: border-box; }
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
         @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
         @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
@@ -82,6 +81,8 @@ export default function Contact() {
         @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
         @keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
         @keyframes checkIn{from{transform:scale(0) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
+        @keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
 
         .gold-text{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
         .reveal{opacity:0;transform:translateY(36px);transition:all .8s cubic-bezier(.16,1,.3,1)}
@@ -98,7 +99,7 @@ export default function Contact() {
         .btn-sub{transition:all .3s ease;cursor:pointer;border:none}
         .btn-sub:hover{transform:translateY(-2px)}
         .btn-sub:disabled{opacity:.5;cursor:not-allowed;transform:none}
-        .interest-btn{transition:all .3s;cursor:pointer;border:1px solid #e2e8f0;background:white;font-family:'DM Sans',sans-serif;font-size:.78rem;padding:7px 14px;color:#64748b}
+        .interest-btn{transition:all .3s;cursor:pointer;border:1px solid #e2e8f0;background:white;font-family:'DM Sans',sans-serif;font-size:.78rem;padding:7px 12px;color:#64748b;border-radius:4px}
         .interest-btn.act{background:#f59e0b;border-color:#f59e0b;color:#000;font-weight:600}
         .interest-btn:hover:not(.act){border-color:#f59e0b;color:#f59e0b}
         .faq-item{transition:all .3s}
@@ -109,8 +110,59 @@ export default function Contact() {
         .btn-main{transition:all .3s;text-decoration:none;cursor:pointer}
         .btn-main:hover{transform:translateY(-2px)}
         .social-popup{animation:scaleIn .3s ease}
-        @media(max-width:768px){.grid-2{grid-template-columns:1fr!important}}
+        .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fadeOverlay .3s;backdrop-filter:blur(4px)}
+        .popup-box{background:#fff;border-radius:20px;padding:44px 40px;max-width:460px;width:90%;text-align:center;position:relative;animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 24px 64px rgba(0,0,0,0.18)}
+        @media(max-width:768px){
+          .grid-2{grid-template-columns:1fr!important; gap:40px!important}
+          .form-grid-2{grid-template-columns:1fr!important; gap:10px!important}
+          .interest-btn{font-size:.72rem!important;padding:6px 10px!important}
+          .social-bar-inner{flex-direction:column!important;gap:8px!important;align-items:flex-start!important}
+          .faq-btn{padding:16px!important}
+          .contact-info-block{padding:16px!important}
+          .popup-box{padding:28px 20px!important}
+        }
+        @media(max-width:480px){
+          .hero-h1{font-size:2.8rem!important}
+          .marquee-track{gap:28px!important}
+        }
       `}</style>
+
+      {/* ── SUCCESS POPUP ── */}
+      {showPopup && (
+        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="popup-box" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowPopup(false)} style={{ position:'absolute', top:16, right:16, background:'#f1f5f9', border:'none', borderRadius:'50%', width:34, height:34, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+              <X size={16} color="#64748b"/>
+            </button>
+            <div style={{ width:72, height:72, borderRadius:'50%', background:'#f59e0b', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 20px', animation:'checkIn .5s cubic-bezier(.16,1,.3,1)' }}>
+              <CheckCircle size={34} color="#000"/>
+            </div>
+            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.68rem', fontWeight:700, color:'#f59e0b', letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:10 }}>
+              Manikya Money Service Pvt. Ltd.
+            </div>
+            <h2 style={{ margin:'0 0 12px', fontSize:'1.5rem', fontWeight:700, color:'#0f172a', fontFamily:'Cormorant Garamond,serif' }}>
+              Thank You for Reaching Out!
+            </h2>
+            <p style={{ margin:'0 0 20px', color:'#475569', fontSize:'0.92rem', lineHeight:1.7, fontFamily:'DM Sans,sans-serif' }}>
+              We have received your enquiry. Our team will get back to you within <strong>24 hours</strong>.
+              {form.email && <><br/><br/>✉️ A confirmation has been sent to <strong>{form.email}</strong></>}
+            </p>
+            <div style={{ background:'#fffbeb', border:'1px solid #fde68a', borderRadius:10, padding:'12px 16px', marginBottom:20 }}>
+              <p style={{ margin:0, color:'#92400e', fontSize:'0.82rem', fontFamily:'DM Sans,sans-serif' }}>
+                For urgent queries, call us directly at <strong>+91 74116 42999</strong>
+              </p>
+            </div>
+            <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
+              <a href="tel:+917411642999" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#000', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
+                <Phone size={13}/> Call Now
+              </a>
+              <a href="https://wa.me/917411642999" target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#25D366', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
+                💬 WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SOCIAL MEDIA POPUP MODAL */}
       {showSocial && (
@@ -121,15 +173,14 @@ export default function Contact() {
             </button>
             <h3 style={{ fontSize:'1.4rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
             <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.85rem',marginBottom:24 }}>Stay connected on social media</p>
-
             {!editMode ? (
               <>
                 <div style={{ display:'flex',gap:14,justifyContent:'center',marginBottom:24 }}>
                   {[
                     { icon:<Instagram size={22}/>, color:'#e1306c', label:'Instagram', key:'instagram' },
-                    { icon:<Facebook size={22}/>, color:'#1877f2', label:'Facebook',  key:'facebook' },
-                    { icon:<Youtube size={22}/>,  color:'#ff0000', label:'YouTube',   key:'youtube' },
-                    { icon:<MapPin size={22}/>,   color:'#34a853', label:'Maps',      key:'maps' },
+                    { icon:<Facebook size={22}/>,  color:'#1877f2', label:'Facebook',  key:'facebook' },
+                    { icon:<Youtube size={22}/>,   color:'#ff0000', label:'YouTube',   key:'youtube' },
+                    { icon:<MapPin size={22}/>,    color:'#34a853', label:'Maps',      key:'maps' },
                   ].map(s=>(
                     <a key={s.key} href={socialLinks[s.key as keyof typeof socialLinks]} target="_blank" rel="noopener noreferrer"
                       className="social-icon" style={{ background:s.color+'12',border:`2px solid ${s.color}30`,color:s.color }}>
@@ -185,7 +236,7 @@ export default function Contact() {
       )}
 
       {/* SOCIAL BAR AT TOP */}
-      <div style={{ background:'#0f172a',padding:'8px clamp(1rem,3vw,3rem)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:10 }}>
+      <div style={{ background:'#0f172a',padding:'8px clamp(1rem,3vw,3rem)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8 }}>
         <div style={{ display:'flex',alignItems:'center',gap:16 }}>
           <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.75rem',color:'rgba(255,255,255,0.5)',letterSpacing:'0.1em',textTransform:'uppercase' }}>Follow us</span>
           <div style={{ display:'flex',gap:12 }}>
@@ -217,7 +268,7 @@ export default function Contact() {
           <div style={{ display:'flex',alignItems:'center',gap:14,marginBottom:16,animation:'fadeUp .9s .1s both' }}>
             <div style={{ width:40,height:1,background:'#f59e0b' }}/><span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase',color:'#f59e0b' }}>Get in Touch</span>
           </div>
-          <h1 style={{ fontSize:'clamp(3rem,7vw,7rem)',fontWeight:700,lineHeight:0.95,color:'white',marginBottom:16,animation:'fadeUp .9s .25s both' }}>Let's<br/><span className="gold-text">Connect.</span></h1>
+          <h1 className="hero-h1" style={{ fontSize:'clamp(2.4rem,7vw,7rem)',fontWeight:700,lineHeight:0.95,color:'white',marginBottom:16,animation:'fadeUp .9s .25s both' }}>Let's<br/><span className="gold-text">Connect.</span></h1>
           <p style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.45)',fontSize:'1rem',maxWidth:440,lineHeight:1.8,fontWeight:300,animation:'fadeUp .9s .4s both' }}>
             Pearl farming, media, e-commerce, wellness, real estate, or financial services — we're here to help.
           </p>
@@ -227,7 +278,7 @@ export default function Contact() {
       {/* SOCIAL MARQUEE */}
       <section style={{ background:'#f59e0b',padding:'12px 0',overflow:'hidden' }}>
         <div className="marquee-track">
-          {[...Array(2)].map((_,r)=>(['+91 74116 42999','•','+91 74117 42999','•','manikyaservicespvtltd@gmail.com','•','Old Airport Road, HAL, Bengaluru','•']).map((t,i)=>(
+          {[...Array(2)].map((_,r)=>(['+91 74116 42999','•','+91 74117 42999','•','manikyamoneyservices@gmail.com','•','5th Main Road, Hampi Nagar, Bengaluru','•']).map((t,i)=>(
             <span key={`${r}-${i}`} style={{ fontFamily:'DM Sans,sans-serif',fontWeight:500,fontSize:'0.75rem',letterSpacing:'0.1em',color:'#000',flexShrink:0 }}>{t}</span>
           )))}
         </div>
@@ -236,13 +287,12 @@ export default function Contact() {
       {/* FORM + CONTACT INFO */}
       <section style={{ background:'#fff',padding:'clamp(4rem,8vw,8rem) 0' }} ref={s1.ref}>
         <div style={{ maxWidth:1400,margin:'0 auto',padding:'0 clamp(1.5rem,5vw,5rem)' }}>
-          <div style={{ display:'grid',gridTemplateColumns:'1.1fr 1fr',gap:80,alignItems:'start' }} className="grid-2">
+          <div style={{ display:'grid',gridTemplateColumns:'1.1fr 1fr',gap:'clamp(32px,6vw,80px)',alignItems:'start' }} className="grid-2">
 
             {/* LEFT — FORM */}
             <div className={`reveal-l ${s1.v?'on':''}`}>
               <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:16 }}>
-                <div style={{ width:30,height:1,background:'#000' }}/>
-                <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.7rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase' }}>Send Us a Message</span>
+                <div style={{ width:30,height:1,background:'#000' }}/><span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.7rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase' }}>Send Us a Message</span>
               </div>
               <h2 style={{ fontSize:'clamp(2rem,4vw,3rem)',fontWeight:700,lineHeight:1.05,color:'#000',marginBottom:28 }}>Start the Conversation</h2>
 
@@ -259,6 +309,11 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
+                  {error && (
+                    <div style={{ marginBottom:18,padding:'12px 16px',background:'#fef2f2',border:'1px solid #fecaca',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',color:'#b91c1c' }}>
+                      {error}
+                    </div>
+                  )}
                   <div style={{ marginBottom:20 }}>
                     <label className="form-label">I'm interested in</label>
                     <div style={{ display:'flex',flexWrap:'wrap',gap:6 }}>
@@ -267,7 +322,7 @@ export default function Contact() {
                       ))}
                     </div>
                   </div>
-                  <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14 }}>
+                  <div className="form-grid-2" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14 }}>
                     <div>
                       <label className="form-label">Full Name *</label>
                       <input required className="form-input" placeholder="Your full name" value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))}/>
@@ -300,11 +355,11 @@ export default function Contact() {
               </div>
               <h2 style={{ fontSize:'clamp(1.8rem,3vw,2.5rem)',fontWeight:700,lineHeight:1.1,color:'#000',marginBottom:24 }}>Manikya Services<br/>Private Limited</h2>
 
-              <div style={{ marginBottom:24,padding:'24px',border:'1px solid #e2e8f0',background:'#fafafa' }}>
+              <div className="contact-info-block" style={{ marginBottom:24,padding:'24px',border:'1px solid #e2e8f0',background:'#fafafa' }}>
                 {[
-                  { icon:<MapPin size={18}/>, bg:'#000', label:'Registered Office', lines:['No. 411, 3rd Floor, Old Airport Road,','HAL, Kodihalli, Bengaluru – 560 008, Karnataka'] },
+                  { icon:<MapPin size={18}/>, bg:'#000', label:'Registered Office', lines:['#215, MGES, Second Floor, 5th Main Road,','RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka'] },
                   { icon:<Phone size={18}/>, bg:'#f59e0b', label:'Phone', lines:['+91 74116 42999','+91 74117 42999'] },
-                  { icon:<Mail size={18}/>, bg:'#000', label:'Email', lines:['manikyaservicespvtltd@gmail.com'] },
+                  { icon:<Mail size={18}/>, bg:'#000', label:'Email', lines:['manikyamoneyservices@gmail.com'] },
                 ].map((c,i)=>(
                   <div key={i} style={{ display:'flex',gap:14,alignItems:'flex-start',marginBottom:i<2?18:0,paddingBottom:i<2?18:0,borderBottom:i<2?'1px solid #e2e8f0':'none' }}>
                     <div style={{ width:40,height:40,background:c.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'white' }}>{c.icon}</div>
@@ -328,9 +383,9 @@ export default function Contact() {
               </div>
 
               {/* Social icons */}
-              <div style={{ padding:'18px 22px',border:'1px solid #e2e8f0',background:'#f8fafc' }}>
+              <div style={{ padding:'18px 22px',border:'1px solid #e2e8f0',background:'#f8fafc',marginBottom:12 }}>
                 <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',fontWeight:700,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:14 }}>Follow Us</div>
-                <div style={{ display:'flex',gap:12 }}>
+                <div style={{ display:'flex',gap:12,marginBottom:14 }}>
                   {[
                     { icon:<Instagram size={20}/>, href:socialLinks.instagram, color:'#e1306c', label:'Instagram' },
                     { icon:<Facebook size={20}/>,  href:socialLinks.facebook,  color:'#1877f2', label:'Facebook' },
@@ -343,11 +398,20 @@ export default function Contact() {
                     </a>
                   ))}
                 </div>
+                {/* WhatsApp CTA */}
+                <a href="https://wa.me/917411642999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer"
+                  style={{ display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'#25D366',textDecoration:'none',borderRadius:4 }}>
+                  <span style={{ fontSize:'1.1rem' }}>💬</span>
+                  <div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.82rem',color:'#fff' }}>Chat on WhatsApp</div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.8)' }}>+91 74116 42999 — Quick Response</div>
+                  </div>
+                </a>
               </div>
 
               {/* NewsJunction live */}
               <a href="https://newsjunction.net/stream.php" target="_blank" rel="noopener noreferrer"
-                style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 18px',background:'#0d0000',marginTop:12,textDecoration:'none' }}>
+                style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 18px',background:'#0d0000',textDecoration:'none' }}>
                 <div style={{ display:'flex',alignItems:'center',gap:10 }}>
                   <span style={{ width:7,height:7,borderRadius:'50%',background:'#ef4444',display:'inline-block',animation:'pulse 1.5s ease-in-out infinite' }}/>
                   <div>
@@ -394,8 +458,8 @@ export default function Contact() {
             <div style={{ position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px)',backgroundSize:'40px 40px' }}/>
             <div style={{ position:'relative',zIndex:1,textAlign:'center' }}>
               <div style={{ fontSize:'2.5rem',marginBottom:10 }}>📍</div>
-              <h3 style={{ fontSize:'1.2rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>No. 411, 3rd Floor, Old Airport Road</h3>
-              <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:14,fontSize:'0.9rem' }}>HAL, Kodihalli, Bengaluru – 560 008, Karnataka</p>
+              <h3 style={{ fontSize:'1.2rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>#215, MGES, Second Floor, 5th Main Road</h3>
+              <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:14,fontSize:'0.9rem' }}>RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka</p>
               <a href={socialLinks.maps} target="_blank" rel="noopener noreferrer"
                 style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'11px 26px',background:'#000',color:'white',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.82rem',textDecoration:'none',letterSpacing:'0.05em',textTransform:'uppercase' }}>
                 <MapPin size={13}/> Open in Google Maps <ExternalLink size={12}/>
