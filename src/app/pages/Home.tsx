@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router';
 import {
   ArrowRight, Sparkles, ExternalLink,
   Instagram, Youtube, Facebook, Linkedin, X, MapPin
 } from 'lucide-react';
+import IntroVideo from './IntroVideo';
 
 /* ── Network Canvas ── */
 function NetworkCanvas() {
@@ -199,18 +201,33 @@ function HeroWords() {
 export default function Home() {
   const [activeSvc, setActiveSvc] = useState(0);
   const [showSocial, setShowSocial] = useState(false);
-  const [introStep, setIntroStep] = useState(0);
+  // true  → video intro is playing (hero is hidden)
+  // false → video done, hero content is revealed
+  const [showingIntro, setShowingIntro] = useState(true);
+  const [heroVisible, setHeroVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView(); const s4 = useInView();
 
-  useEffect(() => {
-    const t = setTimeout(() => setIntroStep(1), 3200);
-    return () => clearTimeout(t);
+  /* Called by IntroVideo when the video ends or errors */
+  const handleIntroComplete = useCallback(() => {
+    setShowingIntro(false);
+    /* tiny delay so the video fade-out completes before hero animates in */
+    setTimeout(() => setHeroVisible(true), 100);
   }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent) => {
     setMouse({ x: e.clientX - window.innerWidth / 2, y: e.clientY - window.innerHeight / 2 });
   }, []);
+
+  // Block body scroll while intro is running
+  useEffect(() => {
+    if (showingIntro) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [showingIntro]);
 
   return (
     <div style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", background:'#000', color:'#fff', overflowX:'hidden', width:'100%' }}>
@@ -372,6 +389,14 @@ export default function Home() {
         .cta-btn-secondary:hover { transform: translateY(-2px); background: rgba(255,255,255,0.06); }
       `}</style>
 
+      {/* ── CINEMATIC INTRO VIDEO ── */}
+      {showingIntro && (
+        <IntroVideo
+          videoSrc="/intro.mp4"
+          onComplete={handleIntroComplete}
+        />
+      )}
+
       {/* SOCIAL MODAL */}
       {showSocial && (
         <div style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.75)',zIndex:999,display:'flex',alignItems:'center',justifyContent:'center',padding:'1rem' }} onClick={() => setShowSocial(false)}>
@@ -437,24 +462,21 @@ export default function Home() {
         <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 60%,#010710 100%)',pointerEvents:'none' }}/>
         <NetworkCanvas />
 
-        {/* Intro overlay */}
-        {introStep === 0 && (
-          <div style={{ position:'absolute',inset:0,zIndex:50,background:'radial-gradient(ellipse 80% 80% at 50% 50%,rgba(2,8,20,0.2) 0%,rgba(1,4,12,0.98) 100%)',pointerEvents:'none',animation:'introDarkOverlay 3.2s ease forwards' }}/>
-        )}
+        {/* Intro overlay removed – IntroVideo handles full-screen intro */}
 
         {/* Content */}
-        <div style={{ position:'relative',zIndex:10,width:'100%',maxWidth:900,margin:'0 auto',display:'flex',flexDirection:'column',alignItems:'center',gap:0 }}>
+        <motion.div
+          initial={{ opacity: 0, filter: 'blur(10px)', y: 24 }}
+          animate={heroVisible ? { opacity: 1, filter: 'blur(0px)', y: 0 } : { opacity: 0, filter: 'blur(10px)', y: 24 }}
+          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+          style={{ position:'relative',zIndex:10,width:'100%',maxWidth:900,margin:'0 auto',display:'flex',flexDirection:'column',alignItems:'center',gap:0 }}
+        >
 
-          {/* Logo */}
-          <img
-            src="/manikya-logo-transparent.png"
-            alt="Manikya Services Logo"
-            className="hero-logo-img"
-          />
+          {/* Logo removed – video intro takes its place */}
 
           {/* Growing Together */}
-          <div style={{ width:'100%', marginTop:'clamp(-1rem,0,0)', opacity:introStep >= 1 ? 1 : 0, transition:'opacity 0.6s ease' }}>
-            {introStep >= 1 && <HeroWords />}
+          <div style={{ width:'100%', marginTop:'clamp(-1rem,0,0)', opacity:heroVisible ? 1 : 0, transition:'opacity 0.6s ease' }}>
+            {heroVisible && <HeroWords />}
           </div>
 
           {/* Subtitle */}
@@ -462,22 +484,22 @@ export default function Home() {
             fontFamily:'DM Sans,sans-serif', fontSize:'clamp(0.75rem,1.5vw,0.92rem)',
             color:'rgba(255,255,255,0.45)', fontWeight:300, textAlign:'center',
             margin:'clamp(8px,1.5vh,14px) 0 6px', lineHeight:1.5, maxWidth:500,
-            opacity:introStep >= 1 ? 1 : 0,
-            transform:introStep >= 1 ? 'translateY(0)' : 'translateY(20px)',
+            opacity:heroVisible ? 1 : 0,
+            transform:heroVisible ? 'translateY(0)' : 'translateY(20px)',
             transition:'opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s',
           }}>
             A multi-sector enterprise driving innovation across
           </p>
 
           {/* Sector badges */}
-          <div style={{ width:'100%', opacity:introStep >= 1 ? 1 : 0, transform:introStep >= 1 ? 'translateY(0)' : 'translateY(20px)', transition:'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s' }}>
+          <div style={{ width:'100%', opacity:heroVisible ? 1 : 0, transform:heroVisible ? 'translateY(0)' : 'translateY(20px)', transition:'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s' }}>
             <HeroCyclingSectors />
           </div>
 
           {/* Buttons */}
           <div style={{
             display:'flex', gap:'clamp(8px,2vw,14px)', justifyContent:'center', flexWrap:'wrap', marginTop:8,
-            opacity:introStep >= 1 ? 1 : 0, transform:introStep >= 1 ? 'translateY(0)' : 'translateY(20px)',
+            opacity:heroVisible ? 1 : 0, transform:heroVisible ? 'translateY(0)' : 'translateY(20px)',
             transition:'opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s',
           }}>
             <Link to="/services" style={{
@@ -505,13 +527,18 @@ export default function Home() {
           </div>
 
           {/* Scroll cue */}
-          <div style={{ marginTop:'clamp(1rem,3vh,2rem)', display:'flex', flexDirection:'column', alignItems:'center', gap:5, opacity:introStep >= 1 ? 1 : 0, transition:'opacity 1s ease 1s' }}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={heroVisible ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ duration: 1, delay: 1.2 }}
+            style={{ marginTop:'clamp(1rem,3vh,2rem)', display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}
+          >
             <div style={{ width:22,height:36,borderRadius:11,border:'1.5px solid rgba(255,255,255,0.2)',display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'4px 0' }}>
               <div className="scroll-cue" style={{ width:3,height:3,borderRadius:'50%',background:'rgba(255,255,255,0.5)' }}/>
             </div>
             <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.46rem',letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.2)' }}>SCROLL</span>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* SOCIAL MARQUEE BAR */}
