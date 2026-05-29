@@ -452,6 +452,31 @@ export default function Home() {
         .cta-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,158,11,0.5); }
         .cta-btn-secondary { border: 1px solid rgba(255,255,255,0.22); color: white; }
         .cta-btn-secondary:hover { transform: translateY(-2px); background: rgba(255,255,255,0.06); }
+        /* ── INTRO VIDEO — fills hero section only ── */
+        .intro-video-root {
+          width: 100% !important;
+          height: 100% !important;
+          overflow: hidden !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+        .intro-video-root video {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: cover !important;
+          object-position: center center !important;
+          display: block !important;
+        }
+        .intro-video-root * {
+          max-width: 100% !important;
+          box-sizing: border-box !important;
+        }
+        @media (max-width: 768px) {
+          .hero-logo-img {
+            width: clamp(140px, 68vw, 260px) !important;
+          }
+        }
       `}</style>
 
       {/* IntroVideo is now inside the hero section below */}
@@ -503,12 +528,17 @@ export default function Home() {
 
       {/* ── HERO ── */}
       <section style={{
-        position:'relative', minHeight:'100svh',
+        position:'relative',
+        width:'100%',
+        minHeight:'100svh',
+        height: introPlaying ? '100svh' : 'auto',
         display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
         background: introPlaying
           ? 'radial-gradient(ellipse 130% 90% at 50% 50%, #08001a 0%, #0a0005 40%, #000510 75%, #000 100%)'
           : 'radial-gradient(ellipse 130% 90% at 50% 0%, #050e24 0%, #060f26 40%, #030918 75%, #010710 100%)',
-        overflow:'hidden', padding:'clamp(4rem,8vh,6rem) clamp(1rem,3vw,2rem) clamp(2rem,4vh,4rem)',
+        overflow:'hidden',
+        padding: introPlaying ? '0' : 'clamp(4rem,8vh,6rem) clamp(1rem,3vw,2rem) clamp(2rem,4vh,4rem)',
+        boxSizing:'border-box',
         transition:'background 1.2s ease',
       }} onMouseMove={onMouseMove}>
 
@@ -526,11 +556,27 @@ export default function Home() {
           <NetworkCanvas />
         </>}
 
-        {/* ── EMBEDDED INTRO VIDEO (fills hero, below navbar) ── */}
-        <IntroVideo
-          videoSrc="/intro.mp4"
-          onComplete={handleIntroComplete}
-        />
+        {/* ── EMBEDDED INTRO VIDEO — stays inside hero section ── */}
+        {introPlaying && (
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 20,
+            background: '#000',
+            overflow: 'hidden',
+          }}>
+            <IntroVideo
+              videoSrc="/intro.mp4"
+              onComplete={handleIntroComplete}
+            />
+          </div>
+        )}
 
         {/* ── HERO CONTENT (shown after video) ── */}
         <div style={{ position:'relative', zIndex:10, width:'100%', maxWidth:960, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:0, isolation:'auto', background:'transparent' }}>
