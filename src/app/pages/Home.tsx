@@ -102,6 +102,59 @@ function CyclingWord() {
   );
 }
 
+/* ── LogoCanvas: screen blend at wrapper level removes black bg completely ── */
+function LogoCanvas() {
+  return (
+    /* isolation:isolate is intentionally NOT set so mix-blend-mode:screen
+       composites against the actual hero background, making black = transparent */
+    <div className="logo-blend-wrapper" style={{
+      position: 'relative',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      mixBlendMode: 'screen',   /* ← key: whole logo unit blends with hero */
+      background: 'transparent',
+    }}>
+      {/* Neon bottom beam */}
+      <div style={{
+        position:'absolute', bottom:'-6px', left:'50%',
+        transform:'translateX(-50%)',
+        width:'65%', height:'28px',
+        background:'radial-gradient(ellipse at center, rgba(0,190,255,0.95) 0%, rgba(29,78,216,0.5) 55%, transparent 100%)',
+        filter:'blur(9px)',
+        borderRadius:'50%',
+        pointerEvents:'none',
+        animation:'logoPulseBeam 2.8s ease-in-out infinite',
+        mixBlendMode:'normal',
+      }}/>
+      {/* Left sparkle */}
+      <div style={{ position:'absolute', bottom:'4px', left:'22%', width:8, height:8, borderRadius:'50%', background:'rgba(0,210,255,1)', boxShadow:'0 0 16px 7px rgba(0,190,255,0.9)', animation:'logoPulseBeam 2.8s ease-in-out infinite 0.4s', pointerEvents:'none', mixBlendMode:'normal' }}/>
+      {/* Right sparkle */}
+      <div style={{ position:'absolute', bottom:'4px', right:'22%', width:8, height:8, borderRadius:'50%', background:'rgba(0,210,255,1)', boxShadow:'0 0 16px 7px rgba(0,190,255,0.9)', animation:'logoPulseBeam 2.8s ease-in-out infinite 0.8s', pointerEvents:'none', mixBlendMode:'normal' }}/>
+      {/* Logo — screen blend makes every black pixel transparent */}
+      <img
+        src="/manikya-logo-transparent.png"
+        alt="Manikya Services Logo"
+        style={{
+          width:'clamp(320px,56vw,680px)',   /* 35% larger than before */
+          height:'auto',
+          display:'block',
+          position:'relative',
+          /* No extra mixBlendMode here — handled by parent wrapper */
+          filter:[
+            'drop-shadow(0 0 24px rgba(0,180,255,0.95))',
+            'drop-shadow(0 0 60px rgba(29,78,216,0.75))',
+            'drop-shadow(0 0 100px rgba(0,140,255,0.4))',
+            'brightness(1.12)',
+            'saturate(1.2)',
+            'contrast(1.05)',
+          ].join(' '),
+        }}
+      />
+    </div>
+  );
+}
+
 /* ── Hero Cycling Sectors ── */
 const sectorData = [
   { label:'MEDIA',      color:'#ef4444', bg:'rgba(239,68,68,0.12)',    border:'rgba(239,68,68,0.4)',    icon:'📺' },
@@ -201,33 +254,21 @@ function HeroWords() {
 export default function Home() {
   const [activeSvc, setActiveSvc] = useState(0);
   const [showSocial, setShowSocial] = useState(false);
-  // true  → video intro is playing (hero is hidden)
-  // false → video done, hero content is revealed
-  const [showingIntro, setShowingIntro] = useState(true);
+  const [introPlaying, setIntroPlaying] = useState(true);
+  const [logoVisible, setLogoVisible] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView(); const s4 = useInView();
 
-  /* Called by IntroVideo when the video ends or errors */
   const handleIntroComplete = useCallback(() => {
-    setShowingIntro(false);
-    /* tiny delay so the video fade-out completes before hero animates in */
-    setTimeout(() => setHeroVisible(true), 100);
+    setIntroPlaying(false);
+    setTimeout(() => setLogoVisible(true), 200);
+    setTimeout(() => setHeroVisible(true), 900);
   }, []);
 
   const onMouseMove = useCallback((e: React.MouseEvent) => {
     setMouse({ x: e.clientX - window.innerWidth / 2, y: e.clientY - window.innerHeight / 2 });
   }, []);
-
-  // Block body scroll while intro is running
-  useEffect(() => {
-    if (showingIntro) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => { document.body.style.overflow = ''; };
-  }, [showingIntro]);
 
   return (
     <div style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", background:'#000', color:'#fff', overflowX:'hidden', width:'100%' }}>
@@ -252,6 +293,7 @@ export default function Home() {
         @keyframes scrollBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(8px)}}
         @keyframes waPulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.5)}70%{box-shadow:0 0 0 12px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
         @keyframes scaleIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+        @keyframes logoPulseBeam{0%,100%{opacity:0.7;transform:translateX(-50%) scaleX(1)}50%{opacity:1;transform:translateX(-50%) scaleX(1.12)}}
 
         .gold-text{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
         .reveal{opacity:0;transform:translateY(40px);transition:all .9s cubic-bezier(.16,1,.3,1)}
@@ -278,6 +320,19 @@ export default function Home() {
           display: block;
           margin: 0 auto;
           animation: logoIntroGlow 3.2s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+        }
+
+        /* ── LOGO BLEND WRAPPER — critical for black-bg removal ── */
+        .logo-blend-wrapper {
+          mix-blend-mode: screen !important;
+          background: transparent !important;
+          isolation: auto !important;
+        }
+        .logo-blend-wrapper img {
+          background: transparent !important;
+          border: none !important;
+          box-shadow: none !important;
+          outline: none !important;
         }
 
         /* ── SERVICES GRID ── */
@@ -389,13 +444,7 @@ export default function Home() {
         .cta-btn-secondary:hover { transform: translateY(-2px); background: rgba(255,255,255,0.06); }
       `}</style>
 
-      {/* ── CINEMATIC INTRO VIDEO ── */}
-      {showingIntro && (
-        <IntroVideo
-          videoSrc="/intro.mp4"
-          onComplete={handleIntroComplete}
-        />
-      )}
+      {/* IntroVideo is now inside the hero section below */}
 
       {/* SOCIAL MODAL */}
       {showSocial && (
@@ -446,36 +495,57 @@ export default function Home() {
       <section style={{
         position:'relative', minHeight:'100svh',
         display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-        background:'radial-gradient(ellipse 130% 90% at 50% 0%, #050e24 0%, #060f26 40%, #030918 75%, #010710 100%)',
+        background: introPlaying
+          ? 'radial-gradient(ellipse 130% 90% at 50% 50%, #08001a 0%, #0a0005 40%, #000510 75%, #000 100%)'
+          : 'radial-gradient(ellipse 130% 90% at 50% 0%, #050e24 0%, #060f26 40%, #030918 75%, #010710 100%)',
         overflow:'hidden', padding:'clamp(4rem,8vh,6rem) clamp(1rem,3vw,2rem) clamp(2rem,4vh,4rem)',
+        transition:'background 1.2s ease',
       }} onMouseMove={onMouseMove}>
 
-        {/* Stars */}
-        {Array.from({ length: 70 }).map((_, i) => {
+        {/* Stars — only show after intro */}
+        {!introPlaying && Array.from({ length: 70 }).map((_, i) => {
           const x = (i * 137.5) % 100, y = (i * 97.3) % 100, s = 0.5 + (i % 4) * 0.5;
           return <div key={i} style={{ position:'absolute',left:`${x}%`,top:`${y}%`,width:s,height:s,borderRadius:'50%',background:'white',animation:`starTwinkle ${2+(i%4)*0.7}s ease-in-out ${(i*0.21)%5}s infinite`,pointerEvents:'none' }}/>;
         })}
 
-        {/* Atmospheric glows */}
-        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 18% 55%, rgba(200,30,30,0.26) 0%, transparent 65%)',pointerEvents:'none' }}/>
-        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 82% 55%, rgba(29,78,216,0.30) 0%, transparent 65%)',pointerEvents:'none' }}/>
-        <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 60%,#010710 100%)',pointerEvents:'none' }}/>
-        <NetworkCanvas />
+        {/* Atmospheric glows — show after intro */}
+        {!introPlaying && <>
+          <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 18% 55%, rgba(200,30,30,0.26) 0%, transparent 65%)',pointerEvents:'none' }}/>
+          <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse 55% 65% at 82% 55%, rgba(29,78,216,0.30) 0%, transparent 65%)',pointerEvents:'none' }}/>
+          <div style={{ position:'absolute',inset:0,background:'linear-gradient(to bottom,transparent 60%,#010710 100%)',pointerEvents:'none' }}/>
+          <NetworkCanvas />
+        </>}
 
-        {/* Intro overlay removed – IntroVideo handles full-screen intro */}
+        {/* ── EMBEDDED INTRO VIDEO (fills hero, below navbar) ── */}
+        <IntroVideo
+          videoSrc="/intro.mp4"
+          onComplete={handleIntroComplete}
+        />
 
-        {/* Content */}
-        <motion.div
-          initial={{ opacity: 0, filter: 'blur(10px)', y: 24 }}
-          animate={heroVisible ? { opacity: 1, filter: 'blur(0px)', y: 0 } : { opacity: 0, filter: 'blur(10px)', y: 24 }}
-          transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-          style={{ position:'relative',zIndex:10,width:'100%',maxWidth:900,margin:'0 auto',display:'flex',flexDirection:'column',alignItems:'center',gap:0 }}
-        >
+        {/* ── HERO CONTENT (shown after video) ── */}
+        <div style={{ position:'relative', zIndex:10, width:'100%', maxWidth:960, margin:'0 auto', display:'flex', flexDirection:'column', alignItems:'center', gap:0, isolation:'auto', background:'transparent' }}>
 
-          {/* Logo removed – video intro takes its place */}
+          {/* Logo — fades in from center after video, replacing the video logo */}
+          <AnimatePresence>
+            {logoVisible && (
+              <motion.div
+                key="hero-logo"
+                initial={{ opacity:0, scale:0.7, filter:'blur(16px) brightness(2)' }}
+                animate={{ opacity:1, scale:1, filter:'blur(0px) brightness(1)' }}
+                transition={{ duration:1.1, ease:[0.16,1,0.3,1] }}
+                style={{
+                  marginBottom:'clamp(0.5rem,2vh,1.5rem)',
+                  isolation:'auto',        /* do NOT isolate — lets screen blend reach hero bg */
+                  background:'transparent',
+                }}
+              >
+                <LogoCanvas />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Growing Together */}
-          <div style={{ width:'100%', marginTop:'clamp(-1rem,0,0)', opacity:heroVisible ? 1 : 0, transition:'opacity 0.6s ease' }}>
+          <div style={{ width:'100%', opacity:heroVisible ? 1 : 0, transition:'opacity 0.7s ease' }}>
             {heroVisible && <HeroWords />}
           </div>
 
@@ -486,13 +556,13 @@ export default function Home() {
             margin:'clamp(8px,1.5vh,14px) 0 6px', lineHeight:1.5, maxWidth:500,
             opacity:heroVisible ? 1 : 0,
             transform:heroVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition:'opacity 0.7s ease 0.4s, transform 0.7s ease 0.4s',
+            transition:'opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s',
           }}>
             A multi-sector enterprise driving innovation across
           </p>
 
           {/* Sector badges */}
-          <div style={{ width:'100%', opacity:heroVisible ? 1 : 0, transform:heroVisible ? 'translateY(0)' : 'translateY(20px)', transition:'opacity 0.7s ease 0.55s, transform 0.7s ease 0.55s' }}>
+          <div style={{ width:'100%', opacity:heroVisible ? 1 : 0, transform:heroVisible ? 'translateY(0)' : 'translateY(20px)', transition:'opacity 0.7s ease 0.5s, transform 0.7s ease 0.5s' }}>
             <HeroCyclingSectors />
           </div>
 
@@ -500,7 +570,7 @@ export default function Home() {
           <div style={{
             display:'flex', gap:'clamp(8px,2vw,14px)', justifyContent:'center', flexWrap:'wrap', marginTop:8,
             opacity:heroVisible ? 1 : 0, transform:heroVisible ? 'translateY(0)' : 'translateY(20px)',
-            transition:'opacity 0.7s ease 0.7s, transform 0.7s ease 0.7s',
+            transition:'opacity 0.7s ease 0.65s, transform 0.7s ease 0.65s',
           }}>
             <Link to="/services" style={{
               display:'inline-flex', alignItems:'center', gap:8,
@@ -528,9 +598,9 @@ export default function Home() {
 
           {/* Scroll cue */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={heroVisible ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 1, delay: 1.2 }}
+            initial={{ opacity:0 }}
+            animate={heroVisible ? { opacity:1 } : { opacity:0 }}
+            transition={{ duration:1, delay:1.2 }}
             style={{ marginTop:'clamp(1rem,3vh,2rem)', display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}
           >
             <div style={{ width:22,height:36,borderRadius:11,border:'1.5px solid rgba(255,255,255,0.2)',display:'flex',alignItems:'flex-start',justifyContent:'center',padding:'4px 0' }}>
@@ -538,7 +608,7 @@ export default function Home() {
             </div>
             <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.46rem',letterSpacing:'0.2em',textTransform:'uppercase',color:'rgba(255,255,255,0.2)' }}>SCROLL</span>
           </motion.div>
-        </motion.div>
+        </div>
       </section>
 
       {/* SOCIAL MARQUEE BAR */}

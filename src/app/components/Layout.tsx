@@ -46,7 +46,7 @@ export default function Layout() {
         .brand-wrap { display:flex; align-items:center; gap:clamp(6px,1.5vw,12px); text-decoration:none; flex-shrink:0; min-width:0; }
         .logo-ring { position:relative; flex-shrink:0; }
         .logo-ring::before { content:''; position:absolute; inset:-3px; border-radius:50%; background:linear-gradient(135deg,var(--red),white,var(--blue)); z-index:-1; opacity:0.7; }
-        .logo-img { width:clamp(36px,5vw,54px); height:clamp(36px,5vw,54px); object-fit:contain; border-radius:50%; background:white; padding:3px; display:block; }
+        .logo-img { width:clamp(36px,5vw,54px); height:clamp(36px,5vw,54px); object-fit:contain; border-radius:50%; background:white; padding:2px; display:block; }
         .brand-name { font-family:'Playfair Display',serif; font-weight:800; font-size:clamp(0.6rem,1.8vw,1rem); line-height:1.2; background:linear-gradient(135deg,var(--red) 0%,#991b1b 40%,var(--blue) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; white-space:nowrap; }
         .brand-tag { font-family:'DM Sans',sans-serif; font-size:clamp(0.42rem,0.9vw,0.58rem); font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-top:1px; white-space:nowrap; }
 
@@ -106,7 +106,7 @@ export default function Layout() {
           <div className="nav-inner">
             <Link to="/" className="brand-wrap">
               <div className="logo-ring">
-                <img src="/manikya-navbar-logo.png" alt="Manikya" className="logo-img"/>
+                <img src="/manikya-navbar-logo.jpeg" alt="Manikya" className="logo-img"/>
               </div>
               <div style={{ minWidth:0, overflow:'hidden' }}>
                 <div className="brand-name">Manikya Money Service Pvt Ltd</div>
@@ -141,7 +141,7 @@ export default function Layout() {
           <div className="mob-drawer">
             <div className="mob-header">
               <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                <img src="/manikya-navbar-logo.png" alt="Logo" style={{ width:34,height:34,borderRadius:'50%',objectFit:'contain',background:'white',border:'1px solid #f1f5f9' }}/>
+                <img src="/manikya-navbar-logo.jpeg" alt="Logo" style={{ width:34,height:34,borderRadius:'50%',objectFit:'contain',background:'white',border:'1px solid #f1f5f9' }}/>
                 <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.78rem',color:'#0f172a',lineHeight:1.3 }}>
                   Manikya Money<br/><span style={{ color:'#f59e0b',fontSize:'0.6rem',fontWeight:600 }}>GROWING TOGETHER</span>
                 </div>
@@ -178,7 +178,7 @@ export default function Layout() {
           <div className="footer-grid">
             <div>
               <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:16,flexWrap:'wrap' }}>
-                <img src="/manikya-navbar-logo.png" alt="Logo" style={{ width:44,height:44,objectFit:'contain',borderRadius:'50%',background:'white',padding:3,flexShrink:0 }}/>
+                <img src="/manikya-navbar-logo.jpeg" alt="Logo" style={{ width:44,height:44,objectFit:'contain',borderRadius:'50%',background:'white',padding:3,flexShrink:0 }}/>
                 <div className="footer-brand">Manikya Money<br/>Service Pvt Ltd</div>
               </div>
               <p style={{ fontFamily:'DM Sans,sans-serif',fontStyle:'italic',color:'#f59e0b',marginBottom:8,fontSize:'0.82rem' }}>"Growing Together"</p>
