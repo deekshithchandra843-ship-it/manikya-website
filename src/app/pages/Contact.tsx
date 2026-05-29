@@ -48,8 +48,16 @@ export default function Contact() {
   const [showPopup, setShowPopup]   = useState(false);
   const [openFaq, setOpenFaq]       = useState<number|null>(null);
   const [showSocial, setShowSocial] = useState(false);
-  const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
+  const [socialLinks, setSocialLinks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('manikya_social_links');
+      return saved ? { ...defaultSocialLinks, ...JSON.parse(saved) } : defaultSocialLinks;
+    } catch {
+      return defaultSocialLinks;
+    }
+  });
   const [editMode, setEditMode]     = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -173,6 +181,11 @@ export default function Contact() {
             </button>
             <h3 style={{ fontSize:'1.4rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
             <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.85rem',marginBottom:24 }}>Stay connected on social media</p>
+            {saveSuccess && (
+              <div style={{ marginBottom:16,padding:'10px 14px',background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:8,fontFamily:'DM Sans,sans-serif',fontSize:'0.82rem',color:'#166534',display:'flex',alignItems:'center',gap:8 }}>
+                ✅ Social links saved successfully!
+              </div>
+            )}
             {!editMode ? (
               <>
                 <div style={{ display:'flex',gap:14,justifyContent:'center',marginBottom:24 }}>
@@ -226,8 +239,29 @@ export default function Contact() {
                   ))}
                 </div>
                 <div style={{ display:'flex',gap:10,marginTop:16 }}>
-                  <button onClick={()=>setEditMode(false)} style={{ flex:1,padding:'10px',background:'#f59e0b',border:'none',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>Save Links</button>
-                  <button onClick={()=>setEditMode(false)} style={{ flex:1,padding:'10px',background:'#f1f5f9',border:'none',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>Cancel</button>
+                  <button
+                    onClick={() => {
+                      try {
+                        localStorage.setItem('manikya_social_links', JSON.stringify(socialLinks));
+                      } catch {}
+                      setEditMode(false);
+                      setSaveSuccess(true);
+                      setTimeout(() => setSaveSuccess(false), 3000);
+                    }}
+                    style={{ flex:1,padding:'10px',background:'#f59e0b',border:'none',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>
+                    Save Links
+                  </button>
+                  <button
+                    onClick={() => {
+                      try {
+                        const saved = localStorage.getItem('manikya_social_links');
+                        setSocialLinks(saved ? { ...defaultSocialLinks, ...JSON.parse(saved) } : defaultSocialLinks);
+                      } catch {}
+                      setEditMode(false);
+                    }}
+                    style={{ flex:1,padding:'10px',background:'#f1f5f9',border:'none',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>
+                    Cancel
+                  </button>
                 </div>
               </>
             )}
