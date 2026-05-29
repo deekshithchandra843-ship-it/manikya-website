@@ -21,7 +21,7 @@ const faqs = [
   { q:'What are the interest rates?', a:'Interest rates vary by loan type, tenure, and applicant eligibility. We offer competitive rates starting from 10% per annum. Contact us for a personalised quote.' },
   { q:'Can I apply for a loan online?', a:'Yes. Our application process is fully digital-friendly. You can apply, upload documents, and track status entirely online through our platform.' },
   { q:'What types of loans does Manikya Properties offer?', a:'We facilitate Home Loans, Loan Against Property, Commercial Property Loans, and Plot Loans through our partner banks including SBI, HDFC, ICICI, and Axis Bank.' },
-  { q:'How do I contact the Pearl Farms investment team?', a:'You can reach out through this contact form, call us at +91 74116 42999, or email us. Our investment team will schedule a consultation within 24 hours.' },
+  { q:'How do I contact the Pearl Farms investment team?', a:'You can reach out through this contact form, call us at +91 74116 47999, or email us. Our investment team will schedule a consultation within 24 hours.' },
   { q:'Where is the NewsJunction studio located?', a:'Our primary studio is at #215, MGES, Second Floor, 5th Main Road, RPC Layout, Hampi Nagar, Bengaluru – 560 104. You can also watch us live at newsjunction.net/stream.php.' },
   { q:'How can I sell on Manikya Market?', a:'Rural artisans, farmers, and women entrepreneurs can register through our contact form. Our team will visit, photograph your products, and list them — at zero cost to you.' },
   { q:'Where can I buy Amrutha Multi Millet Malt?', a:'Amrutha Multi Millet Malt by Manikya Roots is available through our online portal and select retail partners. Contact us to place bulk or retail orders.' },
@@ -34,9 +34,9 @@ const interests = [
 ];
 
 const defaultSocialLinks = {
-  instagram: 'https://instagram.com/manikyaservices',
-  facebook:  'https://facebook.com/manikyaservices',
-  youtube:   'https://youtube.com/@manikyaservices',
+  instagram: 'https://www.instagram.com/newsjunctiondigital?igsh=eGd5czZldWdsMDEw',
+  facebook:  'https://www.facebook.com/share/18cqpxCY8w/',
+  youtube:   'https://youtube.com/@newsjunctiondigital?si=Qb5X358zSsEwiOrZ',
   maps:      'https://maps.google.com/?q=215+MGES+5th+Main+Road+RPC+Layout+Hampi+Nagar+Bengaluru+560104',
 };
 
@@ -48,17 +48,21 @@ export default function Contact() {
   const [showPopup, setShowPopup]   = useState(false);
   const [openFaq, setOpenFaq]       = useState<number|null>(null);
   const [showSocial, setShowSocial] = useState(false);
-  const [socialLinks, setSocialLinks] = useState(() => {
-    try {
-      const saved = localStorage.getItem('manikya_social_links');
-      return saved ? { ...defaultSocialLinks, ...JSON.parse(saved) } : defaultSocialLinks;
-    } catch {
-      return defaultSocialLinks;
-    }
-  });
+  const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
+  const [socialLoading, setSocialLoading] = useState(true);
   const [editMode, setEditMode]     = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [savingLinks, setSavingLinks] = useState(false);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
+
+  // Fetch social links from backend on mount
+  useEffect(() => {
+    fetch('https://manikya-backend.onrender.com/api/social-links')
+      .then(r => r.json())
+      .then(data => { setSocialLinks(prev => ({ ...prev, ...data })); })
+      .catch(() => { /* keep defaults on error */ })
+      .finally(() => setSocialLoading(false));
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,14 +161,14 @@ export default function Contact() {
             </p>
             <div style={{ background:'#fffbeb', border:'1px solid #fde68a', borderRadius:10, padding:'12px 16px', marginBottom:20 }}>
               <p style={{ margin:0, color:'#92400e', fontSize:'0.82rem', fontFamily:'DM Sans,sans-serif' }}>
-                For urgent queries, call us directly at <strong>+91 74116 42999</strong>
+                For urgent queries, call us directly at <strong>+91 74116 47999</strong>
               </p>
             </div>
             <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
-              <a href="tel:+917411642999" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#000', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
+              <a href="tel:+917411647999" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#000', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
                 <Phone size={13}/> Call Now
               </a>
-              <a href="https://wa.me/917411642999" target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#25D366', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
+              <a href="https://wa.me/917411647999" target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#25D366', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
                 💬 WhatsApp
               </a>
             </div>
@@ -240,23 +244,34 @@ export default function Contact() {
                 </div>
                 <div style={{ display:'flex',gap:10,marginTop:16 }}>
                   <button
-                    onClick={() => {
+                    disabled={savingLinks}
+                    onClick={async () => {
+                      setSavingLinks(true);
                       try {
-                        localStorage.setItem('manikya_social_links', JSON.stringify(socialLinks));
-                      } catch {}
-                      setEditMode(false);
-                      setSaveSuccess(true);
-                      setTimeout(() => setSaveSuccess(false), 3000);
+                        const res = await fetch('https://manikya-backend.onrender.com/api/social-links', {
+                          method: 'PUT',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(socialLinks),
+                        });
+                        if (!res.ok) throw new Error('Save failed');
+                        setEditMode(false);
+                        setSaveSuccess(true);
+                        setTimeout(() => setSaveSuccess(false), 3000);
+                      } catch {
+                        alert('Failed to save links. Please try again.');
+                      } finally {
+                        setSavingLinks(false);
+                      }
                     }}
-                    style={{ flex:1,padding:'10px',background:'#f59e0b',border:'none',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>
-                    Save Links
+                    style={{ flex:1,padding:'10px',background: savingLinks ? '#fde68a' : '#f59e0b',border:'none',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.85rem',cursor: savingLinks ? 'not-allowed' : 'pointer',borderRadius:8,opacity: savingLinks ? 0.7 : 1 }}>
+                    {savingLinks ? 'Saving…' : 'Save Links'}
                   </button>
                   <button
                     onClick={() => {
-                      try {
-                        const saved = localStorage.getItem('manikya_social_links');
-                        setSocialLinks(saved ? { ...defaultSocialLinks, ...JSON.parse(saved) } : defaultSocialLinks);
-                      } catch {}
+                      fetch('https://manikya-backend.onrender.com/api/social-links')
+                        .then(r => r.json())
+                        .then(data => setSocialLinks(prev => ({ ...prev, ...data })))
+                        .catch(() => setSocialLinks(defaultSocialLinks));
                       setEditMode(false);
                     }}
                     style={{ flex:1,padding:'10px',background:'#f1f5f9',border:'none',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>
@@ -312,7 +327,7 @@ export default function Contact() {
       {/* SOCIAL MARQUEE */}
       <section style={{ background:'#f59e0b',padding:'12px 0',overflow:'hidden' }}>
         <div className="marquee-track">
-          {[...Array(2)].map((_,r)=>(['+91 74116 42999','•','+91 74117 42999','•','manikyamoneyservices@gmail.com','•','5th Main Road, Hampi Nagar, Bengaluru','•']).map((t,i)=>(
+          {[...Array(2)].map((_,r)=>(['+91 74116 47999','•','+91 74117 42999','•','manikyamoneyservices@gmail.com','•','5th Main Road, Hampi Nagar, Bengaluru','•']).map((t,i)=>(
             <span key={`${r}-${i}`} style={{ fontFamily:'DM Sans,sans-serif',fontWeight:500,fontSize:'0.75rem',letterSpacing:'0.1em',color:'#000',flexShrink:0 }}>{t}</span>
           )))}
         </div>
@@ -392,7 +407,7 @@ export default function Contact() {
               <div className="contact-info-block" style={{ marginBottom:24,padding:'24px',border:'1px solid #e2e8f0',background:'#fafafa' }}>
                 {[
                   { icon:<MapPin size={18}/>, bg:'#000', label:'Registered Office', lines:['#215, MGES, Second Floor, 5th Main Road,','RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka'] },
-                  { icon:<Phone size={18}/>, bg:'#f59e0b', label:'Phone', lines:['+91 74116 42999','+91 74117 42999'] },
+                  { icon:<Phone size={18}/>, bg:'#f59e0b', label:'Phone', lines:['+91 74116 47999','+91 74117 42999'] },
                   { icon:<Mail size={18}/>, bg:'#000', label:'Email', lines:['manikyamoneyservices@gmail.com'] },
                 ].map((c,i)=>(
                   <div key={i} style={{ display:'flex',gap:14,alignItems:'flex-start',marginBottom:i<2?18:0,paddingBottom:i<2?18:0,borderBottom:i<2?'1px solid #e2e8f0':'none' }}>
@@ -433,12 +448,12 @@ export default function Contact() {
                   ))}
                 </div>
                 {/* WhatsApp CTA */}
-                <a href="https://wa.me/917411642999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer"
+                <a href="https://wa.me/917411647999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer"
                   style={{ display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'#25D366',textDecoration:'none',borderRadius:4 }}>
                   <span style={{ fontSize:'1.1rem' }}>💬</span>
                   <div>
                     <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.82rem',color:'#fff' }}>Chat on WhatsApp</div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.8)' }}>+91 74116 42999 — Quick Response</div>
+                    <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.8)' }}>+91 74116 47999 — Quick Response</div>
                   </div>
                 </a>
               </div>

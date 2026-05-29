@@ -217,11 +217,12 @@ const stats = [
   { value:50, suffix:'+', label:'Vendors' },
 ];
 
-const socialLinks = {
-  instagram: 'https://instagram.com/manikyaservices',
-  facebook:  'https://facebook.com/manikyaservices',
-  youtube:   'https://youtube.com/@manikyaservices',
+const defaultSocialLinks = {
+  instagram: 'https://www.instagram.com/newsjunctiondigital?igsh=eGd5czZldWdsMDEw',
+  facebook:  'https://www.facebook.com/share/18cqpxCY8w/',
+  youtube:   'https://youtube.com/@newsjunctiondigital?si=Qb5X358zSsEwiOrZ',
   linkedin:  'https://linkedin.com/company/manikyaservices',
+  maps:      'https://maps.google.com/?q=215+MGES+5th+Main+Road+RPC+Layout+Hampi+Nagar+Bengaluru+560104',
 };
 
 /* ── Hero Words ── */
@@ -258,7 +259,16 @@ export default function Home() {
   const [logoVisible, setLogoVisible] = useState(false);
   const [heroVisible, setHeroVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView(); const s4 = useInView();
+
+  // Fetch social links from backend
+  useEffect(() => {
+    fetch('https://manikya-backend.onrender.com/api/social-links')
+      .then(r => r.json())
+      .then(data => setSocialLinks(prev => ({ ...prev, ...data })))
+      .catch(() => {}); // keep defaults on error
+  }, []);
 
   const handleIntroComplete = useCallback(() => {
     setIntroPlaying(false);
@@ -826,7 +836,7 @@ export default function Home() {
               { icon:<Facebook size={20}/>,  href:socialLinks.facebook,  color:'#1877f2' },
               { icon:<Youtube size={20}/>,   href:socialLinks.youtube,   color:'#ff0000' },
               { icon:<Linkedin size={20}/>,  href:socialLinks.linkedin,  color:'#0a66c2' },
-              { icon:<MapPin size={20}/>,    href:'https://maps.google.com/?q=215+MGES+5th+Main+Road+RPC+Layout+Hampi+Nagar+Bengaluru+560104', color:'#34a853' },
+              { icon:<MapPin size={20}/>,    href:socialLinks.maps,      color:'#34a853' },
             ].map((s, i) => (
               <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
                 style={{ width:44,height:44,borderRadius:'50%',background:s.color+'10',border:`1px solid ${s.color}25`,color:s.color,display:'flex',alignItems:'center',justifyContent:'center',transition:'all .3s',textDecoration:'none' }}>
