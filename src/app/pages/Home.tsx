@@ -136,7 +136,7 @@ function LogoCanvas() {
         src="/manikya-logo-transparent.png"
         alt="Manikya Services Logo"
         style={{
-          width:'clamp(320px,56vw,680px)',   /* 35% larger than before */
+          width:'clamp(480px,72vw,900px)',   /* increased hero logo size */
           height:'auto',
           display:'block',
           position:'relative',
@@ -325,7 +325,7 @@ export default function Home() {
 
         /* ── HERO logo ── */
         .hero-logo-img {
-          width: clamp(180px, 35vw, 380px);
+          width: clamp(280px, 52vw, 580px);
           height: auto;
           display: block;
           margin: 0 auto;
