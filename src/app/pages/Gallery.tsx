@@ -277,13 +277,13 @@ export default function Gallery() {
           </p>
           <div className="hero-stats">
             <div style={{ background:'rgba(255,255,255,0.06)', borderRadius:10, padding:'10px 20px', display:'flex', alignItems:'center', gap:8 }}>
-              <span style={{ color:'#f59e0b', fontFamily:'DM Sans,sans-serif', fontWeight:800, fontSize:'1.3rem' }}>{gallerySlots.length}</span>
+              <span style={{ color:'#f59e0b', fontFamily:'DM Sans,sans-serif', fontWeight:800, fontSize:'clamp(1rem,2vw,1.3rem)' }}>{gallerySlots.length}</span>
               <span style={{ color:'rgba(255,255,255,0.5)', fontFamily:'DM Sans,sans-serif', fontSize:'0.82rem' }}>Total Slots</span>
             </div>
             <div style={{ background:'rgba(255,255,255,0.06)', borderRadius:10, padding:'10px 20px', display:'flex', alignItems:'center', gap:8 }}>
               {loading
                 ? <Loader2 size={18} color="#10b981" style={{ animation:'spin 1s linear infinite' }}/>
-                : <span style={{ color:'#10b981', fontFamily:'DM Sans,sans-serif', fontWeight:800, fontSize:'1.3rem' }}>{uploadedCount}</span>
+                : <span style={{ color:'#10b981', fontFamily:'DM Sans,sans-serif', fontWeight:800, fontSize:'clamp(1rem,2vw,1.3rem)' }}>{uploadedCount}</span>
               }
               <span style={{ color:'rgba(255,255,255,0.5)', fontFamily:'DM Sans,sans-serif', fontSize:'0.82rem' }}>Photos Uploaded</span>
             </div>
@@ -300,17 +300,7 @@ export default function Gallery() {
         </div>
       )}
 
-      {/* Admin tip */}
-      {isAdmin && (
-        <div style={{ maxWidth:1200, margin:'0 auto', padding:'0 clamp(1rem,4vw,24px) 16px' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:10, padding:'12px 16px', background:'rgba(16,185,129,0.1)', border:'1px solid rgba(16,185,129,0.3)', borderRadius:10 }}>
-            <Upload size={16} color="#10b981" style={{ flexShrink:0 }}/>
-            <p style={{ margin:0, fontFamily:'DM Sans,sans-serif', color:'#6ee7b7', fontSize:'0.85rem' }}>
-              <strong>Admin Mode:</strong> Tap any card to upload a photo. Images are saved to the server — all visitors will see them instantly.
-            </p>
-          </div>
-        </div>
-      )}
+
 
       {/* Category Filter */}
       <div ref={s1.ref} className={`reveal ${s1.v?'on':''}`} style={{ maxWidth:1200, margin:'0 auto', padding:'0 clamp(1rem,4vw,24px) 28px' }}>

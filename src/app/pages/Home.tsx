@@ -488,7 +488,7 @@ export default function Home() {
             <button onClick={() => setShowSocial(false)} style={{ position:'absolute',top:12,right:12,background:'#f1f5f9',border:'none',borderRadius:'50%',width:32,height:32,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer' }}>
               <X size={15}/>
             </button>
-            <h3 style={{ fontSize:'1.3rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
+            <h3 style={{ fontSize:'clamp(1rem,2vw,1.3rem)',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
             <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.85rem',marginBottom:20 }}>Connect with us on social media</p>
             <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
               {[
@@ -755,7 +755,7 @@ export default function Home() {
                     )}
                   </div>
                 </div>
-                <div style={{ position:'absolute',bottom:-10,right:20,fontSize:window.innerWidth > 600 ? '8rem' : '4rem',fontWeight:700,color:'rgba(255,255,255,0.025)',lineHeight:1,userSelect:'none' }}>{services[activeSvc].num}</div>
+                <div style={{ position:'absolute',bottom:-10,right:20,fontSize:'clamp(4rem,12vw,8rem)',fontWeight:700,color:'rgba(255,255,255,0.025)',lineHeight:1,userSelect:'none' }}>{services[activeSvc].num}</div>
               </div>
             </div>
           </div>
@@ -798,7 +798,7 @@ export default function Home() {
               <div className="money-mini-grid">
                 {[['⚡','Speedy Approvals','24–48 hour processing'],['💰','Low Interest Rates','Competitive & transparent'],['✅','No Hidden Charges','What you see is what you get'],['📄','Minimal Docs','Digital-friendly process']].map(([icon,t,s]) => (
                   <div key={t as string} style={{ padding:'clamp(12px,2vw,16px)',border:'1px solid rgba(139,92,246,0.2)',background:'rgba(139,92,246,0.04)' }}>
-                    <div style={{ fontSize:'1.3rem',marginBottom:6 }}>{icon}</div>
+                    <div style={{ fontSize:'clamp(1rem,2vw,1.3rem)',marginBottom:6 }}>{icon}</div>
                     <div style={{ fontWeight:700,color:'white',fontSize:'clamp(0.82rem,1.2vw,0.9rem)',marginBottom:2 }}>{t}</div>
                     <div style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.35)',fontSize:'0.75rem' }}>{s}</div>
                   </div>
@@ -818,7 +818,7 @@ export default function Home() {
                 <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.66rem',fontWeight:700,color:'#8b5cf6',textTransform:'uppercase',letterSpacing:'0.18em',marginBottom:20 }}>Our Core Values</div>
                 {[['🏅','Integrity','We uphold the highest standards of honesty in all our actions.'],['🌟','Excellence','Striving to deliver the best possible service to every client.'],['📊','Accountability','We take responsibility for our commitments and results.'],['💡','Innovation','Constantly improving our processes to serve you better.']].map(([icon,t,d]) => (
                   <div key={t as string} style={{ display:'flex',gap:14,padding:'14px 0',borderBottom:'1px solid rgba(255,255,255,0.05)',alignItems:'flex-start' }}>
-                    <span style={{ fontSize:'1.3rem',flexShrink:0 }}>{icon}</span>
+                    <span style={{ fontSize:'clamp(1rem,2vw,1.3rem)',flexShrink:0 }}>{icon}</span>
                     <div>
                       <div style={{ fontWeight:700,color:'white',marginBottom:4,fontSize:'clamp(0.85rem,1.2vw,0.95rem)' }}>{t}</div>
                       <div style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.4)',fontSize:'0.82rem',lineHeight:1.65 }}>{d}</div>

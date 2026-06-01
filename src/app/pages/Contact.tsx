@@ -136,6 +136,9 @@ export default function Contact() {
         @media(max-width:480px){
           .hero-h1{font-size:2.8rem!important}
           .marquee-track{gap:28px!important}
+          .popup-box{padding:22px 16px!important;border-radius:12px!important}
+          .contact-info-block{padding:12px!important}
+          .form-section{padding:1.5rem 1rem!important}
         }
       `}</style>
 
@@ -152,7 +155,7 @@ export default function Contact() {
             <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.68rem', fontWeight:700, color:'#f59e0b', letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:10 }}>
               Manikya Money Service Pvt. Ltd.
             </div>
-            <h2 style={{ margin:'0 0 12px', fontSize:'1.5rem', fontWeight:700, color:'#0f172a', fontFamily:'Cormorant Garamond,serif' }}>
+            <h2 style={{ margin:'0 0 12px', fontSize:'clamp(1.1rem,2.5vw,1.5rem)', fontWeight:700, color:'#0f172a', fontFamily:'Cormorant Garamond,serif' }}>
               Thank You for Reaching Out!
             </h2>
             <p style={{ margin:'0 0 20px', color:'#475569', fontSize:'0.92rem', lineHeight:1.7, fontFamily:'DM Sans,sans-serif' }}>
@@ -183,7 +186,7 @@ export default function Contact() {
             <button onClick={()=>{ setShowSocial(false); setEditMode(false); }} style={{ position:'absolute',top:14,right:14,background:'#f1f5f9',border:'none',borderRadius:'50%',width:34,height:34,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer' }}>
               <X size={16}/>
             </button>
-            <h3 style={{ fontSize:'1.4rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
+            <h3 style={{ fontSize:'clamp(1.05rem,2.2vw,1.4rem)',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
             <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.85rem',marginBottom:24 }}>Stay connected on social media</p>
             {saveSuccess && (
               <div style={{ marginBottom:16,padding:'10px 14px',background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:8,fontFamily:'DM Sans,sans-serif',fontSize:'0.82rem',color:'#166534',display:'flex',alignItems:'center',gap:8 }}>
@@ -350,7 +353,7 @@ export default function Contact() {
                   <div style={{ width:60,height:60,borderRadius:'50%',background:'#f59e0b',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',animation:'checkIn .5s cubic-bezier(.16,1,.3,1)' }}>
                     <CheckCircle size={26} color="#000"/>
                   </div>
-                  <h3 style={{ fontSize:'1.3rem',fontWeight:700,color:'#0f172a',marginBottom:6 }}>Message Sent!</h3>
+                  <h3 style={{ fontSize:'clamp(1rem,2vw,1.3rem)',fontWeight:700,color:'#0f172a',marginBottom:6 }}>Message Sent!</h3>
                   <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:16,lineHeight:1.7 }}>Thank you. Our team will respond within 24 hours.</p>
                   <button onClick={()=>{ setSent(false); setForm({ name:'',email:'',phone:'',interest:'',message:'' }); }} style={{ fontFamily:'DM Sans,sans-serif',fontWeight:600,color:'#f59e0b',background:'none',border:'none',cursor:'pointer',fontSize:'0.88rem',textDecoration:'underline' }}>
                     Send another message
@@ -450,7 +453,7 @@ export default function Contact() {
                 {/* WhatsApp CTA */}
                 <a href="https://wa.me/917411647999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer"
                   style={{ display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'#25D366',textDecoration:'none',borderRadius:4 }}>
-                  <span style={{ fontSize:'1.1rem' }}>💬</span>
+                  <span style={{ fontSize:'clamp(0.9rem,1.8vw,1.1rem)' }}>💬</span>
                   <div>
                     <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.82rem',color:'#fff' }}>Chat on WhatsApp</div>
                     <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.8)' }}>+91 74116 47999 — Quick Response</div>
@@ -488,7 +491,7 @@ export default function Contact() {
               <div key={i} className={`faq-item reveal ${s2.v?'on':''}`}
                 style={{ transitionDelay:`${i*50}ms`,border:`1px solid ${openFaq===i?'#f59e0b':'#e2e8f0'}`,background:'white',borderRadius:4,overflow:'hidden',boxShadow:openFaq===i?'0 4px 20px rgba(245,158,11,0.1)':'none',transition:'all .3s' }}>
                 <button className="faq-btn" onClick={()=>setOpenFaq(openFaq===i?null:i)}>
-                  <span style={{ fontWeight:700,color:'#0f172a',fontFamily:'Cormorant Garamond,serif',fontSize:'1.05rem',textAlign:'left',lineHeight:1.35,flex:1,marginRight:12 }}>{f.q}</span>
+                  <span style={{ fontWeight:700,color:'#0f172a',fontFamily:'Cormorant Garamond,serif',fontSize:'clamp(0.88rem,1.6vw,1.05rem)',textAlign:'left',lineHeight:1.35,flex:1,marginRight:12 }}>{f.q}</span>
                   <ChevronDown size={20} style={{ color:'#f59e0b',flexShrink:0,transition:'transform .3s',transform:openFaq===i?'rotate(180deg)':'none' }}/>
                 </button>
                 <div style={{ overflow:'hidden',maxHeight:openFaq===i?300:0,transition:'max-height .4s ease',paddingLeft:24,paddingRight:24,paddingBottom:openFaq===i?18:0 }}>
@@ -506,8 +509,8 @@ export default function Contact() {
           <div style={{ height:280,background:'linear-gradient(135deg,#f8fafc,#f1f5f9)',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:14,borderTop:'1px solid #e2e8f0',position:'relative' }}>
             <div style={{ position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px)',backgroundSize:'40px 40px' }}/>
             <div style={{ position:'relative',zIndex:1,textAlign:'center' }}>
-              <div style={{ fontSize:'2.5rem',marginBottom:10 }}>📍</div>
-              <h3 style={{ fontSize:'1.2rem',fontWeight:700,color:'#0f172a',marginBottom:4 }}>#215, MGES, Second Floor, 5th Main Road</h3>
+              <div style={{ fontSize:'clamp(1.5rem,4vw,2.5rem)',marginBottom:10 }}>📍</div>
+              <h3 style={{ fontSize:'clamp(0.95rem,2vw,1.2rem)',fontWeight:700,color:'#0f172a',marginBottom:4 }}>#215, MGES, Second Floor, 5th Main Road</h3>
               <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:14,fontSize:'0.9rem' }}>RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka</p>
               <a href={socialLinks.maps} target="_blank" rel="noopener noreferrer"
                 style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'11px 26px',background:'#000',color:'white',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.82rem',textDecoration:'none',letterSpacing:'0.05em',textTransform:'uppercase' }}>

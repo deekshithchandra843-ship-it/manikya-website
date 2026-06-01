@@ -240,15 +240,7 @@ export default function InsideManikya() {
       <section style={{ background:'#f8fafc', padding:'clamp(3rem,8vw,8rem) 0' }} ref={section.ref}>
         <div style={{ maxWidth:1400, margin:'0 auto', padding:'0 clamp(1rem,5vw,5rem)' }}>
 
-          {/* Admin banner */}
-          {isAdmin && (
-            <div style={{ marginBottom:24, display:'flex', alignItems:'center', gap:10, padding:'12px 16px', background:'rgba(245,158,11,0.08)', border:'1px solid rgba(245,158,11,0.3)', borderRadius:8 }}>
-              <Upload size={15} color="#f59e0b" style={{ flexShrink:0 }}/>
-              <p style={{ margin:0, fontFamily:'DM Sans,sans-serif', color:'#92400e', fontSize:'0.82rem' }}>
-                <strong>Admin Mode:</strong> Upload videos below. They are saved to the server — all visitors will see them.
-              </p>
-            </div>
-          )}
+
 
           {/* Loading state */}
           {loading && (

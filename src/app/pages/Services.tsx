@@ -271,12 +271,13 @@ export default function Services() {
         }
         @media(max-width:600px){
           .channel-logos-grid{grid-template-columns:repeat(2,1fr)!important}
-          .stats-bar-grid{grid-template-columns:repeat(2,1fr)!important}
+          .stats-bar-grid{grid-template-columns:repeat(2,1fr)!important;gap:6px!important;padding:0 1rem!important}
           .svc-hero-tabs{gap:6px!important}
           .svc-hero-tab{padding:6px 10px!important;font-size:0.72rem!important}
         }
         @media(max-width:480px){
           .hero-txt h1{font-size:2.2rem!important}
+          .stats-bar-grid{grid-template-columns:repeat(2,1fr)!important;padding:0 0.75rem!important}
         }
 
         .channel-logo{transition:all .3s ease;cursor:pointer}
@@ -340,7 +341,7 @@ export default function Services() {
 
             {/* Subtitle */}
             <p style={{
-              fontFamily:'DM Sans,sans-serif',color:'#93c5fd',fontSize:'1.1rem',
+              fontFamily:'DM Sans,sans-serif',color:'#93c5fd',fontSize:'clamp(0.9rem,1.8vw,1.1rem)',
               maxWidth:'42rem',lineHeight:1.75,margin:'0 auto 28px',
               animation:'heroTextIn 0.8s cubic-bezier(0.16,1,0.3,1) 2s both',
             }}>
@@ -448,7 +449,7 @@ export default function Services() {
                       <span style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.85)',fontWeight:700,fontSize:'0.7rem',textTransform:'uppercase',letterSpacing:'0.2em' }}>Live · Media</span>
                     </div>
                     <h2 style={{ color:'white',fontSize:'clamp(2rem,5vw,3.5rem)',fontWeight:700,margin:'0 0 8px',lineHeight:1.05 }}>NewsJunction</h2>
-                    <p style={{ color:'rgba(255,255,255,0.8)',fontStyle:'italic',fontFamily:'DM Sans,sans-serif',fontSize:'1.05rem',margin:0 }}>"One Network. Many Voices."</p>
+                    <p style={{ color:'rgba(255,255,255,0.8)',fontStyle:'italic',fontFamily:'DM Sans,sans-serif',fontSize:'clamp(0.88rem,1.6vw,1.05rem)',margin:0 }}>"One Network. Many Voices."</p>
                   </div>
                 </div>
               </div>
@@ -526,12 +527,14 @@ export default function Services() {
 
           {/* STATS BAR — compact */}
           <div style={{ background:'#0f172a',padding:'0.7rem 0' }}>
-            <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8 }}>
+            <div className="stats-bar-grid" style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:8 }}>
               {data.stats.map((st: any,i: number)=>(
-                <div key={i} style={{ textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center',gap:8,padding:'4px 0' }}>
-                  <span style={{ fontSize:'1rem' }}>{st.icon}</span>
-                  <span style={{ fontSize:'1.1rem',fontWeight:700,color:'white',fontFamily:'Georgia,serif' }}>{st.value}</span>
-                  <span style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.65rem',textTransform:'uppercase',letterSpacing:'0.08em' }}>{st.label}</span>
+                <div key={i} style={{ textAlign:'center',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:2,padding:'6px 4px' }}>
+                  <div style={{ display:'flex',alignItems:'center',gap:6 }}>
+                    <span style={{ fontSize:'clamp(0.85rem,2.5vw,1rem)' }}>{st.icon}</span>
+                    <span style={{ fontSize:'clamp(0.95rem,3vw,1.1rem)',fontWeight:700,color:'white',fontFamily:'Georgia,serif' }}>{st.value}</span>
+                  </div>
+                  <span style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'clamp(0.6rem,1.8vw,0.65rem)',textTransform:'uppercase',letterSpacing:'0.06em',lineHeight:1.2,textAlign:'center' }}>{st.label}</span>
                 </div>
               ))}
             </div>
@@ -544,7 +547,7 @@ export default function Services() {
 
                 {/* LEFT */}
                 <div>
-                  <h3 style={{ fontSize:'1.5rem',fontWeight:700,color:'#0f172a',marginBottom:14 }}>About {s.title}</h3>
+                  <h3 style={{ fontSize:'clamp(1.1rem,2.5vw,1.5rem)',fontWeight:700,color:'#0f172a',marginBottom:14 }}>About {s.title}</h3>
                   <p style={{ fontFamily:'DM Sans,sans-serif',color:'#475569',lineHeight:1.9,fontSize:'1rem',marginBottom:24 }}>{s.description}</p>
                   <h4 style={{ fontSize:'1rem',fontWeight:700,color:'#0f172a',marginBottom:12,fontFamily:'DM Sans,sans-serif',textTransform:'uppercase',letterSpacing:'0.1em' }}>What We Offer</h4>
                   <div style={{ display:'flex',flexDirection:'column',gap:7,marginBottom:28 }}>
@@ -663,7 +666,7 @@ export default function Services() {
                 <div style={{ display:'flex',alignItems:'center',gap:10,marginBottom:8 }}>
                   <span className="live-dot"/><span style={{ fontFamily:'DM Sans,sans-serif',color:'#ef4444',fontWeight:700,fontSize:'0.72rem',textTransform:'uppercase',letterSpacing:'0.15em' }}>Live Now — 5 Channels</span>
                 </div>
-                <h3 style={{ fontSize:'1.5rem',fontWeight:700,color:'#0f172a',marginBottom:6 }}>Select Your Language Channel</h3>
+                <h3 style={{ fontSize:'clamp(1.1rem,2.5vw,1.5rem)',fontWeight:700,color:'#0f172a',marginBottom:6 }}>Select Your Language Channel</h3>
                 <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:22,fontSize:'0.9rem' }}>Click any card to watch live. Each opens in a new tab.</p>
                 <div style={{ display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(220px,1fr))',gap:14 }}>
                   {channels.map((ch,i)=>(
@@ -674,7 +677,7 @@ export default function Services() {
                       <div style={{ padding:'18px' }}>
                         <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8 }}>
                           <div style={{ display:'flex',alignItems:'center',gap:10 }}>
-                            <span style={{ fontSize:'1.4rem' }}>{ch.flag}</span>
+                            <span style={{ fontSize:'clamp(1.05rem,2.2vw,1.4rem)' }}>{ch.flag}</span>
                             <div>
                               <div style={{ fontWeight:700,color:'#0f172a',fontSize:'0.92rem' }}>{ch.lang}</div>
                               <div style={{ fontFamily:'DM Sans,sans-serif',color:'#94a3b8',fontSize:'0.68rem' }}>{ch.name}</div>
@@ -742,7 +745,7 @@ export default function Services() {
                   <div style={{ width:80,height:80,borderRadius:16,overflow:'hidden',marginBottom:16,border:'2px solid #c4b5fd',boxShadow:'0 4px 16px rgba(139,92,246,0.2)' }}>
                     <img src={heritageLogo} alt="Manikya Heritage" style={{ width:'100%',height:'100%',objectFit:'cover' }}/>
                   </div>
-                  <h3 style={{ fontSize:'1.6rem',fontWeight:700,color:'#0f172a',marginBottom:6 }}>{comingSoon.title}</h3>
+                  <h3 style={{ fontSize:'clamp(1.1rem,2.8vw,1.6rem)',fontWeight:700,color:'#0f172a',marginBottom:6 }}>{comingSoon.title}</h3>
                   <p style={{ fontStyle:'italic',color:'#4c1d95',marginBottom:12,fontSize:'0.95rem' }}>"{comingSoon.tagline}"</p>
                   <p style={{ fontFamily:'DM Sans,sans-serif',color:'#475569',lineHeight:1.8,marginBottom:18,fontSize:'0.92rem' }}>{comingSoon.description}</p>
                   <div style={{ display:'flex',flexDirection:'column',gap:7 }}>
@@ -755,7 +758,7 @@ export default function Services() {
                   </div>
                 </div>
                 <div style={{ background:'linear-gradient(135deg,#4c1d95,#6d28d9)',padding:'2.5rem',display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',color:'white',textAlign:'center' }}>
-                  <div style={{ fontSize:'4rem',marginBottom:16 }}>🎭</div>
+                  <div style={{ fontSize:'clamp(2rem,5vw,4rem)',marginBottom:16 }}>🎭</div>
                   <div style={{ display:'flex',flexWrap:'wrap',gap:7,justifyContent:'center',marginBottom:20 }}>
                     {['Yakshagana','Pottery','Ayurveda','Heritage Stay','Weaving','Folk Dance','Traditional Food','Artisan Crafts'].map(tag=>(
                       <span key={tag} style={{ padding:'4px 10px',borderRadius:20,background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.2)',fontSize:'0.75rem',fontFamily:'DM Sans,sans-serif' }}>{tag}</span>
@@ -774,7 +777,7 @@ export default function Services() {
       {/* ── CROSS LINKS ── */}
       <section style={{ padding:'4rem 0',background:'linear-gradient(135deg,#0f172a,#1e3a8a)' }}>
         <div style={{ maxWidth:1280,margin:'0 auto',padding:'0 2rem',textAlign:'center' }}>
-          <h2 style={{ fontSize:'2rem',fontWeight:700,color:'white',marginBottom:8 }}>Explore Manikya</h2>
+          <h2 style={{ fontSize:'clamp(1.3rem,3.5vw,2rem)',fontWeight:700,color:'white',marginBottom:8 }}>Explore Manikya</h2>
           <p style={{ fontFamily:'DM Sans,sans-serif',color:'#93c5fd',marginBottom:32,fontSize:'0.9rem' }}>Discover our full ecosystem</p>
           <div style={{ display:'flex',flexWrap:'wrap',gap:12,justifyContent:'center' }}>
             {[
@@ -789,7 +792,7 @@ export default function Services() {
                     style={{ display:'flex',flexDirection:'column',alignItems:'center',gap:6,padding:'18px 24px',borderRadius:16,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.12)',color:'white',minWidth:110 }}
                     onMouseEnter={e=>{ (e.currentTarget as HTMLElement).style.background=item.g; (e.currentTarget as HTMLElement).style.transform='translateY(-5px)'; }}
                     onMouseLeave={e=>{ (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform='none'; }}>
-                    <span style={{ fontSize:'1.5rem' }}>{item.icon}</span>
+                    <span style={{ fontSize:'clamp(1.1rem,2.5vw,1.5rem)' }}>{item.icon}</span>
                     <span style={{ fontWeight:700,fontSize:'0.88rem' }}>{item.label}</span>
                     <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.55)' }}>{item.desc}</span>
                   </Link>
@@ -797,7 +800,7 @@ export default function Services() {
                     style={{ display:'flex',flexDirection:'column',alignItems:'center',gap:6,padding:'18px 24px',borderRadius:16,background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.12)',color:'white',minWidth:110,textDecoration:'none' }}
                     onMouseEnter={e=>{ (e.currentTarget as HTMLElement).style.background=item.g; (e.currentTarget as HTMLElement).style.transform='translateY(-5px)'; }}
                     onMouseLeave={e=>{ (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform='none'; }}>
-                    <span style={{ fontSize:'1.5rem' }}>{item.icon}</span>
+                    <span style={{ fontSize:'clamp(1.1rem,2.5vw,1.5rem)' }}>{item.icon}</span>
                     <span style={{ fontWeight:700,fontSize:'0.88rem' }}>{item.label}</span>
                     <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.55)' }}>{item.desc}</span>
                     <ExternalLink size={12} style={{ color:'rgba(255,255,255,0.4)' }}/>

@@ -134,6 +134,7 @@ export default function About() {
         .marquee-track{display:flex;gap:60px;animation:marquee 25s linear infinite;white-space:nowrap}
         .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:999;display:flex;align-items:center;justify-content:center;animation:scaleIn .3s ease}
         @media(max-width:768px){.grid-2{grid-template-columns:1fr!important}.grid-3{grid-template-columns:1fr!important}.grid-4{grid-template-columns:1fr 1fr!important}}
+        @media(max-width:480px){.grid-4{grid-template-columns:repeat(2,1fr)!important}}
       `}</style>
 
       {/* VIDEO MODAL */}
@@ -166,7 +167,7 @@ export default function About() {
           <h1 style={{ fontSize: 'clamp(3.5rem,8vw,8rem)', fontWeight: 700, lineHeight: 0.95, color: 'white', marginBottom: 24, animation: 'fadeUp .9s .25s both' }}>
             About<br /><span className="gold-text">Manikya.</span>
           </h1>
-          <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.5)', fontSize: '1.1rem', maxWidth: 500, lineHeight: 1.8, fontWeight: 300, animation: 'fadeUp .9s .4s both' }}>
+          <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.5)', fontSize:'clamp(0.9rem,1.8vw,1.1rem)', maxWidth: 500, lineHeight: 1.8, fontWeight: 300, animation: 'fadeUp .9s .4s both' }}>
             A multi-sector enterprise rooted in Bengaluru — driving sustainable growth across media, agriculture, commerce, wellness, financial services, and real estate since 2002.
           </p>
         </div>
@@ -202,7 +203,7 @@ export default function About() {
                   { icon: '🏠', label: 'Manikya Properties', sub: 'Real estate facilitation' },
                 ].map((p, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 14px', border: '1px solid #e2e8f0', borderRadius: 8, background: '#fafafa' }}>
-                    <span style={{ fontSize: '1.3rem', flexShrink: 0 }}>{p.icon}</span>
+                    <span style={{ fontSize:'clamp(1rem,2vw,1.3rem)', flexShrink: 0 }}>{p.icon}</span>
                     <div>
                       <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.88rem' }}>{p.label}</div>
                       <div style={{ fontFamily: 'DM Sans,sans-serif', color: '#94a3b8', fontSize: '0.75rem', marginTop: 2 }}>{p.sub}</div>
@@ -215,7 +216,7 @@ export default function About() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
               {/* Quote block */}
               <div style={{ borderLeft: '4px solid #f59e0b', padding: '20px 24px', background: '#fffbeb', borderRadius: '0 12px 12px 0' }}>
-                <p style={{ fontFamily: 'DM Sans,sans-serif', fontStyle: 'italic', color: '#334155', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
+                <p style={{ fontFamily: 'DM Sans,sans-serif', fontStyle: 'italic', color: '#334155', fontSize:'clamp(0.88rem,1.6vw,1.05rem)', lineHeight: 1.8, margin: 0 }}>
                   "We don't just build businesses — we build bridges between communities, between tradition and innovation, between today's challenge and tomorrow's opportunity."
                 </p>
                 <div style={{ marginTop: 12, fontFamily: 'DM Sans,sans-serif', fontWeight: 700, color: '#f59e0b', fontSize: '0.8rem' }}>— Dr. Rahmat Kanchagar, Founder & MD & CEO</div>
@@ -228,7 +229,7 @@ export default function About() {
                   { n: '500+', label: 'Partners' },
                 ].map((s, i) => (
                   <div key={i} style={{ padding: '20px 16px', textAlign: 'center', borderRight: i < 2 ? '1px solid #e2e8f0' : 'none', background: '#fafafa' }}>
-                    <div style={{ fontSize: '1.8rem', fontWeight: 700, color: '#0f172a' }}>{s.n}</div>
+                    <div style={{ fontSize:'clamp(1.2rem,3vw,1.8rem)', fontWeight: 700, color: '#0f172a' }}>{s.n}</div>
                     <div style={{ fontFamily: 'DM Sans,sans-serif', fontSize: '0.7rem', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.12em', marginTop: 4 }}>{s.label}</div>
                   </div>
                 ))}
@@ -271,9 +272,9 @@ export default function About() {
                 style={{ transitionDelay: `${i * 100}ms`, padding: '2.5rem 2rem', border: '1px solid rgba(255,255,255,0.06)', position: 'relative', overflow: 'hidden' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(245,158,11,0.05)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(245,158,11,0.3)'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.06)'; }}>
-                <div style={{ fontSize: '2.5rem', marginBottom: 16 }}>{v.icon}</div>
+                <div style={{ fontSize:'clamp(1.5rem,4vw,2.5rem)', marginBottom: 16 }}>{v.icon}</div>
                 <div style={{ width: 28, height: 2, background: '#f59e0b', marginBottom: 14 }} />
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 700, color: 'white', marginBottom: 10 }}>{v.title}</h3>
+                <h3 style={{ fontSize:'clamp(1rem,2vw,1.3rem)', fontWeight: 700, color: 'white', marginBottom: 10 }}>{v.title}</h3>
                 <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.45)', fontSize: '0.9rem', lineHeight: 1.75, margin: 0 }}>{v.desc}</p>
               </div>
             ))}
@@ -296,7 +297,7 @@ export default function About() {
                 <img src={IMG_RAHMAT} alt="Dr. Rahmat Kanchagar" style={{ width: '100%', display: 'block', objectFit: 'cover' }}
                   onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px 24px', background: 'linear-gradient(to top,rgba(0,0,0,0.85),transparent)' }}>
-                  <div style={{ color: 'white', fontWeight: 700, fontSize: '1.15rem', fontFamily: 'Cormorant Garamond,serif' }}>Dr. Rahmat Kanchagar</div>
+                  <div style={{ color: 'white', fontWeight: 700, fontSize:'clamp(0.95rem,1.8vw,1.15rem)', fontFamily: 'Cormorant Garamond,serif' }}>Dr. Rahmat Kanchagar</div>
                   <div style={{ fontFamily: 'DM Sans,sans-serif', color: '#f59e0b', fontSize: '0.78rem', fontWeight: 600, marginTop: 3 }}>PhD · MD & CEO, Manikya Group</div>
                 </div>
               </div>
@@ -331,7 +332,7 @@ export default function About() {
 
               {/* Pull quote */}
               <div style={{ borderLeft: '4px solid #f59e0b', paddingLeft: 20, marginBottom: 24, background: '#fffbeb', padding: '16px 20px', borderRadius: '0 8px 8px 0' }}>
-                <p style={{ fontStyle: 'italic', color: '#334155', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
+                <p style={{ fontStyle: 'italic', color: '#334155', fontSize:'clamp(0.88rem,1.6vw,1.05rem)', lineHeight: 1.8, margin: 0 }}>
                   "A unique blend of media excellence, social responsibility, and visionary leadership — an inspiration to aspiring journalists, entrepreneurs, and future leaders."
                 </p>
               </div>
@@ -402,7 +403,7 @@ export default function About() {
                   />
                   {/* Name overlay */}
                   <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px 20px', background: 'linear-gradient(to top,rgba(0,0,0,0.8),transparent)' }}>
-                    <div style={{ color: 'white', fontWeight: 700, fontSize: '1.1rem', fontFamily: 'Cormorant Garamond,serif' }}>{dir.name}</div>
+                    <div style={{ color: 'white', fontWeight: 700, fontSize:'clamp(0.9rem,1.8vw,1.1rem)', fontFamily: 'Cormorant Garamond,serif' }}>{dir.name}</div>
                     <div style={{ fontFamily: 'DM Sans,sans-serif', color: '#f59e0b', fontSize: '0.75rem', fontWeight: 600, marginTop: 2 }}>{dir.title} — Manikya Group</div>
                   </div>
                 </div>
@@ -433,7 +434,7 @@ export default function About() {
                 Manikya<br /><span className="gold-text">Money Service</span><br />
                 <span style={{ fontSize: '0.55em', fontWeight: 400, color: 'rgba(255,255,255,0.5)' }}>Pvt. Ltd.</span>
               </h2>
-              <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.55)', fontSize: '1.05rem', lineHeight: 1.85, marginBottom: 24, fontWeight: 300 }}>
+              <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.55)', fontSize:'clamp(0.88rem,1.6vw,1.05rem)', lineHeight: 1.85, marginBottom: 24, fontWeight: 300 }}>
                 Founded on the principles of <strong style={{ color: '#f59e0b' }}>integrity and customer-centricity</strong>. We are your trusted financial partners — providing accessible, affordable, and innovative financial services to every segment of Indian society.
               </p>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 28 }}>
@@ -463,7 +464,7 @@ export default function About() {
                   { val: 100, suf: '%', label: 'Transparent', col: '#22c55e' },
                 ].map((s, i) => (
                   <div key={i} className={`reveal ${s2.v ? 'on' : ''}`} style={{ transitionDelay: `${i * 80}ms`, padding: '2rem', border: '1px solid rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}>
-                    <div style={{ fontSize: '2.6rem', fontWeight: 700, color: s.col, lineHeight: 1 }}><Counter end={s.val} suffix={s.suf} /></div>
+                    <div style={{ fontSize:'clamp(1.5rem,4vw,2.6rem)', fontWeight: 700, color: s.col, lineHeight: 1 }}><Counter end={s.val} suffix={s.suf} /></div>
                     <div style={{ fontFamily: 'DM Sans,sans-serif', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)', marginTop: 6, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{s.label}</div>
                   </div>
                 ))}
@@ -486,9 +487,9 @@ export default function About() {
                 style={{ transitionDelay: `${i * 80}ms`, padding: '2rem 1.5rem', border: '1px solid #e2e8f0', position: 'relative', overflow: 'hidden', background: 'white' }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#f59e0b50'; (e.currentTarget as HTMLElement).style.background = '#fffbeb'; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#e2e8f0'; (e.currentTarget as HTMLElement).style.background = 'white'; }}>
-                <div style={{ fontSize: '2.2rem', marginBottom: 14 }}>{w.icon}</div>
+                <div style={{ fontSize:'clamp(1.4rem,3.5vw,2.2rem)', marginBottom: 14 }}>{w.icon}</div>
                 <div style={{ width: 28, height: 2, background: '#f59e0b', marginBottom: 12 }} />
-                <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{w.title}</h3>
+                <h3 style={{ fontSize:'clamp(0.88rem,1.6vw,1.05rem)', fontWeight: 700, color: '#0f172a', marginBottom: 8 }}>{w.title}</h3>
                 <p style={{ fontFamily: 'DM Sans,sans-serif', color: '#64748b', fontSize: '0.85rem', lineHeight: 1.7, margin: 0 }}>{w.desc}</p>
               </div>
             ))}
@@ -546,7 +547,7 @@ export default function About() {
                   )}
                 </div>
                 <div style={{ padding: '14px 0' }}>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Dr. Rahmat Kanchagar — MD & CEO Message</h3>
+                  <h3 style={{ fontSize:'clamp(0.88rem,1.6vw,1.05rem)', fontWeight: 700, color: '#0f172a', marginBottom: 4 }}>Dr. Rahmat Kanchagar — MD & CEO Message</h3>
                   <p style={{ fontFamily: 'DM Sans,sans-serif', color: '#94a3b8', fontSize: '0.82rem' }}>On building a sustainable multi-sector enterprise for India</p>
                 </div>
               </div>
@@ -636,9 +637,9 @@ export default function About() {
                 onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'transparent'}>
                 <span style={{ fontFamily: 'DM Sans,sans-serif', fontSize: '0.7rem', fontWeight: 700, color: m.color, letterSpacing: '0.15em', padding: '3px 10px', border: `1px solid ${m.color}40`, borderRadius: 20, display: 'inline-block', marginBottom: 10 }}>{m.year}</span>
                 <div style={{ width: 24, height: 2, background: m.color, marginBottom: 10 }} />
-                <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: 'white', marginBottom: 6 }}>{m.title}</h3>
+                <h3 style={{ fontSize:'clamp(0.95rem,1.8vw,1.15rem)', fontWeight: 700, color: 'white', marginBottom: 6 }}>{m.title}</h3>
                 <p style={{ fontFamily: 'DM Sans,sans-serif', color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', lineHeight: 1.65, margin: 0 }}>{m.desc}</p>
-                <div style={{ position: 'absolute', bottom: -15, right: 10, fontSize: '5rem', fontWeight: 700, color: m.color + '05', lineHeight: 1 }}>{m.year.replace('+', '')}</div>
+                <div style={{ position: 'absolute', bottom: -15, right: 10, fontSize:'clamp(2.5rem,6vw,5rem)', fontWeight: 700, color: m.color + '05', lineHeight: 1 }}>{m.year.replace('+', '')}</div>
               </div>
             ))}
           </div>
