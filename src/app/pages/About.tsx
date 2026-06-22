@@ -107,6 +107,10 @@ export default function About() {
         @media(max-width:560px){ .ab-company-grid { grid-template-columns:1fr; } }
         .ab-timeline { display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid rgba(255,255,255,0.08); border-radius:12px; overflow:hidden; }
         @media(max-width:640px){ .ab-timeline { grid-template-columns:1fr; } }
+        .ab-why-grid { display:grid; gap:clamp(16px,2.5vw,24px); grid-template-columns:repeat(5,1fr); }
+        @media(max-width:1024px){ .ab-why-grid { grid-template-columns:repeat(3,1fr); } }
+        @media(max-width:680px){ .ab-why-grid { grid-template-columns:repeat(2,1fr); } }
+        @media(max-width:440px){ .ab-why-grid { grid-template-columns:1fr; } }
       `}</style>
 
       {/* VIDEO MODAL */}
@@ -370,7 +374,7 @@ export default function About() {
             <p className="mk-eyebrow">Manikya Money Service</p>
             <h2 className="mk-h1" style={{ margin: 0 }}>Why choose Manikya Money Service?</h2>
           </div>
-          <div className="mk-grid" style={{ gridTemplateColumns: 'repeat(5,1fr)' }}>
+          <div className="ab-why-grid">
             {whyChoose.map((w, i) => (
               <div key={i} className={`mk-card mk-card-hover mk-reveal ${s3.v ? 'mk-on' : ''}`} style={{ transitionDelay: `${i * 70}ms` }}>
                 <div style={{ fontSize: '1.8rem', marginBottom: 12 }}>{w.icon}</div>

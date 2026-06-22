@@ -94,6 +94,8 @@ export default function Contact() {
         .ct-interest.act { background:var(--mk-primary); border-color:var(--mk-primary); color:#fff; font-weight:600; }
         .ct-interest:hover:not(.act) { border-color:var(--mk-green); color:var(--mk-green-deep); }
         .ct-label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mk-steel); margin-bottom:6px; }
+        .ct-form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+        @media(max-width:480px) { .ct-form-row { grid-template-columns:1fr; } }
       `}</style>
 
       {/* SUCCESS POPUP */}
@@ -295,7 +297,7 @@ export default function Contact() {
                       ))}
                     </div>
                   </div>
-                  <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14 }}>
+                  <div className="ct-form-row">
                     <div>
                       <label className="ct-label">Full name *</label>
                       <input required className="mk-input" placeholder="Your full name" value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))}/>

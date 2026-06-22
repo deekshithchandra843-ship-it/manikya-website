@@ -54,6 +54,8 @@ export default function ServiceDetail() {
         @media(max-width:560px){ .channel-logos-grid { grid-template-columns:repeat(3,1fr); } }
         .stats-bar-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
         @media(max-width:560px){ .stats-bar-grid { grid-template-columns:repeat(2,1fr); } }
+        .svc-nav-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        @media(max-width:560px){ .svc-nav-grid { grid-template-columns:1fr; } }
         .svc-orb { position:absolute; border-radius:50%; filter:blur(70px); pointer-events:none; }
         .svc-glass {
           background-color:rgba(255,255,255,0.62);
@@ -323,7 +325,7 @@ export default function ServiceDetail() {
           <div style={{ display:'flex', justifyContent:'center', marginBottom:26 }}>
             <Link to="/services" className="mk-btn mk-btn-outline"><ArrowLeft size={15}/> Back to all services</Link>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+          <div className="svc-nav-grid">
             {[prev, next].map((nav, i) => nav ? (
               <Link key={nav.slug} to={`/services/${nav.slug}`} className="svc-nav-card"
                 style={{ display:'flex', alignItems:'center', gap:14, padding:'16px 18px', borderRadius:16, background:'#fff', border:'1px solid var(--mk-hairline)', textDecoration:'none', boxShadow:'0 4px 16px rgba(20,20,40,0.05)', justifyContent:i===1?'flex-end':'flex-start', textAlign:i===1?'right':'left', flexDirection:i===1?'row-reverse':'row' }}>

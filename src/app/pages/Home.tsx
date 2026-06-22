@@ -113,6 +113,9 @@ export default function Home() {
         .home-cta:hover { transform: translateY(-3px); }
         .home-cta-fill:hover { filter: brightness(1.06); }
         .home-stat { text-align: center; padding: 14px; }
+        .home-hero-inner { margin-top: clamp(180px,30vh,360px); }
+        @media (max-width: 768px) { .home-hero-inner { margin-top: clamp(28px,9vh,84px); } }
+        @media (max-width: 600px) { .home-stats { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
 {/* ── NEWSJUNCTION LIVE STRIP ── */}
@@ -172,7 +175,7 @@ export default function Home() {
         {/* Light readability scrim — keeps the video clearly visible */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
           background: 'linear-gradient(180deg, rgba(3,9,24,0.28) 0%, rgba(3,9,24,0.12) 45%, rgba(3,9,24,0.42) 100%)' }} />
-        <div className="mk-container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 920, marginTop: 'clamp(180px,30vh,360px)' }}>
+        <div className="mk-container home-hero-inner" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 920 }}>
           <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
             <span className="mk-badge mk-badge-glass-dark" style={{ marginBottom: 22 }}>
               <Sparkles size={13} /> Multi-sector enterprise · Est. 2002
@@ -200,7 +203,7 @@ export default function Home() {
       {/* ── STATS STRIP ── */}
       <section style={{ background: '#2a2a2e', borderBottom: '1px solid var(--mk-hairline)' }} ref={s2.ref}>
         <div className="mk-container" style={{ padding: 'clamp(32px,5vw,48px) clamp(1.25rem,4vw,2rem)' }}>
-          <div className="mk-grid mk-grid-4">
+          <div className="mk-grid mk-grid-4 home-stats">
             {stats.map((st, i) => (
               <div key={i} className={`home-stat mk-reveal ${s2.v ? 'mk-on' : ''}`} style={{ transitionDelay: `${i * 80}ms` }}>
                 <div style={{ fontSize: 'clamp(2rem,4vw,3.25rem)', fontWeight: 700, color: '#fff', lineHeight: 1, letterSpacing: '-0.02em' }}>
