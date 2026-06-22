@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import {
   ArrowRight, ArrowUpRight, ExternalLink, Check,
-  Instagram, Youtube, Facebook, Linkedin, MapPin, Sparkles,
+  Instagram, Youtube, Facebook, Linkedin, MapPin,
   Volume2, VolumeX,
 } from 'lucide-react';
 
@@ -42,8 +42,6 @@ const services = [
   { id: 7, num: '07', title: 'Manikya Heritage', sub: 'Coming Soon', desc: "A living museum of Karnataka's 5000-year culture — folk arts, Ayurvedic wellness, heritage stays.", link: '/services', soon: true, accent: '#0d9488', grad: 'linear-gradient(135deg,#00d4a4,#00b48a)' },
 ];
 
-
-const sectorChips = ['Media', 'Pearl Farming', 'E-commerce', 'Trading', 'Real Estate', 'Finance', 'Heritage'];
 
 const stats = [
   { value: 24, suffix: '+', label: 'Years' },
@@ -177,17 +175,6 @@ export default function Home() {
           background: 'linear-gradient(180deg, rgba(3,9,24,0.28) 0%, rgba(3,9,24,0.12) 45%, rgba(3,9,24,0.42) 100%)' }} />
         <div className="mk-container home-hero-inner" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 920 }}>
           <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
-            <span className="mk-badge mk-badge-glass-dark" style={{ marginBottom: 22 }}>
-              <Sparkles size={13} /> Multi-sector enterprise · Est. 2002
-            </span>
-            <p className="mk-lead" style={{ color: '#ffe9c2', maxWidth: 600, margin: '0 auto 14px', textShadow: '0 1px 10px rgba(0,0,0,0.35)' }}>
-              From digital media to pearl farming, commerce, trading, real estate and finance — seven verticals, one vision, building trust across Karnataka and beyond.
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap', margin: '0 auto 30px', maxWidth: 640 }}>
-              {sectorChips.map(c => (
-                <span key={c} className="mk-badge mk-badge-glass-dark">{c}</span>
-              ))}
-            </div>
             <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link to="/services" className="mk-btn mk-btn-primary mk-btn-lg">
                 Explore Services <ArrowRight size={16} />
