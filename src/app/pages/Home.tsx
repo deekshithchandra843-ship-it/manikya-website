@@ -111,8 +111,7 @@ export default function Home() {
         .home-cta:hover { transform: translateY(-3px); }
         .home-cta-fill:hover { filter: brightness(1.06); }
         .home-stat { text-align: center; padding: 14px; }
-        .home-hero-inner { margin-top: clamp(180px,30vh,360px); }
-        @media (max-width: 768px) { .home-hero-inner { margin-top: clamp(28px,9vh,84px); } }
+        .home-hero-inner { margin-top: auto; margin-bottom: clamp(8px,3vh,40px); }
         @media (max-width: 600px) { .home-stats { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
