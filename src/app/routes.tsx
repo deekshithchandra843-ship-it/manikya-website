@@ -3,6 +3,7 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
+import ServiceDetail from "./pages/ServiceDetail";
 import PearlFarms from "./pages/PearlFarms";
 import Gallery from "./pages/Gallery";
 import Contact from "./pages/Contact";
@@ -20,6 +21,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: "about", Component: About },
       { path: "services", Component: Services },
+      { path: "services/:slug", Component: ServiceDetail },
       { path: "pearl-farms", Component: PearlFarms },
       { path: "gallery", Component: Gallery },
       { path: "contact", Component: Contact },

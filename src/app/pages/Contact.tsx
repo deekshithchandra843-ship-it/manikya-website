@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router';
-import { Phone, Mail, MapPin, ArrowRight, CheckCircle, ExternalLink, Send, ChevronDown, Instagram, Youtube, Facebook, X } from 'lucide-react';
+import { Phone, Mail, MapPin, CheckCircle, ExternalLink, Send, ChevronDown, Instagram, Youtube, Facebook, X } from 'lucide-react';
 import { contactApi } from '../../lib/api';
 
 function useInView(t = 0.1) {
@@ -49,18 +48,17 @@ export default function Contact() {
   const [openFaq, setOpenFaq]       = useState<number|null>(null);
   const [showSocial, setShowSocial] = useState(false);
   const [socialLinks, setSocialLinks] = useState(defaultSocialLinks);
-  const [socialLoading, setSocialLoading] = useState(true);
+  const [, setSocialLoading] = useState(true);
   const [editMode, setEditMode]     = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [savingLinks, setSavingLinks] = useState(false);
   const s1 = useInView(); const s2 = useInView(); const s3 = useInView();
 
-  // Fetch social links from backend on mount
   useEffect(() => {
     fetch('https://manikya-backend.onrender.com/api/social-links')
       .then(r => r.json())
       .then(data => { setSocialLinks(prev => ({ ...prev, ...data })); })
-      .catch(() => { /* keep defaults on error */ })
+      .catch(() => {})
       .finally(() => setSocialLoading(false));
   }, []);
 
@@ -82,132 +80,65 @@ export default function Contact() {
   };
 
   return (
-    <div style={{ fontFamily:"'Cormorant Garamond',Georgia,serif", background:'#fff', overflowX:'hidden' }}>
+    <div className="mk" style={{ overflowX:'hidden' }}>
       <style>{`
-        * { box-sizing: border-box; }
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap');
-        @keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes shimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-        @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.9)}}
-        @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-        @keyframes slideDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes scaleIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
-        @keyframes checkIn{from{transform:scale(0) rotate(-45deg);opacity:0}to{transform:scale(1) rotate(0deg);opacity:1}}
-        @keyframes popIn{from{opacity:0;transform:scale(0.85)}to{opacity:1;transform:scale(1)}}
-        @keyframes fadeOverlay{from{opacity:0}to{opacity:1}}
-
-        .gold-text{background:linear-gradient(90deg,#f59e0b,#fde68a,#f59e0b);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
-        .reveal{opacity:0;transform:translateY(36px);transition:all .8s cubic-bezier(.16,1,.3,1)}
-        .reveal.on{opacity:1;transform:translateY(0)}
-        .reveal-l{opacity:0;transform:translateX(-50px);transition:all .85s cubic-bezier(.16,1,.3,1)}
-        .reveal-l.on{opacity:1;transform:translateX(0)}
-        .reveal-r{opacity:0;transform:translateX(50px);transition:all .85s cubic-bezier(.16,1,.3,1)}
-        .reveal-r.on{opacity:1;transform:translateX(0)}
-
-        .form-input{width:100%;background:#f8fafc;border:1px solid #e2e8f0;padding:13px 16px;font-family:'DM Sans',sans-serif;font-size:.92rem;color:#0f172a;outline:none;transition:all .3s;box-sizing:border-box}
-        .form-input:focus{border-color:#f59e0b;background:#fff;box-shadow:0 0 0 3px rgba(245,158,11,0.08)}
-        .form-input::placeholder{color:#94a3b8}
-        .form-label{display:block;font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#64748b;margin-bottom:5px}
-        .btn-sub{transition:all .3s ease;cursor:pointer;border:none}
-        .btn-sub:hover{transform:translateY(-2px)}
-        .btn-sub:disabled{opacity:.5;cursor:not-allowed;transform:none}
-        .interest-btn{transition:all .3s;cursor:pointer;border:1px solid #e2e8f0;background:white;font-family:'DM Sans',sans-serif;font-size:.78rem;padding:7px 12px;color:#64748b;border-radius:4px}
-        .interest-btn.act{background:#f59e0b;border-color:#f59e0b;color:#000;font-weight:600}
-        .interest-btn:hover:not(.act){border-color:#f59e0b;color:#f59e0b}
-        .faq-item{transition:all .3s}
-        .faq-btn{cursor:pointer;border:none;background:none;text-align:left;width:100%;display:flex;align-items:center;justify-content:space-between;padding:20px 24px}
-        .social-icon{transition:all .3s;text-decoration:none;display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%}
-        .social-icon:hover{transform:translateY(-4px) scale(1.1)}
-        .marquee-track{display:flex;gap:50px;animation:marquee 18s linear infinite;white-space:nowrap}
-        .btn-main{transition:all .3s;text-decoration:none;cursor:pointer}
-        .btn-main:hover{transform:translateY(-2px)}
-        .social-popup{animation:scaleIn .3s ease}
-        .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:9999;display:flex;align-items:center;justify-content:center;animation:fadeOverlay .3s;backdrop-filter:blur(4px)}
-        .popup-box{background:#fff;border-radius:20px;padding:44px 40px;max-width:460px;width:90%;text-align:center;position:relative;animation:popIn .4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 24px 64px rgba(0,0,0,0.18)}
-        @media(max-width:768px){
-          .grid-2{grid-template-columns:1fr!important; gap:40px!important}
-          .form-grid-2{grid-template-columns:1fr!important; gap:10px!important}
-          .interest-btn{font-size:.72rem!important;padding:6px 10px!important}
-          .social-bar-inner{flex-direction:column!important;gap:8px!important;align-items:flex-start!important}
-          .faq-btn{padding:16px!important}
-          .contact-info-block{padding:16px!important}
-          .popup-box{padding:28px 20px!important}
-        }
-        @media(max-width:480px){
-          .hero-h1{font-size:2.8rem!important}
-          .marquee-track{gap:28px!important}
-          .popup-box{padding:22px 16px!important;border-radius:12px!important}
-          .contact-info-block{padding:12px!important}
-          .form-section{padding:1.5rem 1rem!important}
-        }
+        @keyframes mkMarquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+        @keyframes mkPop { from { opacity:0; transform:scale(.9) } to { opacity:1; transform:scale(1) } }
+        @keyframes mkPulse { 0%,100% { opacity:1 } 50% { opacity:.4 } }
+        .ct-marquee { display:flex; gap:48px; animation:mkMarquee 20s linear infinite; white-space:nowrap; }
+        .ct-popup-overlay { position:fixed; inset:0; background:rgba(10,10,10,0.55); -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); z-index:9999; display:flex; align-items:center; justify-content:center; padding:16px; }
+        .ct-popup { background:#fff; border-radius:20px; padding:40px 36px; max-width:460px; width:100%; text-align:center; position:relative; animation:mkPop .35s cubic-bezier(.34,1.56,.64,1); box-shadow:0 24px 64px rgba(10,10,10,0.18); }
+        .ct-grid { display:grid; grid-template-columns:1.1fr 1fr; gap:clamp(32px,6vw,72px); align-items:start; }
+        @media(max-width:860px) { .ct-grid { grid-template-columns:1fr; gap:40px; } }
+        .ct-interest { border:1px solid var(--mk-hairline); background:#fff; font-family:var(--mk-font); font-size:.8125rem; padding:8px 14px; color:var(--mk-steel); border-radius:9999px; cursor:pointer; transition:all .2s; }
+        .ct-interest.act { background:var(--mk-primary); border-color:var(--mk-primary); color:#fff; font-weight:600; }
+        .ct-interest:hover:not(.act) { border-color:var(--mk-green); color:var(--mk-green-deep); }
+        .ct-label { display:block; font-size:.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--mk-steel); margin-bottom:6px; }
       `}</style>
 
-      {/* ── SUCCESS POPUP ── */}
+      {/* SUCCESS POPUP */}
       {showPopup && (
-        <div className="popup-overlay" onClick={() => setShowPopup(false)}>
-          <div className="popup-box" onClick={e => e.stopPropagation()}>
-            <button onClick={() => setShowPopup(false)} style={{ position:'absolute', top:16, right:16, background:'#f1f5f9', border:'none', borderRadius:'50%', width:34, height:34, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
-              <X size={16} color="#64748b"/>
+        <div className="ct-popup-overlay" onClick={() => setShowPopup(false)}>
+          <div className="ct-popup" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setShowPopup(false)} style={{ position:'absolute', top:16, right:16, background:'var(--mk-surface)', border:'none', borderRadius:'50%', width:34, height:34, display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer' }}>
+              <X size={16} color="#5a5a5c"/>
             </button>
-            <div style={{ width:72, height:72, borderRadius:'50%', background:'#f59e0b', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 20px', animation:'checkIn .5s cubic-bezier(.16,1,.3,1)' }}>
-              <CheckCircle size={34} color="#000"/>
+            <div style={{ width:72, height:72, borderRadius:'50%', background:'linear-gradient(135deg,#00d4a4,#00b48a)', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 20px' }}>
+              <CheckCircle size={34} color="#fff"/>
             </div>
-            <div style={{ fontFamily:'DM Sans,sans-serif', fontSize:'0.68rem', fontWeight:700, color:'#f59e0b', letterSpacing:'0.2em', textTransform:'uppercase', marginBottom:10 }}>
-              Manikya Money Service Pvt. Ltd.
-            </div>
-            <h2 style={{ margin:'0 0 12px', fontSize:'clamp(1.1rem,2.5vw,1.5rem)', fontWeight:700, color:'#0f172a', fontFamily:'Cormorant Garamond,serif' }}>
-              Thank You for Reaching Out!
-            </h2>
-            <p style={{ margin:'0 0 20px', color:'#475569', fontSize:'0.92rem', lineHeight:1.7, fontFamily:'DM Sans,sans-serif' }}>
-              We have received your enquiry. Our team will get back to you within <strong>24 hours</strong>.
-              {form.email && <><br/><br/>✉️ A confirmation has been sent to <strong>{form.email}</strong></>}
+            <div className="mk-eyebrow" style={{ marginBottom:10 }}>Manikya Money Service Pvt. Ltd.</div>
+            <h2 className="mk-h3" style={{ margin:'0 0 12px' }}>Thank you for reaching out!</h2>
+            <p className="mk-body" style={{ margin:'0 0 20px', color:'var(--mk-steel)' }}>
+              We have received your enquiry. Our team will get back to you within <strong style={{ color:'var(--mk-ink)' }}>24 hours</strong>.
+              {form.email && <><br/><br/>✉️ A confirmation has been sent to <strong style={{ color:'var(--mk-ink)' }}>{form.email}</strong></>}
             </p>
-            <div style={{ background:'#fffbeb', border:'1px solid #fde68a', borderRadius:10, padding:'12px 16px', marginBottom:20 }}>
-              <p style={{ margin:0, color:'#92400e', fontSize:'0.82rem', fontFamily:'DM Sans,sans-serif' }}>
-                For urgent queries, call us directly at <strong>+91 74116 47999</strong>
-              </p>
+            <div style={{ background:'rgba(0,212,164,0.08)', border:'1px solid rgba(0,212,164,0.3)', borderRadius:12, padding:'12px 16px', marginBottom:20 }}>
+              <p className="mk-small" style={{ margin:0, color:'var(--mk-green-deep)' }}>For urgent queries, call us directly at <strong>+91 74116 47999</strong></p>
             </div>
             <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
-              <a href="tel:+917411647999" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#000', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
-                <Phone size={13}/> Call Now
-              </a>
-              <a href="https://wa.me/917411647999" target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'10px 22px', background:'#25D366', color:'#fff', borderRadius:4, textDecoration:'none', fontFamily:'DM Sans,sans-serif', fontWeight:600, fontSize:'0.82rem', letterSpacing:'0.05em' }}>
-                💬 WhatsApp
-              </a>
+              <a href="tel:+917411647999" className="mk-btn mk-btn-primary"><Phone size={13}/> Call now</a>
+              <a href="https://wa.me/917411647999" target="_blank" rel="noreferrer" className="mk-btn mk-btn-green">💬 WhatsApp</a>
             </div>
           </div>
         </div>
       )}
 
-      {/* SOCIAL MEDIA POPUP MODAL */}
+      {/* SOCIAL MEDIA POPUP */}
       {showSocial && (
-        <div style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',zIndex:999,display:'flex',alignItems:'center',justifyContent:'center' }} onClick={()=>{ setShowSocial(false); setEditMode(false); }}>
-          <div className="social-popup" style={{ background:'white',borderRadius:16,padding:'2rem',width:'90%',maxWidth:460,position:'relative' }} onClick={e=>e.stopPropagation()}>
-            <button onClick={()=>{ setShowSocial(false); setEditMode(false); }} style={{ position:'absolute',top:14,right:14,background:'#f1f5f9',border:'none',borderRadius:'50%',width:34,height:34,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer' }}>
+        <div style={{ position:'fixed',inset:0,background:'rgba(10,10,10,0.6)',zIndex:999,display:'flex',alignItems:'center',justifyContent:'center',padding:16 }} onClick={()=>{ setShowSocial(false); setEditMode(false); }}>
+          <div style={{ background:'white',borderRadius:16,padding:'2rem',width:'100%',maxWidth:460,position:'relative',animation:'mkPop .3s ease' }} onClick={e=>e.stopPropagation()}>
+            <button onClick={()=>{ setShowSocial(false); setEditMode(false); }} style={{ position:'absolute',top:14,right:14,background:'var(--mk-surface)',border:'none',borderRadius:'50%',width:34,height:34,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer' }}>
               <X size={16}/>
             </button>
-            <h3 style={{ fontSize:'clamp(1.05rem,2.2vw,1.4rem)',fontWeight:700,color:'#0f172a',marginBottom:4 }}>Follow Manikya</h3>
-            <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'0.85rem',marginBottom:24 }}>Stay connected on social media</p>
+            <h3 className="mk-h4" style={{ margin:'0 0 4px' }}>Follow Manikya</h3>
+            <p className="mk-small" style={{ color:'var(--mk-steel)', marginBottom:24 }}>Stay connected on social media</p>
             {saveSuccess && (
-              <div style={{ marginBottom:16,padding:'10px 14px',background:'#f0fdf4',border:'1px solid #bbf7d0',borderRadius:8,fontFamily:'DM Sans,sans-serif',fontSize:'0.82rem',color:'#166534',display:'flex',alignItems:'center',gap:8 }}>
+              <div style={{ marginBottom:16,padding:'10px 14px',background:'rgba(0,212,164,0.1)',border:'1px solid rgba(0,212,164,0.3)',borderRadius:10,fontSize:'0.82rem',color:'var(--mk-green-deep)' }}>
                 ✅ Social links saved successfully!
               </div>
             )}
             {!editMode ? (
               <>
-                <div style={{ display:'flex',gap:14,justifyContent:'center',marginBottom:24 }}>
-                  {[
-                    { icon:<Instagram size={22}/>, color:'#e1306c', label:'Instagram', key:'instagram' },
-                    { icon:<Facebook size={22}/>,  color:'#1877f2', label:'Facebook',  key:'facebook' },
-                    { icon:<Youtube size={22}/>,   color:'#ff0000', label:'YouTube',   key:'youtube' },
-                    { icon:<MapPin size={22}/>,    color:'#34a853', label:'Maps',      key:'maps' },
-                  ].map(s=>(
-                    <a key={s.key} href={socialLinks[s.key as keyof typeof socialLinks]} target="_blank" rel="noopener noreferrer"
-                      className="social-icon" style={{ background:s.color+'12',border:`2px solid ${s.color}30`,color:s.color }}>
-                      {s.icon}
-                    </a>
-                  ))}
-                </div>
                 <div style={{ display:'flex',flexDirection:'column',gap:8 }}>
                   {[
                     { icon:<Instagram size={15}/>, label:'Instagram', key:'instagram', color:'#e1306c' },
@@ -216,22 +147,20 @@ export default function Contact() {
                     { icon:<MapPin size={15}/>,    label:'Google Maps',key:'maps',     color:'#34a853' },
                   ].map(s=>(
                     <a key={s.key} href={socialLinks[s.key as keyof typeof socialLinks]} target="_blank" rel="noopener noreferrer"
-                      style={{ display:'flex',alignItems:'center',gap:12,padding:'10px 14px',borderRadius:10,background:'#f8fafc',textDecoration:'none',color:'#0f172a',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',fontWeight:500,transition:'all .3s' }}
-                      onMouseEnter={e=>(e.currentTarget as HTMLElement).style.background=s.color+'10'}
-                      onMouseLeave={e=>(e.currentTarget as HTMLElement).style.background='#f8fafc'}>
+                      style={{ display:'flex',alignItems:'center',gap:12,padding:'11px 14px',borderRadius:10,background:'var(--mk-surface)',textDecoration:'none',color:'var(--mk-ink)',fontSize:'0.875rem',fontWeight:500 }}>
                       <span style={{ color:s.color }}>{s.icon}</span> {s.label}
-                      <ExternalLink size={12} style={{ marginLeft:'auto',color:'#94a3b8' }}/>
+                      <ExternalLink size={12} style={{ marginLeft:'auto',color:'var(--mk-muted)' }}/>
                     </a>
                   ))}
                 </div>
-                <button onClick={()=>setEditMode(true)} style={{ width:'100%',marginTop:16,padding:'10px',background:'none',border:'1px solid #e2e8f0',fontFamily:'DM Sans,sans-serif',fontSize:'0.78rem',color:'#64748b',cursor:'pointer',borderRadius:8 }}>
-                  ✏️ Edit Social Links
+                <button onClick={()=>setEditMode(true)} className="mk-btn mk-btn-outline mk-btn-sm" style={{ width:'100%',marginTop:16 }}>
+                  ✏️ Edit social links
                 </button>
               </>
             ) : (
               <>
-                <p style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.8rem',color:'#64748b',marginBottom:16 }}>Update your social media URLs:</p>
-                <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
+                <p className="mk-small" style={{ color:'var(--mk-steel)', marginBottom:16 }}>Update your social media URLs:</p>
+                <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
                   {[
                     { label:'Instagram URL', key:'instagram', placeholder:'https://instagram.com/yourpage' },
                     { label:'Facebook URL',  key:'facebook',  placeholder:'https://facebook.com/yourpage' },
@@ -239,8 +168,8 @@ export default function Contact() {
                     { label:'Google Maps',   key:'maps',      placeholder:'https://maps.google.com/...' },
                   ].map(f=>(
                     <div key={f.key}>
-                      <label className="form-label">{f.label}</label>
-                      <input className="form-input" style={{ borderRadius:8 }} placeholder={f.placeholder} value={socialLinks[f.key as keyof typeof socialLinks]}
+                      <label className="ct-label">{f.label}</label>
+                      <input className="mk-input" placeholder={f.placeholder} value={socialLinks[f.key as keyof typeof socialLinks]}
                         onChange={e=>setSocialLinks(p=>({...p,[f.key]:e.target.value}))}/>
                     </div>
                   ))}
@@ -266,8 +195,8 @@ export default function Contact() {
                         setSavingLinks(false);
                       }
                     }}
-                    style={{ flex:1,padding:'10px',background: savingLinks ? '#fde68a' : '#f59e0b',border:'none',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.85rem',cursor: savingLinks ? 'not-allowed' : 'pointer',borderRadius:8,opacity: savingLinks ? 0.7 : 1 }}>
-                    {savingLinks ? 'Saving…' : 'Save Links'}
+                    className="mk-btn mk-btn-green" style={{ flex:1, opacity: savingLinks ? .7 : 1 }}>
+                    {savingLinks ? 'Saving…' : 'Save links'}
                   </button>
                   <button
                     onClick={() => {
@@ -277,7 +206,7 @@ export default function Contact() {
                         .catch(() => setSocialLinks(defaultSocialLinks));
                       setEditMode(false);
                     }}
-                    style={{ flex:1,padding:'10px',background:'#f1f5f9',border:'none',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',cursor:'pointer',borderRadius:8 }}>
+                    className="mk-btn mk-btn-outline" style={{ flex:1 }}>
                     Cancel
                   </button>
                 </div>
@@ -287,191 +216,160 @@ export default function Contact() {
         </div>
       )}
 
-      {/* SOCIAL BAR AT TOP */}
-      <div style={{ background:'#0f172a',padding:'8px clamp(1rem,3vw,3rem)',display:'flex',alignItems:'center',justifyContent:'space-between',flexWrap:'wrap',gap:8 }}>
-        <div style={{ display:'flex',alignItems:'center',gap:16 }}>
-          <span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.75rem',color:'rgba(255,255,255,0.5)',letterSpacing:'0.1em',textTransform:'uppercase' }}>Follow us</span>
-          <div style={{ display:'flex',gap:12 }}>
-            {[
-              { icon:<Instagram size={16}/>, href:socialLinks.instagram, color:'#e1306c' },
-              { icon:<Facebook size={16}/>,  href:socialLinks.facebook,  color:'#1877f2' },
-              { icon:<Youtube size={16}/>,   href:socialLinks.youtube,   color:'#ff0000' },
-              { icon:<MapPin size={16}/>,    href:socialLinks.maps,      color:'#34a853' },
-            ].map((s,i)=>(
-              <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
-                style={{ color:s.color,transition:'all .3s',display:'flex',alignItems:'center' }}
-                onMouseEnter={e=>(e.currentTarget as HTMLElement).style.transform='scale(1.2)'}
-                onMouseLeave={e=>(e.currentTarget as HTMLElement).style.transform='none'}>
-                {s.icon}
-              </a>
-            ))}
+      {/* TOP SOCIAL BAR */}
+      <div style={{ background:'var(--mk-canvas-dark)', padding:'9px clamp(1rem,3vw,2rem)' }}>
+        <div style={{ maxWidth:1280, margin:'0 auto', display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:8 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+            <span style={{ fontSize:'0.72rem', color:'rgba(255,255,255,0.55)', letterSpacing:'0.12em', textTransform:'uppercase' }}>Follow us</span>
+            <div style={{ display:'flex', gap:14 }}>
+              {[
+                { icon:<Instagram size={16}/>, href:socialLinks.instagram },
+                { icon:<Facebook size={16}/>,  href:socialLinks.facebook },
+                { icon:<Youtube size={16}/>,   href:socialLinks.youtube },
+                { icon:<MapPin size={16}/>,    href:socialLinks.maps },
+              ].map((s,i)=>(
+                <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" style={{ color:'rgba(255,255,255,0.8)', display:'flex', alignItems:'center' }}>{s.icon}</a>
+              ))}
+            </div>
           </div>
+          <button onClick={()=>setShowSocial(true)} style={{ display:'flex',alignItems:'center',gap:6,padding:'5px 14px',background:'rgba(0,212,164,0.15)',border:'1px solid rgba(0,212,164,0.4)',borderRadius:20,fontFamily:'var(--mk-font)',fontSize:'0.72rem',fontWeight:600,color:'#00d4a4',cursor:'pointer',letterSpacing:'0.06em',textTransform:'uppercase' }}>
+            + Manage social links
+          </button>
         </div>
-        <button onClick={()=>setShowSocial(true)} style={{ display:'flex',alignItems:'center',gap:6,padding:'5px 14px',background:'rgba(245,158,11,0.15)',border:'1px solid rgba(245,158,11,0.35)',borderRadius:20,fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:600,color:'#f59e0b',cursor:'pointer',letterSpacing:'0.1em',textTransform:'uppercase' }}>
-          + Manage Social Links
-        </button>
       </div>
 
       {/* HERO */}
-      <section style={{ background:'#000',minHeight:'50vh',display:'flex',alignItems:'flex-end',position:'relative',overflow:'hidden' }}>
-        <div style={{ position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px)',backgroundSize:'80px 80px' }}/>
-        <div style={{ position:'absolute',inset:0,background:'radial-gradient(ellipse at 30% 60%,rgba(245,158,11,0.07),transparent 60%)' }}/>
-        <div style={{ position:'relative',zIndex:1,maxWidth:1400,margin:'0 auto',padding:'clamp(5rem,8vw,8rem) clamp(1.5rem,5vw,5rem) clamp(3rem,5vw,4rem)',width:'100%' }}>
-          <div style={{ display:'flex',alignItems:'center',gap:14,marginBottom:16,animation:'fadeUp .9s .1s both' }}>
-            <div style={{ width:40,height:1,background:'#f59e0b' }}/><span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase',color:'#f59e0b' }}>Get in Touch</span>
-          </div>
-          <h1 className="hero-h1" style={{ fontSize:'clamp(2.4rem,7vw,7rem)',fontWeight:700,lineHeight:0.95,color:'white',marginBottom:16,animation:'fadeUp .9s .25s both' }}>Let's<br/><span className="gold-text">Connect.</span></h1>
-          <p style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.45)',fontSize:'1rem',maxWidth:440,lineHeight:1.8,fontWeight:300,animation:'fadeUp .9s .4s both' }}>
+      <section className="mk-hero-sky" style={{ position:'relative', overflow:'hidden', padding:'clamp(56px,9vw,96px) 0' }}>
+        <div className="mk-cloud" style={{ top:-40, left:'10%', width:300, height:190 }} />
+        <div className="mk-cloud" style={{ bottom:-30, right:'12%', width:340, height:210 }} />
+        <div className="mk-container" style={{ position:'relative', zIndex:2, maxWidth:760 }}>
+          <span className="mk-badge mk-badge-glass" style={{ marginBottom:18 }}>Get in touch</span>
+          <h1 className="mk-display" style={{ color:'var(--mk-ink)', margin:'0 0 14px' }}>Let's connect.</h1>
+          <p className="mk-lead" style={{ color:'var(--mk-slate)', maxWidth:480 }}>
             Pearl farming, media, e-commerce, wellness, real estate, or financial services — we're here to help.
           </p>
         </div>
       </section>
 
-      {/* SOCIAL MARQUEE */}
-      <section style={{ background:'#f59e0b',padding:'12px 0',overflow:'hidden' }}>
-        <div className="marquee-track">
+      {/* MARQUEE */}
+      <section style={{ background:'var(--mk-canvas-dark)', padding:'12px 0', overflow:'hidden' }}>
+        <div className="ct-marquee">
           {[...Array(2)].map((_,r)=>(['+91 74116 47999','•','+91 74117 42999','•','manikyamoneyservices@gmail.com','•','5th Main Road, Hampi Nagar, Bengaluru','•']).map((t,i)=>(
-            <span key={`${r}-${i}`} style={{ fontFamily:'DM Sans,sans-serif',fontWeight:500,fontSize:'0.75rem',letterSpacing:'0.1em',color:'#000',flexShrink:0 }}>{t}</span>
+            <span key={`${r}-${i}`} style={{ fontFamily:'var(--mk-font)', fontWeight:500, fontSize:'0.78rem', letterSpacing:'0.06em', color:'rgba(255,255,255,0.75)', flexShrink:0 }}>{t}</span>
           )))}
         </div>
       </section>
 
-      {/* FORM + CONTACT INFO */}
-      <section style={{ background:'#fff',padding:'clamp(4rem,8vw,8rem) 0' }} ref={s1.ref}>
-        <div style={{ maxWidth:1400,margin:'0 auto',padding:'0 clamp(1.5rem,5vw,5rem)' }}>
-          <div style={{ display:'grid',gridTemplateColumns:'1.1fr 1fr',gap:'clamp(32px,6vw,80px)',alignItems:'start' }} className="grid-2">
-
+      {/* FORM + INFO */}
+      <section className="mk-section" style={{ background:'var(--mk-canvas)' }} ref={s1.ref}>
+        <div className="mk-container">
+          <div className="ct-grid">
             {/* LEFT — FORM */}
-            <div className={`reveal-l ${s1.v?'on':''}`}>
-              <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:16 }}>
-                <div style={{ width:30,height:1,background:'#000' }}/><span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.7rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase' }}>Send Us a Message</span>
-              </div>
-              <h2 style={{ fontSize:'clamp(2rem,4vw,3rem)',fontWeight:700,lineHeight:1.05,color:'#000',marginBottom:28 }}>Start the Conversation</h2>
+            <div className={`mk-reveal ${s1.v?'mk-on':''}`}>
+              <p className="mk-eyebrow">Send us a message</p>
+              <h2 className="mk-h2" style={{ margin:'0 0 26px' }}>Start the conversation</h2>
 
               {sent ? (
-                <div style={{ padding:'2.5rem',border:'1px solid #f59e0b',background:'#fffbeb',textAlign:'center' }}>
-                  <div style={{ width:60,height:60,borderRadius:'50%',background:'#f59e0b',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',animation:'checkIn .5s cubic-bezier(.16,1,.3,1)' }}>
-                    <CheckCircle size={26} color="#000"/>
+                <div className="mk-card" style={{ background:'rgba(0,212,164,0.06)', border:'1px solid rgba(0,212,164,0.3)', textAlign:'center', padding:'2.5rem' }}>
+                  <div style={{ width:60,height:60,borderRadius:'50%',background:'linear-gradient(135deg,#00d4a4,#00b48a)',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px' }}>
+                    <CheckCircle size={26} color="#fff"/>
                   </div>
-                  <h3 style={{ fontSize:'clamp(1rem,2vw,1.3rem)',fontWeight:700,color:'#0f172a',marginBottom:6 }}>Message Sent!</h3>
-                  <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:16,lineHeight:1.7 }}>Thank you. Our team will respond within 24 hours.</p>
-                  <button onClick={()=>{ setSent(false); setForm({ name:'',email:'',phone:'',interest:'',message:'' }); }} style={{ fontFamily:'DM Sans,sans-serif',fontWeight:600,color:'#f59e0b',background:'none',border:'none',cursor:'pointer',fontSize:'0.88rem',textDecoration:'underline' }}>
+                  <h3 className="mk-h4" style={{ margin:'0 0 6px' }}>Message sent!</h3>
+                  <p className="mk-body" style={{ color:'var(--mk-steel)', marginBottom:16 }}>Thank you. Our team will respond within 24 hours.</p>
+                  <button onClick={()=>{ setSent(false); setForm({ name:'',email:'',phone:'',interest:'',message:'' }); }} style={{ fontWeight:600, color:'var(--mk-green-deep)', background:'none', border:'none', cursor:'pointer', fontSize:'0.9rem', textDecoration:'underline', fontFamily:'var(--mk-font)' }}>
                     Send another message
                   </button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit}>
                   {error && (
-                    <div style={{ marginBottom:18,padding:'12px 16px',background:'#fef2f2',border:'1px solid #fecaca',fontFamily:'DM Sans,sans-serif',fontSize:'0.85rem',color:'#b91c1c' }}>
+                    <div style={{ marginBottom:18,padding:'12px 16px',background:'rgba(212,86,86,0.08)',border:'1px solid rgba(212,86,86,0.3)',borderRadius:10,fontSize:'0.875rem',color:'#b13b3b' }}>
                       {error}
                     </div>
                   )}
                   <div style={{ marginBottom:20 }}>
-                    <label className="form-label">I'm interested in</label>
-                    <div style={{ display:'flex',flexWrap:'wrap',gap:6 }}>
+                    <label className="ct-label">I'm interested in</label>
+                    <div style={{ display:'flex',flexWrap:'wrap',gap:8 }}>
                       {interests.map(int=>(
-                        <button key={int} type="button" className={`interest-btn ${form.interest===int?'act':''}`} onClick={()=>setForm(p=>({...p,interest:int}))}>{int}</button>
+                        <button key={int} type="button" className={`ct-interest ${form.interest===int?'act':''}`} onClick={()=>setForm(p=>({...p,interest:int}))}>{int}</button>
                       ))}
                     </div>
                   </div>
-                  <div className="form-grid-2" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14 }}>
+                  <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:14,marginBottom:14 }}>
                     <div>
-                      <label className="form-label">Full Name *</label>
-                      <input required className="form-input" placeholder="Your full name" value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))}/>
+                      <label className="ct-label">Full name *</label>
+                      <input required className="mk-input" placeholder="Your full name" value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))}/>
                     </div>
                     <div>
-                      <label className="form-label">Phone *</label>
-                      <input required className="form-input" placeholder="+91 98765 43210" value={form.phone} onChange={e=>setForm(p=>({...p,phone:e.target.value}))}/>
+                      <label className="ct-label">Phone *</label>
+                      <input required className="mk-input" placeholder="+91 98765 43210" value={form.phone} onChange={e=>setForm(p=>({...p,phone:e.target.value}))}/>
                     </div>
                   </div>
                   <div style={{ marginBottom:14 }}>
-                    <label className="form-label">Email *</label>
-                    <input required type="email" className="form-input" placeholder="your@email.com" value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))}/>
+                    <label className="ct-label">Email *</label>
+                    <input required type="email" className="mk-input" placeholder="your@email.com" value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))}/>
                   </div>
                   <div style={{ marginBottom:22 }}>
-                    <label className="form-label">Your Message</label>
-                    <textarea className="form-input" rows={4} placeholder="Tell us what you're looking for..." value={form.message} onChange={e=>setForm(p=>({...p,message:e.target.value}))} style={{ resize:'vertical' }}/>
+                    <label className="ct-label">Your message</label>
+                    <textarea className="mk-input" rows={4} placeholder="Tell us what you're looking for..." value={form.message} onChange={e=>setForm(p=>({...p,message:e.target.value}))}/>
                   </div>
-                  <button type="submit" disabled={sending||!form.name||!form.email||!form.phone} className="btn-sub"
-                    style={{ display:'flex',alignItems:'center',justifyContent:'center',gap:10,width:'100%',padding:'15px',background:sending?'#94a3b8':'#f59e0b',color:'#000',fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.9rem',letterSpacing:'0.08em',textTransform:'uppercase' }}>
-                    {sending?<>Sending...</>:<><Send size={16}/> Send Message</>}
+                  <button type="submit" disabled={sending||!form.name||!form.email||!form.phone} className="mk-btn mk-btn-primary mk-btn-lg" style={{ width:'100%', opacity: (sending||!form.name||!form.email||!form.phone) ? .6 : 1 }}>
+                    {sending?<>Sending…</>:<><Send size={16}/> Send message</>}
                   </button>
                 </form>
               )}
             </div>
 
             {/* RIGHT — CONTACT INFO */}
-            <div className={`reveal-r ${s1.v?'on':''}`}>
-              <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:16 }}>
-                <div style={{ width:30,height:1,background:'#f59e0b' }}/><span style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.7rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase',color:'#f59e0b' }}>Contact Details</span>
-              </div>
-              <h2 style={{ fontSize:'clamp(1.8rem,3vw,2.5rem)',fontWeight:700,lineHeight:1.1,color:'#000',marginBottom:24 }}>Manikya Services<br/>Private Limited</h2>
+            <div className={`mk-reveal ${s1.v?'mk-on':''}`}>
+              <p className="mk-eyebrow">Contact details</p>
+              <h2 className="mk-h3" style={{ margin:'0 0 22px' }}>Manikya Services Private Limited</h2>
 
-              <div className="contact-info-block" style={{ marginBottom:24,padding:'24px',border:'1px solid #e2e8f0',background:'#fafafa' }}>
+              <div className="mk-card" style={{ marginBottom:18 }}>
                 {[
-                  { icon:<MapPin size={18}/>, bg:'#000', label:'Registered Office', lines:['#215, MGES, Second Floor, 5th Main Road,','RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka'] },
-                  { icon:<Phone size={18}/>, bg:'#f59e0b', label:'Phone', lines:['+91 74116 47999','+91 74117 42999'] },
-                  { icon:<Mail size={18}/>, bg:'#000', label:'Email', lines:['manikyamoneyservices@gmail.com'] },
+                  { icon:<MapPin size={17}/>, label:'Registered office', lines:['#215, MGES, Second Floor, 5th Main Road,','RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka'] },
+                  { icon:<Phone size={17}/>, label:'Phone', lines:['+91 74116 47999','+91 74117 42999'] },
+                  { icon:<Mail size={17}/>, label:'Email', lines:['manikyamoneyservices@gmail.com'] },
                 ].map((c,i)=>(
-                  <div key={i} style={{ display:'flex',gap:14,alignItems:'flex-start',marginBottom:i<2?18:0,paddingBottom:i<2?18:0,borderBottom:i<2?'1px solid #e2e8f0':'none' }}>
-                    <div style={{ width:40,height:40,background:c.bg,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'white' }}>{c.icon}</div>
+                  <div key={i} style={{ display:'flex',gap:14,alignItems:'flex-start',marginBottom:i<2?16:0,paddingBottom:i<2?16:0,borderBottom:i<2?'1px solid var(--mk-hairline)':'none' }}>
+                    <div style={{ width:38,height:38,borderRadius:9,background:'rgba(0,212,164,0.12)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,color:'#00b48a' }}>{c.icon}</div>
                     <div>
-                      <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',fontWeight:700,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.1em',marginBottom:3 }}>{c.label}</div>
-                      {c.lines.map((l,j)=><div key={j} style={{ fontFamily:'DM Sans,sans-serif',color:'#334155',fontSize:'0.88rem',fontWeight:j===0?600:400 }}>{l}</div>)}
+                      <div className="mk-eyebrow" style={{ margin:'0 0 3px', color:'var(--mk-stone)' }}>{c.label}</div>
+                      {c.lines.map((l,j)=><div key={j} style={{ color:'var(--mk-slate)', fontSize:'0.9rem', fontWeight:j===0?600:400 }}>{l}</div>)}
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Hours */}
-              <div style={{ marginBottom:20,padding:'18px 22px',border:'1px solid #e2e8f0' }}>
-                <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',fontWeight:700,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:10 }}>Business Hours</div>
+              <div className="mk-card" style={{ marginBottom:18 }}>
+                <div className="mk-eyebrow" style={{ margin:'0 0 10px', color:'var(--mk-stone)' }}>Business hours</div>
                 {[['Monday – Saturday','9:00 AM – 6:00 PM'],['Sunday','By Appointment Only']].map(([d,t])=>(
-                  <div key={d} style={{ display:'flex',justifyContent:'space-between',paddingBottom:7,marginBottom:7,borderBottom:'1px solid #f1f5f9' }}>
-                    <span style={{ fontFamily:'DM Sans,sans-serif',color:'#334155',fontSize:'0.87rem' }}>{d}</span>
-                    <span style={{ fontFamily:'DM Sans,sans-serif',color:'#f59e0b',fontWeight:600,fontSize:'0.87rem' }}>{t}</span>
+                  <div key={d} style={{ display:'flex',justifyContent:'space-between',paddingBottom:7,marginBottom:7,borderBottom:'1px solid var(--mk-hairline-soft)' }}>
+                    <span style={{ color:'var(--mk-slate)', fontSize:'0.9rem' }}>{d}</span>
+                    <span style={{ color:'var(--mk-green-deep)', fontWeight:600, fontSize:'0.9rem' }}>{t}</span>
                   </div>
                 ))}
               </div>
 
-              {/* Social icons */}
-              <div style={{ padding:'18px 22px',border:'1px solid #e2e8f0',background:'#f8fafc',marginBottom:12 }}>
-                <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.68rem',fontWeight:700,color:'#94a3b8',textTransform:'uppercase',letterSpacing:'0.12em',marginBottom:14 }}>Follow Us</div>
-                <div style={{ display:'flex',gap:12,marginBottom:14 }}>
-                  {[
-                    { icon:<Instagram size={20}/>, href:socialLinks.instagram, color:'#e1306c', label:'Instagram' },
-                    { icon:<Facebook size={20}/>,  href:socialLinks.facebook,  color:'#1877f2', label:'Facebook' },
-                    { icon:<Youtube size={20}/>,   href:socialLinks.youtube,   color:'#ff0000', label:'YouTube' },
-                    { icon:<MapPin size={20}/>,    href:socialLinks.maps,      color:'#34a853', label:'Maps' },
-                  ].map((s,i)=>(
-                    <a key={i} href={s.href} target="_blank" rel="noopener noreferrer" title={s.label}
-                      className="social-icon" style={{ background:s.color+'12',border:`1px solid ${s.color}30`,color:s.color }}>
-                      {s.icon}
-                    </a>
-                  ))}
+              <a href="https://wa.me/917411647999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer" className="mk-float"
+                style={{ display:'flex',alignItems:'center',gap:12,padding:'14px 18px',background:'linear-gradient(135deg,#00d4a4,#00b48a)',textDecoration:'none',borderRadius:12,marginBottom:12 }}>
+                <span style={{ fontSize:'1.1rem' }}>💬</span>
+                <div>
+                  <div style={{ fontWeight:600, fontSize:'0.875rem', color:'#fff' }}>Chat on WhatsApp</div>
+                  <div style={{ fontSize:'0.75rem', color:'rgba(255,255,255,0.85)' }}>+91 74116 47999 — Quick response</div>
                 </div>
-                {/* WhatsApp CTA */}
-                <a href="https://wa.me/917411647999?text=Hello%20Manikya%20Money%20Service%2C%20I%20would%20like%20to%20know%20more." target="_blank" rel="noreferrer"
-                  style={{ display:'flex',alignItems:'center',gap:10,padding:'11px 16px',background:'#25D366',textDecoration:'none',borderRadius:4 }}>
-                  <span style={{ fontSize:'clamp(0.9rem,1.8vw,1.1rem)' }}>💬</span>
-                  <div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:700,fontSize:'0.82rem',color:'#fff' }}>Chat on WhatsApp</div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',color:'rgba(255,255,255,0.8)' }}>+91 74116 47999 — Quick Response</div>
-                  </div>
-                </a>
-              </div>
+              </a>
 
-              {/* NewsJunction live */}
-              <a href="https://newsjunction.net/stream.php" target="_blank" rel="noopener noreferrer"
-                style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 18px',background:'#0d0000',textDecoration:'none' }}>
+              <a href="https://newsjunction.net/stream.php" target="_blank" rel="noopener noreferrer" className="mk-float"
+                style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 18px',background:'var(--mk-canvas-dark)',textDecoration:'none',borderRadius:12 }}>
                 <div style={{ display:'flex',alignItems:'center',gap:10 }}>
-                  <span style={{ width:7,height:7,borderRadius:'50%',background:'#ef4444',display:'inline-block',animation:'pulse 1.5s ease-in-out infinite' }}/>
+                  <span style={{ width:7,height:7,borderRadius:'50%',background:'#00d4a4',display:'inline-block',animation:'mkPulse 1.5s ease-in-out infinite' }}/>
                   <div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.85rem',color:'white' }}>NewsJunction — Watch Live</div>
-                    <div style={{ fontFamily:'DM Sans,sans-serif',color:'rgba(255,255,255,0.4)',fontSize:'0.72rem' }}>Kannada · Hindi · Tamil · Telugu · English</div>
+                    <div style={{ fontWeight:600, fontSize:'0.875rem', color:'#fff' }}>NewsJunction — Watch live</div>
+                    <div style={{ color:'rgba(255,255,255,0.5)', fontSize:'0.72rem' }}>Kannada · Hindi · Tamil · Telugu · English</div>
                   </div>
                 </div>
-                <ExternalLink size={15} style={{ color:'#ef4444' }}/>
+                <ExternalLink size={15} style={{ color:'#00d4a4' }}/>
               </a>
             </div>
           </div>
@@ -479,23 +377,23 @@ export default function Contact() {
       </section>
 
       {/* FAQ */}
-      <section style={{ background:'#f8fafc',padding:'clamp(4rem,8vw,8rem) 0' }} ref={s2.ref}>
-        <div style={{ maxWidth:900,margin:'0 auto',padding:'0 clamp(1.5rem,5vw,5rem)' }}>
-          <div className={`reveal ${s2.v?'on':''}`} style={{ textAlign:'center',marginBottom:48 }}>
-            <p style={{ fontFamily:'DM Sans,sans-serif',fontSize:'0.72rem',fontWeight:600,letterSpacing:'0.25em',textTransform:'uppercase',color:'#f59e0b',marginBottom:12 }}>Support</p>
-            <h2 style={{ fontSize:'clamp(2rem,4vw,3.2rem)',fontWeight:700,lineHeight:1.05,color:'#0f172a',marginBottom:12 }}>Frequently Asked Questions</h2>
-            <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',fontSize:'1rem',maxWidth:500,margin:'0 auto' }}>Answers to common questions about our services, loans, and eligibility.</p>
+      <section className="mk-section mk-sec-sky" ref={s2.ref}>
+        <div className="mk-container" style={{ maxWidth:880 }}>
+          <div className={`mk-section-head mk-reveal ${s2.v?'mk-on':''}`}>
+            <p className="mk-eyebrow">Support</p>
+            <h2 className="mk-h1" style={{ margin:'0 0 12px' }}>Frequently asked questions</h2>
+            <p className="mk-body" style={{ color:'var(--mk-steel)', maxWidth:500, margin:'0 auto' }}>Answers to common questions about our services, loans, and eligibility.</p>
           </div>
-          <div style={{ display:'flex',flexDirection:'column',gap:10 }}>
+          <div style={{ display:'flex',flexDirection:'column',gap:12 }}>
             {faqs.map((f,i)=>(
-              <div key={i} className={`faq-item reveal ${s2.v?'on':''}`}
-                style={{ transitionDelay:`${i*50}ms`,border:`1px solid ${openFaq===i?'#f59e0b':'#e2e8f0'}`,background:'white',borderRadius:4,overflow:'hidden',boxShadow:openFaq===i?'0 4px 20px rgba(245,158,11,0.1)':'none',transition:'all .3s' }}>
-                <button className="faq-btn" onClick={()=>setOpenFaq(openFaq===i?null:i)}>
-                  <span style={{ fontWeight:700,color:'#0f172a',fontFamily:'Cormorant Garamond,serif',fontSize:'clamp(0.88rem,1.6vw,1.05rem)',textAlign:'left',lineHeight:1.35,flex:1,marginRight:12 }}>{f.q}</span>
-                  <ChevronDown size={20} style={{ color:'#f59e0b',flexShrink:0,transition:'transform .3s',transform:openFaq===i?'rotate(180deg)':'none' }}/>
+              <div key={i} className={`mk-reveal ${s2.v?'mk-on':''}`}
+                style={{ transitionDelay:`${i*40}ms`, border:`1px solid ${openFaq===i?'var(--mk-green)':'var(--mk-hairline)'}`, background:'#fff', borderRadius:12, overflow:'hidden', boxShadow:openFaq===i?'0 8px 24px rgba(0,212,164,0.08)':'none', transition:'all .3s' }}>
+                <button onClick={()=>setOpenFaq(openFaq===i?null:i)} style={{ cursor:'pointer', border:'none', background:'none', textAlign:'left', width:'100%', display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, padding:'18px 22px', fontFamily:'var(--mk-font)' }}>
+                  <span style={{ fontWeight:600, color:'var(--mk-ink)', fontSize:'1rem', flex:1 }}>{f.q}</span>
+                  <ChevronDown size={18} style={{ color:'var(--mk-steel)', flexShrink:0, transition:'transform .3s', transform:openFaq===i?'rotate(180deg)':'none' }}/>
                 </button>
-                <div style={{ overflow:'hidden',maxHeight:openFaq===i?300:0,transition:'max-height .4s ease',paddingLeft:24,paddingRight:24,paddingBottom:openFaq===i?18:0 }}>
-                  <p style={{ fontFamily:'DM Sans,sans-serif',color:'#475569',lineHeight:1.8,margin:0,fontSize:'0.93rem' }}>{f.a}</p>
+                <div style={{ overflow:'hidden', maxHeight:openFaq===i?320:0, transition:'max-height .4s ease', paddingLeft:22, paddingRight:22, paddingBottom:openFaq===i?18:0 }}>
+                  <p className="mk-body" style={{ color:'var(--mk-steel)', margin:0 }}>{f.a}</p>
                 </div>
               </div>
             ))}
@@ -503,20 +401,16 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* MAP */}
-      <section style={{ background:'#fff' }} ref={s3.ref}>
-        <div className={`reveal ${s3.v?'on':''}`}>
-          <div style={{ height:280,background:'linear-gradient(135deg,#f8fafc,#f1f5f9)',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:14,borderTop:'1px solid #e2e8f0',position:'relative' }}>
-            <div style={{ position:'absolute',inset:0,backgroundImage:'linear-gradient(rgba(0,0,0,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.03) 1px,transparent 1px)',backgroundSize:'40px 40px' }}/>
-            <div style={{ position:'relative',zIndex:1,textAlign:'center' }}>
-              <div style={{ fontSize:'clamp(1.5rem,4vw,2.5rem)',marginBottom:10 }}>📍</div>
-              <h3 style={{ fontSize:'clamp(0.95rem,2vw,1.2rem)',fontWeight:700,color:'#0f172a',marginBottom:4 }}>#215, MGES, Second Floor, 5th Main Road</h3>
-              <p style={{ fontFamily:'DM Sans,sans-serif',color:'#64748b',marginBottom:14,fontSize:'0.9rem' }}>RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka</p>
-              <a href={socialLinks.maps} target="_blank" rel="noopener noreferrer"
-                style={{ display:'inline-flex',alignItems:'center',gap:8,padding:'11px 26px',background:'#000',color:'white',fontFamily:'DM Sans,sans-serif',fontWeight:600,fontSize:'0.82rem',textDecoration:'none',letterSpacing:'0.05em',textTransform:'uppercase' }}>
-                <MapPin size={13}/> Open in Google Maps <ExternalLink size={12}/>
-              </a>
-            </div>
+      {/* MAP CTA */}
+      <section style={{ background:'var(--mk-canvas)' }} ref={s3.ref}>
+        <div className={`mk-reveal ${s3.v?'mk-on':''}`}>
+          <div style={{ padding:'clamp(48px,7vw,72px) 16px', background:'var(--mk-surface)', display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:10, borderTop:'1px solid var(--mk-hairline)', textAlign:'center' }}>
+            <div style={{ fontSize:'clamp(1.5rem,4vw,2.5rem)' }}>📍</div>
+            <h3 className="mk-h4" style={{ margin:0 }}>#215, MGES, Second Floor, 5th Main Road</h3>
+            <p className="mk-body" style={{ color:'var(--mk-steel)', marginBottom:6 }}>RPC Layout, Hampi Nagar, Bengaluru – 560 104, Karnataka</p>
+            <a href={socialLinks.maps} target="_blank" rel="noopener noreferrer" className="mk-btn mk-btn-primary">
+              <MapPin size={14}/> Open in Google Maps <ExternalLink size={13}/>
+            </a>
           </div>
         </div>
       </section>

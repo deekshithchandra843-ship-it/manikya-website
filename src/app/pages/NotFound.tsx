@@ -3,28 +3,18 @@ import { Home, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
-      <div className="text-center text-white">
-        <h1 className="text-9xl font-bold mb-4">404</h1>
-        <h2 className="text-3xl font-semibold mb-4">Page Not Found</h2>
-        <p className="text-xl text-blue-100 mb-8 max-w-md">
+    <div className="mk mk-hero-sky" style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16, position: 'relative', overflow: 'hidden' }}>
+      <div className="mk-cloud" style={{ top: '12%', left: '14%', width: 280, height: 180 }} />
+      <div className="mk-cloud" style={{ bottom: '14%', right: '16%', width: 320, height: 200 }} />
+      <div style={{ textAlign: 'center', position: 'relative', zIndex: 2, maxWidth: 520 }}>
+        <div style={{ fontSize: 'clamp(5rem,18vw,9rem)', fontWeight: 700, color: 'var(--mk-ink)', lineHeight: 1, letterSpacing: '-0.04em' }}>404</div>
+        <h2 className="mk-h2" style={{ margin: '12px 0' }}>Page not found</h2>
+        <p className="mk-lead" style={{ color: 'var(--mk-slate)', margin: '0 auto 28px', maxWidth: 400 }}>
           The page you're looking for doesn't exist or has been moved.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-          >
-            <Home className="mr-2" size={20} />
-            Go to Homepage
-          </Link>
-          <button
-            onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center px-6 py-3 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors border border-blue-500"
-          >
-            <ArrowLeft className="mr-2" size={20} />
-            Go Back
-          </button>
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Link to="/" className="mk-btn mk-btn-primary mk-btn-lg"><Home size={16} /> Go to homepage</Link>
+          <button onClick={() => window.history.back()} className="mk-btn mk-btn-glass mk-btn-lg"><ArrowLeft size={16} /> Go back</button>
         </div>
       </div>
     </div>

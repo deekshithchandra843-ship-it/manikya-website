@@ -382,7 +382,7 @@ export default function Home() {
         @keyframes heroFadeIn{from{opacity:0}to{opacity:1}}
         @keyframes starTwinkle{0%,100%{opacity:0.08;transform:scale(0.8)}50%{opacity:0.75;transform:scale(1.4)}}
         @keyframes logoEntrance{0%{opacity:0;transform:scale(0.75) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
-        @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        @keyframes logoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
         @keyframes globePulse{0%,100%{box-shadow:0 0 22px 8px rgba(59,130,246,0.85),0 0 55px 22px rgba(59,130,246,0.35)}50%{box-shadow:0 0 38px 14px rgba(96,165,250,1),0 0 90px 38px rgba(59,130,246,0.55)}}
         @keyframes platformGlow{0%,100%{opacity:0.65}50%{opacity:1}}
         @keyframes swooshDraw{from{stroke-dashoffset:1100}to{stroke-dashoffset:0}}
@@ -436,7 +436,7 @@ export default function Home() {
         }
         .hero-section{animation:heroFadeIn 0.9s ease both}
         .logo-entrance{animation:logoEntrance 1.1s cubic-bezier(.16,1,.3,1) 0.1s both}
-        .logo-float{animation:logoFloat 5.5s ease-in-out infinite}
+        .logo-float{animation:logoFloat 7s ease-in-out infinite}
         .globe-pulse{animation:globePulse 2.6s ease-in-out infinite}
         .platform-ring{animation:platformGlow 3s ease-in-out infinite}
         .swoosh-draw{stroke-dasharray:1100;animation:swooshDraw 1.6s cubic-bezier(.16,1,.3,1) 0.5s both}

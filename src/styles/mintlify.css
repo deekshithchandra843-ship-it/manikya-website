@@ -1,0 +1,465 @@
+/* ══════════════════════════════════════════════════════════════════════
+   MANIKYA × MINTLIFY DESIGN SYSTEM
+   Inter + Geist Mono · mint-green accent · sky/cream hero · glass buttons
+   Reference: DESIGN-mintlify.md  +  glassmorphism (investkarnataka.co.in)
+   All shared classes are namespaced with `mk-`.
+══════════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Brand & accent ── */
+  --mk-primary:        #0a0a0a;
+  --mk-on-primary:     #ffffff;
+  --mk-green:          #00d4a4;
+  --mk-green-deep:     #00b48a;
+  --mk-green-soft:     #7cebcb;
+  --mk-tag:            #3772cf;
+  --mk-error:          #d45656;
+
+  /* ── Invest-Karnataka gradient (refined magenta → orange) ── */
+  --mk-grad-from:      #d65096;   /* muted magenta */
+  --mk-grad-to:        #e8783c;   /* warm orange   */
+  --mk-grad-glow:      rgba(214, 80, 120, 0.22);
+
+  /* ── Hero atmosphere ── */
+  --mk-sky-from:       #87a8c8;
+  --mk-sky-mid:        #cfdce8;
+  --mk-sky-to:         #f5e9d8;
+  --mk-dark-from:      #1a3d4a;
+  --mk-dark-to:        #2d5a4f;
+
+  /* ── Surfaces ── */
+  --mk-canvas:         #ffffff;
+  --mk-canvas-dark:    #0a0a0a;
+  --mk-surface:        #f7f7f7;
+  --mk-surface-soft:   #fafafa;
+  --mk-surface-code:   #1c1c1e;
+  --mk-hairline:       #e5e5e5;
+  --mk-hairline-soft:  #ededed;
+  --mk-hairline-dark:  #1f1f1f;
+
+  /* ── Text ── */
+  --mk-ink:            #0a0a0a;
+  --mk-charcoal:       #1c1c1e;
+  --mk-slate:          #3a3a3c;
+  --mk-steel:          #5a5a5c;
+  --mk-stone:          #888888;
+  --mk-muted:          #a8a8aa;
+  --mk-on-dark:        #ffffff;
+  --mk-on-dark-muted:  #b3b3b3;
+
+  /* ── Radii ── */
+  --mk-r-xs: 4px;  --mk-r-sm: 6px;  --mk-r-md: 8px;
+  --mk-r-lg: 12px; --mk-r-xl: 16px; --mk-r-xxl: 24px; --mk-r-full: 9999px;
+
+  /* ── Fonts ── */
+  --mk-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mk-mono: 'Geist Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* ── Max content width ── */
+  --mk-max: 1280px;
+}
+
+/* ══════════════ Base type scope ══════════════
+   `.mk` wrappers opt a page into Inter + ink defaults. */
+.mk {
+  font-family: var(--mk-font);
+  color: var(--mk-ink);
+  background: var(--mk-canvas);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.mk code, .mk kbd, .mk pre, .mk .mk-mono { font-family: var(--mk-mono); }
+
+/* ── Layout helpers ── */
+.mk-container { width: 100%; max-width: var(--mk-max); margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2rem); }
+.mk-section   { padding: clamp(56px, 9vw, 96px) 0; }
+.mk-section-sm{ padding: clamp(40px, 6vw, 64px) 0; }
+.mk-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--mk-green-deep); margin: 0 0 14px;
+}
+
+/* ── Type scale ── */
+.mk-display { font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 600; line-height: 1.05; letter-spacing: -0.03em; }
+.mk-h1 { font-size: clamp(2rem, 4.5vw, 3rem);   font-weight: 600; line-height: 1.1;  letter-spacing: -0.02em; }
+.mk-h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); font-weight: 600; line-height: 1.2; letter-spacing: -0.01em; }
+.mk-h3 { font-size: clamp(1.3rem, 2.5vw, 1.75rem); font-weight: 600; line-height: 1.25; }
+.mk-h4 { font-size: 1.375rem; font-weight: 600; line-height: 1.3; }
+.mk-lead { font-size: clamp(1rem, 1.6vw, 1.125rem); font-weight: 400; line-height: 1.55; color: var(--mk-steel); }
+.mk-body { font-size: 1rem;   line-height: 1.5; color: var(--mk-slate); }
+.mk-small{ font-size: 0.875rem; line-height: 1.5; color: var(--mk-steel); }
+
+/* ══════════════════════════════════════════════════════════════════
+   GLASS BUTTONS  (frosted glassmorphism — investkarnataka style)
+   Pill-shaped, backdrop blur, soft inset shine, lift on hover.
+══════════════════════════════════════════════════════════════════ */
+.mk-btn {
+  --mk-btn-pad: 11px 22px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  font-family: var(--mk-font);
+  font-size: 0.875rem; font-weight: 600; line-height: 1.3; letter-spacing: 0.005em;
+  padding: var(--mk-btn-pad);
+  border-radius: var(--mk-r-full);
+  border: 1px solid transparent;
+  text-decoration: none; cursor: pointer; white-space: nowrap;
+  isolation: isolate;
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  backdrop-filter: blur(14px) saturate(150%);
+  transition: transform .25s cubic-bezier(.16,1,.3,1),
+              box-shadow .25s ease, background .25s ease, border-color .25s ease;
+}
+/* shared top-edge shine */
+.mk-btn::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 45%);
+  opacity: .6; z-index: -1;
+}
+.mk-btn:hover { transform: translateY(-2px); }
+.mk-btn:active { transform: translateY(0); }
+.mk-btn svg { flex-shrink: 0; }
+
+/* Primary — gradient glass pill (Invest-Karnataka style, refined)
+   Frosted translucent pill with a muted magenta→orange sheen,
+   thin light border, and a gentle outer glow. */
+.mk-btn-primary,
+.mk-btn-gradient {
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--mk-grad-from) 88%, transparent),
+                            color-mix(in srgb, var(--mk-grad-to) 88%, transparent));
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.35);
+  box-shadow: 0 6px 20px var(--mk-grad-glow), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.mk-btn-primary:hover,
+.mk-btn-gradient:hover {
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--mk-grad-glow) 160%, transparent),
+              inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.mk-btn-primary::before,
+.mk-btn-gradient::before { opacity: .4; }
+
+/* Solid dark pill kept available for rare on-light neutral CTAs */
+.mk-btn-dark {
+  background: linear-gradient(135deg, rgba(20,20,22,0.92), rgba(10,10,10,0.86));
+  color: var(--mk-on-primary);
+  border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 6px 22px rgba(10,10,10,0.28), inset 0 1px 0 rgba(255,255,255,0.18);
+}
+.mk-btn-dark::before { opacity: .25; }
+
+/* Accent — mint green glass pill */
+.mk-btn-green {
+  background: linear-gradient(135deg, rgba(0,212,164,0.92), rgba(0,180,138,0.86));
+  color: #04231c;
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 6px 22px rgba(0,180,138,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.mk-btn-green:hover { box-shadow: 0 12px 34px rgba(0,180,138,0.45), inset 0 1px 0 rgba(255,255,255,0.6); }
+
+/* Light glass — translucent white, for light surfaces */
+.mk-btn-glass {
+  background: rgba(255,255,255,0.55);
+  color: var(--mk-ink);
+  border-color: rgba(10,10,10,0.10);
+  box-shadow: 0 4px 18px rgba(10,10,10,0.08), inset 0 1px 0 rgba(255,255,255,0.7);
+}
+.mk-btn-glass:hover { background: rgba(255,255,255,0.75); box-shadow: 0 10px 28px rgba(10,10,10,0.12); }
+
+/* Dark glass — translucent, for use ON dark / hero gradient backgrounds */
+.mk-btn-glass-dark {
+  background: rgba(255,255,255,0.12);
+  color: var(--mk-on-dark);
+  border-color: rgba(255,255,255,0.3);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.35);
+}
+.mk-btn-glass-dark:hover { background: rgba(255,255,255,0.2); }
+
+/* Outline / secondary */
+.mk-btn-outline {
+  background: transparent; color: var(--mk-ink);
+  border-color: var(--mk-hairline);
+  -webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.mk-btn-outline::before { display: none; }
+.mk-btn-outline:hover { border-color: var(--mk-ink); background: rgba(10,10,10,0.03); }
+
+.mk-btn-sm { --mk-btn-pad: 8px 16px; font-size: 0.8125rem; }
+.mk-btn-lg { --mk-btn-pad: 14px 28px; font-size: 0.9375rem; }
+
+/* ══════════════ Cards ══════════════ */
+/* Light glassmorphism — frosted, faintly colourful frames on white backgrounds */
+.mk-card {
+  background-color: rgba(255,255,255,0.62);
+  background-image: linear-gradient(135deg, rgba(0,212,164,0.10) 0%, rgba(55,114,207,0.07) 55%, rgba(214,80,150,0.06) 100%);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: var(--mk-r-lg);
+  padding: clamp(20px, 3vw, 24px);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: 0 8px 30px rgba(20,20,40,0.08), inset 0 1px 0 rgba(255,255,255,0.65);
+  transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+}
+.mk-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 44px rgba(20,20,40,0.12), inset 0 1px 0 rgba(255,255,255,0.7);
+  border-color: rgba(255,255,255,0.95);
+}
+.mk-card-glass {
+  background-color: rgba(255,255,255,0.5);
+  background-image: linear-gradient(135deg, rgba(0,212,164,0.12) 0%, rgba(55,114,207,0.08) 55%, rgba(214,80,150,0.07) 100%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.7);
+  border-radius: var(--mk-r-lg);
+  box-shadow: 0 8px 30px rgba(20,20,40,0.09), inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+/* ══════════════ Cursor spotlight (interactive light) ══════════════ */
+/* A soft light follows the cursor across buttons & cards site-wide.
+   Position is fed by a global pointer listener in App.tsx (--mk-mx/--mk-my). */
+.mk-btn, .mk-card, .mk-card-glass, [data-spotlight] {
+  --mk-mx: 50%;
+  --mk-my: 50%;
+}
+.mk-card, .mk-card-glass, [data-spotlight] { position: relative; }
+
+.mk-btn::after,
+.mk-card::after,
+.mk-card-glass::after,
+[data-spotlight]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .35s ease;
+  background: radial-gradient(circle farthest-corner at var(--mk-mx) var(--mk-my),
+              rgba(245,158,11,0.34) 0%, rgba(239,68,68,0.20) 55%, rgba(239,68,68,0.08) 100%);
+}
+/* Buttons get a tighter, brighter highlight */
+.mk-btn::after {
+  background: radial-gradient(circle farthest-corner at var(--mk-mx) var(--mk-my),
+              rgba(245,158,11,0.58) 0%, rgba(239,68,68,0.32) 55%, rgba(239,68,68,0.14) 100%);
+}
+.mk-btn:hover::after,
+.mk-card:hover::after,
+.mk-card-glass:hover::after,
+[data-spotlight]:hover::after {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-btn::after, .mk-card::after, .mk-card-glass::after, [data-spotlight]::after {
+    transition: none;
+  }
+}
+
+/* ══════════════ Floating boxes (interactive, site-wide) ══════════════ */
+/* Cards softly bob up and down for a living feel, and gently shrink on hover.
+   Uses the individual `translate`/`scale` properties so they compose with any
+   existing `transform` (e.g. .mk-card-hover lift) instead of overriding it.
+   Add .mk-float to any inline-styled box to give it the same behaviour. */
+@keyframes mkFloatBob {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -9px; }
+}
+.mk-card,
+.mk-card-glass,
+.mk-float {
+  animation: mkFloatBob 6s ease-in-out infinite;
+  will-change: translate;
+  transition: scale .3s cubic-bezier(.16,1,.3,1), box-shadow .3s ease, border-color .3s ease;
+}
+/* Stagger so neighbouring boxes don't bob in unison */
+.mk-card:nth-of-type(3n),
+.mk-card-glass:nth-of-type(3n),
+.mk-float:nth-of-type(3n)        { animation-delay: -1.5s; }
+.mk-card:nth-of-type(3n + 1),
+.mk-card-glass:nth-of-type(3n + 1),
+.mk-float:nth-of-type(3n + 1)    { animation-delay: -3.5s; }
+.mk-card:nth-of-type(3n + 2),
+.mk-card-glass:nth-of-type(3n + 2),
+.mk-float:nth-of-type(3n + 2)    { animation-delay: -5s; }
+/* Hover: pause the bob and shrink slightly for tactile feedback */
+.mk-card:hover,
+.mk-card-glass:hover,
+.mk-float:hover {
+  animation-play-state: paused;
+  scale: 0.97;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mk-card, .mk-card-glass, .mk-float { animation: none; }
+  .mk-card:hover, .mk-card-glass:hover, .mk-float:hover { scale: 1; }
+}
+
+/* ══════════════ Badges / pills ══════════════ */
+.mk-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600; line-height: 1.4;
+  padding: 4px 11px; border-radius: var(--mk-r-full);
+  background: var(--mk-surface); color: var(--mk-steel);
+  border: 1px solid var(--mk-hairline);
+}
+.mk-badge-green { background: rgba(0,212,164,0.12); color: var(--mk-green-deep); border-color: rgba(0,212,164,0.3); }
+.mk-badge-glass {
+  background: rgba(255,255,255,0.35);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-color: rgba(255,255,255,0.5); color: var(--mk-charcoal);
+}
+/* Frosted pill for use ON dark / video hero backgrounds */
+.mk-badge-glass-dark {
+  background: rgba(255,255,255,0.12);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-color: rgba(255,255,255,0.28); color: rgba(255,255,255,0.92);
+}
+
+/* ══════════════ Hero gradient bands ══════════════ */
+.mk-hero-sky {
+  position: relative;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(255,255,255,0.65) 0%, transparent 55%),
+    linear-gradient(180deg, var(--mk-sky-from) 0%, var(--mk-sky-mid) 45%, var(--mk-sky-to) 100%);
+}
+.mk-hero-dark {
+  position: relative;
+  background: linear-gradient(135deg, var(--mk-dark-from) 0%, var(--mk-dark-to) 100%);
+  color: var(--mk-on-dark);
+}
+
+/* soft cloud blobs for the sky hero */
+.mk-cloud {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.85), rgba(255,255,255,0) 70%);
+  filter: blur(8px); pointer-events: none;
+}
+
+/* ══════════════ Logo wall ══════════════ */
+.mk-logo-wall {
+  display: grid; grid-template-columns: repeat(6, 1fr);
+  gap: 8px 24px; align-items: center;
+}
+.mk-logo-wall > * {
+  display: flex; align-items: center; justify-content: center;
+  padding: 16px; color: var(--mk-steel);
+  font-weight: 600; font-size: 0.95rem; opacity: .75;
+  transition: opacity .25s ease, color .25s ease;
+}
+.mk-logo-wall > *:hover { opacity: 1; color: var(--mk-ink); }
+@media (max-width: 768px) { .mk-logo-wall { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 460px) { .mk-logo-wall { grid-template-columns: repeat(2, 1fr); } }
+
+/* ══════════════════════════════════════════════════════════════════
+   GLASS NAV FRAME  (Invest-Karnataka style category bar)
+   A frosted frame holding a row of category buttons, each with a
+   circular arrow that fills with the brand gradient + slides on hover.
+══════════════════════════════════════════════════════════════════ */
+.mk-glassnav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: rgba(255,255,255,0.18);
+  -webkit-backdrop-filter: blur(20px) saturate(155%);
+  backdrop-filter: blur(20px) saturate(155%);
+  border: 1px solid rgba(255,255,255,0.45);
+  border-radius: var(--mk-r-xl);
+  box-shadow: 0 14px 44px rgba(10,10,10,0.12), inset 0 1px 0 rgba(255,255,255,0.55);
+  overflow: hidden;
+}
+.mk-glassnav-item {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: clamp(16px, 2.2vw, 22px) clamp(18px, 2.4vw, 26px);
+  text-decoration: none;
+  color: var(--mk-ink);
+  font-family: var(--mk-font);
+  font-weight: 600; font-size: clamp(.95rem, 1.4vw, 1.05rem);
+  border-right: 1px solid rgba(255,255,255,0.4);
+  transition: background .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
+}
+.mk-glassnav-item:last-child { border-right: none; }
+.mk-glassnav-item:hover { background: rgba(255,255,255,0.3); }
+.mk-glassnav-item:hover { transform: translateY(-2px); }
+.mk-glassnav-arrow {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(10,10,10,0.12);
+  color: var(--mk-ink);
+  transition: transform .4s cubic-bezier(.16,1,.3,1), background .35s ease, color .35s ease, border-color .35s ease;
+}
+.mk-glassnav-item:hover .mk-glassnav-arrow {
+  background: linear-gradient(135deg, var(--mk-grad-from), var(--mk-grad-to));
+  color: #fff;
+  border-color: transparent;
+  transform: translate(4px, -4px);
+  box-shadow: 0 6px 18px var(--mk-grad-glow);
+}
+
+/* Dark-hero variant (white text + light glass) */
+.mk-glassnav.on-dark {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.22);
+  box-shadow: 0 14px 44px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.25);
+}
+.mk-glassnav.on-dark .mk-glassnav-item { color: #fff; border-right-color: rgba(255,255,255,0.18); }
+.mk-glassnav.on-dark .mk-glassnav-item:hover { background: rgba(255,255,255,0.16); }
+.mk-glassnav.on-dark .mk-glassnav-arrow { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.3); color: #fff; }
+
+/* Responsive: stack into rows on small screens */
+@media (max-width: 760px) {
+  .mk-glassnav { grid-auto-flow: row; grid-auto-columns: auto; }
+  .mk-glassnav-item { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.35); }
+  .mk-glassnav-item:last-child { border-bottom: none; }
+  .mk-glassnav.on-dark .mk-glassnav-item { border-bottom-color: rgba(255,255,255,0.18); }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SECTION THEMES  (soft tints that complement the white canvas)
+   Each theme sets a very light background + recolors its eyebrow label
+   and the small accent bar, so headings read as a coordinated palette.
+══════════════════════════════════════════════════════════════════ */
+.mk-sec-mint     { background: #f1faf6; }
+.mk-sec-sky      { background: #f0f6fd; }
+.mk-sec-lavender { background: #f5f3fd; }
+.mk-sec-peach    { background: #fdf5ee; }
+.mk-sec-rose     { background: #fdf2f6; }
+.mk-sec-cream    { background: #faf7f0; }
+
+.mk-sec-mint     .mk-eyebrow { color: #009e82; }
+.mk-sec-sky      .mk-eyebrow { color: #2f6fd0; }
+.mk-sec-lavender .mk-eyebrow { color: #6b5cf6; }
+.mk-sec-peach    .mk-eyebrow { color: #cf6a2b; }
+.mk-sec-rose     .mk-eyebrow { color: #c2497a; }
+.mk-sec-cream    .mk-eyebrow { color: #a9791a; }
+
+/* ══════════════ Section header helper ══════════════ */
+.mk-section-head { max-width: 680px; margin: 0 auto clamp(2rem, 5vw, 3.5rem); text-align: center; }
+.mk-section-head.mk-left { margin-left: 0; text-align: left; }
+
+/* ══════════════ Reveal on scroll ══════════════ */
+.mk-reveal { opacity: 0; transform: translateY(28px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+.mk-reveal.mk-on { opacity: 1; transform: translateY(0); }
+
+/* ══════════════ Inputs ══════════════ */
+.mk-input {
+  width: 100%; height: 44px;
+  background: var(--mk-canvas); color: var(--mk-ink);
+  font-family: var(--mk-font); font-size: 1rem;
+  border: 1px solid var(--mk-hairline); border-radius: var(--mk-r-md);
+  padding: 0 14px; transition: border-color .2s ease, box-shadow .2s ease;
+}
+.mk-input:focus { outline: none; border-color: var(--mk-green); box-shadow: 0 0 0 3px rgba(0,212,164,0.15); }
+textarea.mk-input { height: auto; padding: 12px 14px; resize: vertical; }
+
+/* ══════════════ Misc ══════════════ */
+.mk-divider { height: 1px; background: var(--mk-hairline); border: 0; }
+.mk-grid { display: grid; gap: clamp(16px, 2.5vw, 24px); }
+.mk-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.mk-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.mk-grid-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) { .mk-grid-3, .mk-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .mk-grid-2, .mk-grid-3, .mk-grid-4 { grid-template-columns: 1fr; } }

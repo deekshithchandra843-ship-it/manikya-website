@@ -1,3 +1,4 @@
 node_modules
-.env 
-manikya_backup.sql 
+.env
+manikya_backup.sql
+dist
