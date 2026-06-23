@@ -114,12 +114,27 @@ export default function Home() {
         /* Hero video sits inside a rounded, contained frame (card look) with
            margins around it — mobile-first. The frame's aspect-ratio controls
            the crop; the video uses object-fit:cover so it always fills cleanly. */
-        .home-hero-wrap { padding: clamp(14px,4vw,40px) clamp(12px,4vw,40px); background: var(--mk-canvas); }
-        .home-hero-frame { position: relative; overflow: hidden; width: 100%; max-width: 1200px;
+        .home-hero-wrap { position: relative; overflow: hidden;
+          padding: clamp(26px,6vw,60px) clamp(12px,4vw,40px) clamp(28px,6vw,56px);
+          background: radial-gradient(135% 105% at 50% 0%, #eaf6ff 0%, #d6ecfb 52%, #e9f4fb 100%); }
+        /* Soft drifting aurora glow orbs behind the video — light sky blue palette */
+        .home-hero-wrap::before, .home-hero-wrap::after { content: ''; position: absolute; border-radius: 50%;
+          pointer-events: none; filter: blur(70px); opacity: .65; z-index: 0; }
+        .home-hero-wrap::before { width: clamp(280px,55vw,460px); height: clamp(280px,55vw,460px);
+          top: -14%; left: -10%; background: radial-gradient(circle, rgba(56,189,248,0.6), transparent 70%);
+          animation: heroOrbA 15s ease-in-out infinite; }
+        .home-hero-wrap::after { width: clamp(320px,60vw,520px); height: clamp(320px,60vw,520px);
+          bottom: -22%; right: -12%; background: radial-gradient(circle, rgba(125,211,252,0.55), transparent 70%);
+          animation: heroOrbB 19s ease-in-out infinite; }
+        @keyframes heroOrbA { 0%,100% { transform: translate(0,0) scale(1) } 50% { transform: translate(55px,38px) scale(1.15) } }
+        @keyframes heroOrbB { 0%,100% { transform: translate(0,0) scale(1) } 50% { transform: translate(-48px,-30px) scale(1.2) } }
+        @media (prefers-reduced-motion: reduce) { .home-hero-wrap::before, .home-hero-wrap::after { animation: none; } }
+        .home-hero-frame { position: relative; z-index: 1; overflow: hidden; width: 100%; max-width: 1200px;
           margin: 0 auto; border-radius: clamp(18px,4vw,30px); aspect-ratio: 16 / 10;
-          box-shadow: 0 22px 60px -26px rgba(10,10,10,0.5); }
+          border: 1px solid rgba(255,255,255,0.6);
+          box-shadow: 0 26px 60px -26px rgba(15,52,84,0.4); }
         @media (min-width: 768px) { .home-hero-frame { aspect-ratio: 21 / 9; } }
-        .home-hero-inner { position: absolute; left: 0; right: 0; bottom: clamp(16px,4vw,34px); }
+        .home-hero-cta { position: relative; z-index: 1; }
         @media (max-width: 600px) { .home-stats { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
@@ -181,17 +196,16 @@ export default function Home() {
           {/* Light readability scrim — keeps the video clearly visible */}
           <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
             background: 'linear-gradient(180deg, rgba(3,9,24,0.28) 0%, rgba(3,9,24,0.10) 45%, rgba(3,9,24,0.45) 100%)' }} />
-          <div className="home-hero-inner" style={{ zIndex: 2, textAlign: 'center', padding: '0 clamp(12px,4vw,24px)' }}>
-            <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
-              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                <Link to="/services" className="mk-btn mk-btn-primary mk-btn-lg">
-                  Explore Services <ArrowRight size={16} />
-                </Link>
-                <Link to="/about" className="mk-btn mk-btn-glass-dark mk-btn-lg">
-                  About Manikya
-                </Link>
-              </div>
-            </div>
+        </div>
+        {/* CTA buttons — below the video frame */}
+        <div className="home-hero-cta" style={{ marginTop: 'clamp(18px,4vw,30px)', textAlign: 'center', opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link to="/services" className="mk-btn mk-btn-primary mk-btn-lg">
+              Explore Services <ArrowRight size={16} />
+            </Link>
+            <Link to="/about" className="mk-btn mk-btn-outline mk-btn-lg">
+              About Manikya
+            </Link>
           </div>
         </div>
       </section>
