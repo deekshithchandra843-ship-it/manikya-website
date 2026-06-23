@@ -112,6 +112,15 @@ export default function Home() {
         .home-cta-fill:hover { filter: brightness(1.06); }
         .home-stat { text-align: center; padding: 14px; }
         .home-hero-inner { margin-top: auto; margin-bottom: clamp(8px,3vh,40px); }
+        /* Hero auto-fits the device viewport — no forced aspect ratio. The video
+           uses object-fit:cover, so it always crops cleanly to fill the screen,
+           whatever the laptop or phone proportions are. */
+        .home-hero { height: 88vh; min-height: 560px; max-height: 900px; }
+        @supports (height: 100dvh) { .home-hero { height: 88dvh; } }
+        @media (max-width: 768px) {
+          .home-hero { height: 86vh; min-height: 480px; max-height: none; }
+          @supports (height: 100dvh) { .home-hero { height: 86dvh; } }
+        }
         @media (max-width: 600px) { .home-stats { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
@@ -132,7 +141,7 @@ export default function Home() {
       </a>
 
       {/* ── HERO (company intro video background) ── */}
-      <section className="mk-hero-sky" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(96px,14vw,160px) 0 clamp(72px,10vw,120px)', minHeight: '78vh', display: 'flex', alignItems: 'center' }}>
+      <section className="mk-hero-sky home-hero" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(96px,14vw,160px) 0 clamp(24px,5vh,56px)', display: 'flex', alignItems: 'flex-end' }}>
         {/* Background intro video */}
         <video
           ref={heroVideoRef}
