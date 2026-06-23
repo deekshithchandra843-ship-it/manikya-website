@@ -111,16 +111,15 @@ export default function Home() {
         .home-cta:hover { transform: translateY(-3px); }
         .home-cta-fill:hover { filter: brightness(1.06); }
         .home-stat { text-align: center; padding: 14px; }
-        .home-hero-inner { margin-top: auto; margin-bottom: clamp(8px,3vh,40px); }
-        /* Hero auto-fits the device viewport — no forced aspect ratio. The video
-           uses object-fit:cover, so it always crops cleanly to fill the screen,
-           whatever the laptop or phone proportions are. */
-        .home-hero { height: 88vh; min-height: 560px; max-height: 900px; }
-        @supports (height: 100dvh) { .home-hero { height: 88dvh; } }
-        @media (max-width: 768px) {
-          .home-hero { height: 86vh; min-height: 480px; max-height: none; }
-          @supports (height: 100dvh) { .home-hero { height: 86dvh; } }
-        }
+        /* Hero video sits inside a rounded, contained frame (card look) with
+           margins around it — mobile-first. The frame's aspect-ratio controls
+           the crop; the video uses object-fit:cover so it always fills cleanly. */
+        .home-hero-wrap { padding: clamp(14px,4vw,40px) clamp(12px,4vw,40px); background: var(--mk-canvas); }
+        .home-hero-frame { position: relative; overflow: hidden; width: 100%; max-width: 1200px;
+          margin: 0 auto; border-radius: clamp(18px,4vw,30px); aspect-ratio: 16 / 10;
+          box-shadow: 0 22px 60px -26px rgba(10,10,10,0.5); }
+        @media (min-width: 768px) { .home-hero-frame { aspect-ratio: 21 / 9; } }
+        .home-hero-inner { position: absolute; left: 0; right: 0; bottom: clamp(16px,4vw,34px); }
         @media (max-width: 600px) { .home-stats { grid-template-columns: repeat(2,1fr) !important; } }
       `}</style>
 
@@ -140,56 +139,58 @@ export default function Home() {
         </div>
       </a>
 
-      {/* ── HERO (company intro video background) ── */}
-      <section className="mk-hero-sky home-hero" style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(96px,14vw,160px) 0 clamp(24px,5vh,56px)', display: 'flex', alignItems: 'flex-end' }}>
-        {/* Background intro video */}
-        <video
-          ref={heroVideoRef}
-          autoPlay muted loop playsInline preload="auto"
-          poster="/manikya-logo-transparent.png"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}
-        >
-          <source src="/hero-intro.mp4?v=2" type="video/mp4" />
-        </video>
-        {/* Mute / unmute toggle */}
-        <button
-          type="button"
-          aria-label={heroMuted ? 'Unmute video' : 'Mute video'}
-          onClick={() => {
-            const v = heroVideoRef.current;
-            if (!v) return;
-            const next = !heroMuted;
-            v.muted = next;
-            if (!next) { v.volume = 1; v.play().catch(() => {}); }
-            setHeroMuted(next);
-          }}
-          style={{
-            position: 'absolute', bottom: 22, right: 22, zIndex: 3,
-            width: 46, height: 46, borderRadius: '50%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', color: '#fff',
-            background: 'rgba(3,9,24,0.45)', border: '1px solid rgba(255,255,255,0.35)',
-            backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
-            boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
-            transition: 'background .25s ease, transform .25s ease',
-          }}
-          onMouseEnter={e => { e.currentTarget.style.background = 'rgba(3,9,24,0.7)'; e.currentTarget.style.transform = 'scale(1.08)'; }}
-          onMouseLeave={e => { e.currentTarget.style.background = 'rgba(3,9,24,0.45)'; e.currentTarget.style.transform = 'scale(1)'; }}
-        >
-          {heroMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
-        </button>
-        {/* Light readability scrim — keeps the video clearly visible */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-          background: 'linear-gradient(180deg, rgba(3,9,24,0.28) 0%, rgba(3,9,24,0.12) 45%, rgba(3,9,24,0.42) 100%)' }} />
-        <div className="mk-container home-hero-inner" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 920 }}>
-          <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
-            <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link to="/services" className="mk-btn mk-btn-primary mk-btn-lg">
-                Explore Services <ArrowRight size={16} />
-              </Link>
-              <Link to="/about" className="mk-btn mk-btn-glass-dark mk-btn-lg">
-                About Manikya
-              </Link>
+      {/* ── HERO (company intro video in a rounded, contained frame) ── */}
+      <section className="home-hero-wrap">
+        <div className="home-hero-frame">
+          {/* Background intro video */}
+          <video
+            ref={heroVideoRef}
+            autoPlay muted loop playsInline preload="auto"
+            poster="/manikya-logo-transparent.png"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}
+          >
+            <source src="/hero-intro.mp4?v=2" type="video/mp4" />
+          </video>
+          {/* Mute / unmute toggle */}
+          <button
+            type="button"
+            aria-label={heroMuted ? 'Unmute video' : 'Mute video'}
+            onClick={() => {
+              const v = heroVideoRef.current;
+              if (!v) return;
+              const next = !heroMuted;
+              v.muted = next;
+              if (!next) { v.volume = 1; v.play().catch(() => {}); }
+              setHeroMuted(next);
+            }}
+            style={{
+              position: 'absolute', bottom: 16, right: 16, zIndex: 3,
+              width: 44, height: 44, borderRadius: '50%',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: '#fff',
+              background: 'rgba(3,9,24,0.45)', border: '1px solid rgba(255,255,255,0.35)',
+              backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)',
+              boxShadow: '0 4px 14px rgba(0,0,0,0.25)',
+              transition: 'background .25s ease, transform .25s ease',
+            }}
+            onMouseEnter={e => { e.currentTarget.style.background = 'rgba(3,9,24,0.7)'; e.currentTarget.style.transform = 'scale(1.08)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(3,9,24,0.45)'; e.currentTarget.style.transform = 'scale(1)'; }}
+          >
+            {heroMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
+          {/* Light readability scrim — keeps the video clearly visible */}
+          <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
+            background: 'linear-gradient(180deg, rgba(3,9,24,0.28) 0%, rgba(3,9,24,0.10) 45%, rgba(3,9,24,0.45) 100%)' }} />
+          <div className="home-hero-inner" style={{ zIndex: 2, textAlign: 'center', padding: '0 clamp(12px,4vw,24px)' }}>
+            <div style={{ opacity: heroVisible ? 1 : 0, transform: heroVisible ? 'translateY(0)' : 'translateY(20px)', transition: 'all .8s cubic-bezier(.16,1,.3,1)' }}>
+              <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Link to="/services" className="mk-btn mk-btn-primary mk-btn-lg">
+                  Explore Services <ArrowRight size={16} />
+                </Link>
+                <Link to="/about" className="mk-btn mk-btn-glass-dark mk-btn-lg">
+                  About Manikya
+                </Link>
+              </div>
             </div>
           </div>
         </div>
