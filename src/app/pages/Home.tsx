@@ -149,7 +149,7 @@ export default function Home() {
           poster="/manikya-logo-transparent.png"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0, pointerEvents: 'none' }}
         >
-          <source src="/hero-intro.mp4" type="video/mp4" />
+          <source src="/hero-intro.mp4?v=2" type="video/mp4" />
         </video>
         {/* Mute / unmute toggle */}
         <button
