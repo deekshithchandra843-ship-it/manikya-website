@@ -266,7 +266,7 @@ export default function Layout() {
           </div>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, borderTop: '1px solid var(--mk-hairline)', marginTop: 36, paddingTop: 22 }}>
             <p style={{ fontFamily: 'var(--mk-font)', fontSize: '.8125rem', color: '#888', margin: 0 }}>© 2026 Manikya Money Service Pvt Ltd. All rights reserved.</p>
-            <span className="mk-badge mk-badge-green">Est. 2002 · Bengaluru, Karnataka</span>
+            <span className="mk-badge mk-badge-green">Est. 2026 · Bengaluru, Karnataka</span>
           </div>
         </div>
       </footer>

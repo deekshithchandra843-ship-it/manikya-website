@@ -55,7 +55,7 @@ const videoSlots = [
 ];
 
 const milestones = [
-  { year: '2002', title: 'NewsJunction Founded',      desc: 'Dr. Rahmat Kanchagar started as a Kannada regional news portal covering Karnataka.' },
+  { year: '2026', title: 'NewsJunction Founded',      desc: 'Dr. Rahmat Kanchagar started as a Kannada regional news portal covering Karnataka.' },
   { year: '2008', title: 'Multi-Language Expansion',  desc: 'Expanded to Hindi, Tamil, and Telugu channels — national multi-lingual media network.' },
   { year: '2014', title: 'Manikya Market Launched',   desc: 'Desi e-commerce connecting Karnataka artisans to global buyers.' },
   { year: '2018', title: 'Pearl Farms Initiative',    desc: 'Pioneered freshwater pearl farming in Mandya, Karnataka.' },
@@ -139,7 +139,7 @@ export default function About() {
           <span className="mk-badge mk-badge-glass" style={{ marginBottom: 20 }}>Our story</span>
           <h1 className="mk-display" style={{ color: 'var(--mk-ink)', margin: '0 0 16px' }}>About Manikya.</h1>
           <p className="mk-lead" style={{ color: 'var(--mk-slate)', maxWidth: 540 }}>
-            A multi-sector enterprise rooted in Bengaluru — driving sustainable growth across media, agriculture, commerce, wellness, financial services, and real estate since 2002.
+            A multi-sector enterprise rooted in Bengaluru — driving sustainable growth across media, agriculture, commerce, wellness, financial services, and real estate since 2026.
           </p>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function About() {
               <p className="mk-eyebrow">Who we are</p>
               <h2 className="mk-h2" style={{ margin: '0 0 20px' }}>Building India's future across seven verticals</h2>
               <p className="mk-body" style={{ marginBottom: 16 }}>
-                Founded in 2002 by Dr. Rahmat Kanchagar, <strong style={{ color: 'var(--mk-ink)' }}>Manikya Group</strong> is a Bengaluru-based multi-sector enterprise that has grown from a regional news portal into a diversified conglomerate spanning media, agriculture, e-commerce, wellness, financial services, and real estate.
+                Founded in 2026 by Dr. Rahmat Kanchagar, <strong style={{ color: 'var(--mk-ink)' }}>Manikya Group</strong> is a Bengaluru-based multi-sector enterprise that has grown from a regional news portal into a diversified conglomerate spanning media, agriculture, e-commerce, wellness, financial services, and real estate.
               </p>
               <p className="mk-body" style={{ marginBottom: 24 }}>
                 Over more than two decades, we have remained steadfast in our mission: to <strong style={{ color: 'var(--mk-ink)' }}>empower rural communities, elevate Karnataka's cultural heritage</strong>, and create sustainable livelihoods for farmers, artisans, and entrepreneurs across India.
@@ -184,7 +184,7 @@ export default function About() {
                 <div style={{ marginTop: 12, fontWeight: 600, color: 'var(--mk-green-deep)', fontSize: '0.85rem' }}>— Dr. Rahmat Kanchagar, Founder & MD & CEO</div>
               </div>
               <div className="mk-grid mk-grid-3" style={{ gap: 0, border: '1px solid var(--mk-hairline)', borderRadius: 12, overflow: 'hidden' }}>
-                {[{ n: '2002', label: 'Founded' }, { n: '7', label: 'Verticals' }, { n: '500+', label: 'Partners' }].map((s, i) => (
+                {[{ n: '2026', label: 'Founded' }, { n: '7', label: 'Verticals' }, { n: '500+', label: 'Partners' }].map((s, i) => (
                   <div key={i} style={{ padding: '22px 16px', textAlign: 'center', borderRight: i < 2 ? '1px solid var(--mk-hairline)' : 'none', background: 'var(--mk-surface-soft)' }}>
                     <div style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--mk-ink)' }}>{s.n}</div>
                     <div className="mk-eyebrow" style={{ margin: '4px 0 0', color: 'var(--mk-stone)' }}>{s.label}</div>
@@ -209,7 +209,7 @@ export default function About() {
       {/* MARQUEE */}
       <section style={{ background: 'var(--mk-canvas-dark)', padding: '13px 0', overflow: 'hidden' }}>
         <div className="ab-marquee">
-          {[...Array(2)].map((_, r) => (['Established 2002', '•', 'Bengaluru, Karnataka', '•', '7 Business Verticals', '•', '500+ Partners', '•', '24+ Years of Excellence', '•']).map((t, i) => (
+          {[...Array(2)].map((_, r) => (['Established 2026', '•', 'Bengaluru, Karnataka', '•', '7 Business Verticals', '•', '500+ Partners', '•', '24+ Years of Excellence', '•']).map((t, i) => (
             <span key={`${r}-${i}`} style={{ fontFamily: 'var(--mk-font)', fontWeight: 500, fontSize: '0.8rem', letterSpacing: '0.08em', color: 'rgba(255,255,255,0.75)', flexShrink: 0 }}>{t}</span>
           )))}
         </div>

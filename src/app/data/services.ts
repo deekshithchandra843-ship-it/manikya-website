@@ -61,7 +61,7 @@ export const newsChannelLogos = [
 /* ─────────────  Deep-dive data per service (by slug)  ───────────── */
 export const serviceDetails: Record<string, any> = {
   newsjunction: {
-    stats:[{value:'5',label:'Language Channels',icon:'🌐'},{value:'31+',label:'Districts Covered',icon:'📍'},{value:'24/7',label:'Live Streaming',icon:'📡'},{value:'2002',label:'Established',icon:'🏆'}],
+    stats:[{value:'5',label:'Language Channels',icon:'🌐'},{value:'31+',label:'Districts Covered',icon:'📍'},{value:'24/7',label:'Live Streaming',icon:'📡'},{value:'2026',label:'Established',icon:'🏆'}],
     howItWorks:[
       {step:1,title:'Multi-Language Coverage',desc:'Five dedicated language desks — each with local journalists delivering verified news in Kannada, Hindi, Tamil, Telugu, and English.'},
       {step:2,title:'Hyper-Local Reporting',desc:'Reporters embedded in all 31 Karnataka districts ensuring every village story gets the national attention it deserves.'},

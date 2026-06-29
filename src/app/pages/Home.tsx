@@ -339,7 +339,7 @@ export default function Home() {
           <div className="mk-grid mk-grid-3">
             {[
               { n: '01', t: 'Circular Synergy', d: 'Each of our 7 verticals feeds and strengthens the others — media drives commerce, farms attract investors, finance enables growth.' },
-              { n: '02', t: '24+ Years Excellence', d: 'Two decades of journalistic integrity, entrepreneurial grit, and community empowerment — building trust one venture at a time since 2002.' },
+              { n: '02', t: '24+ Years Excellence', d: 'Two decades of journalistic integrity, entrepreneurial grit, and community empowerment — building trust one venture at a time since 2026.' },
               { n: '03', t: 'Rural Empowerment', d: 'Every product, every farm, every story — rooted in the empowerment of Indian farmers, artisans, women entrepreneurs, and local communities.' },
               { n: '04', t: 'Tech + Tradition', d: 'We blend modern technology with ancient wisdom — digital media meets pearl farming, Ayurveda meets e-commerce, fintech meets community banking.' },
               { n: '05', t: 'Financial Inclusion', d: 'Manikya Money Service ensures everyone has access to quick capital with speedy approvals, low rates, and zero hidden charges.' },
