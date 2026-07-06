@@ -175,14 +175,20 @@ export default function Gallery() {
 
     try {
       if (dbId) {
-        await fetch(`${API_BASE}/gallery/${dbId}/image`, {
-          method: 'PUT',
+        // Backend rejects PUT with null image_data, so delete the row;
+        // the next upload re-creates it via POST.
+        const res = await fetch(`${API_BASE}/gallery/${dbId}`, {
+          method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           },
-          body: JSON.stringify({ image_data: null, image_url: null }),
         });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || `Delete failed (${res.status})`);
+        }
+        setDbIds(prev => { const n = { ...prev }; delete n[slotId]; return n; });
       }
       setImages(prev => { const n = { ...prev }; delete n[slotId]; return n; });
     } catch (err: any) {

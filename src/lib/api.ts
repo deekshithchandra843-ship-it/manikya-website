@@ -75,8 +75,9 @@ export const galleryApi = {
   getAll: () => call<GalleryItem[]>('/gallery/all', {}, 'admin'),
   uploadImage: (id: number, image_data: string) =>
     call<{ message: string }>(`/gallery/${id}/image`, { method: 'PUT', body: JSON.stringify({ image_data }) }, 'admin'),
+  // Backend rejects PUT with null image_data, so removal deletes the row.
   removeImage: (id: number) =>
-    call<{ message: string }>(`/gallery/${id}/image`, { method: 'PUT', body: JSON.stringify({ image_data: null, image_url: null }) }, 'admin'),
+    call<{ message: string }>(`/gallery/${id}`, { method: 'DELETE' }, 'admin'),
 };
 
 // ── analytics ─────────────────────────────────────────────────
